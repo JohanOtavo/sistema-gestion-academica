@@ -1,0 +1,65 @@
+@startuml 05-casos-uso-administrador
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Administrador\nacadémico" as ADM
+
+package "EP-01 Acceso y seguridad" {
+  usecase "HU-01\nIniciar sesión" as UC01
+  usecase "HU-03\nAdministrar usuarios y roles" as UC03
+}
+
+package "EP-02 / EP-03 Personas" {
+  usecase "HU-06\nRegistrar estudiante" as UC06
+  usecase "HU-07\nConsultar y buscar" as UC07
+  usecase "HU-11\nRegistrar docente" as UC11
+  usecase "HU-12\nAsignar docente a curso" as UC12
+}
+
+package "EP-04 Oferta académica" {
+  usecase "HU-13\nAdministrar períodos" as UC13
+  usecase "HU-14\nAdministrar cursos" as UC14
+  usecase "HU-17\nConfigurar cortes" as UC17
+}
+
+package "EP-05 Matrícula" {
+  usecase "HU-15\nMatricular estudiante" as UC15
+  usecase "HU-16\nCancelar matrícula" as UC16
+}
+
+ADM --> UC01
+ADM --> UC03
+ADM --> UC06
+ADM --> UC07
+ADM --> UC11
+ADM --> UC12
+ADM --> UC13
+ADM --> UC14
+ADM --> UC17
+ADM --> UC15
+ADM --> UC16
+
+UC15 ..> UC14 : <<include>>\nvalidar cupo (RN-05)
+UC15 ..> UC13 : <<include>>\nperíodo activo (RN-07)
+@enduml

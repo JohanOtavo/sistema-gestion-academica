@@ -1,0 +1,59 @@
+@startuml 06-casos-uso-docente-estudiante
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Docente" as DOC
+actor "Estudiante" as EST
+
+package "EP-06 Registro de calificaciones" {
+  usecase "HU-22\nConsultar lista de clase" as UC22
+  usecase "HU-18\nRegistrar calificaciones" as UC18
+  usecase "HU-19\nModificar calificación" as UC19
+  usecase "HU-21\nCalcular nota definitiva" as UC21
+}
+
+package "EP-07 Consultas del estudiante" {
+  usecase "HU-23\nConsultar mis cursos" as UC23
+  usecase "HU-24\nConsultar mis notas" as UC24
+  usecase "HU-25\nConsultar mi promedio" as UC25
+}
+
+DOC --> UC22
+DOC --> UC18
+DOC --> UC19
+EST --> UC23
+EST --> UC24
+EST --> UC25
+
+UC18 ..> UC22 : <<include>>
+UC18 ..> UC21 : <<include>>
+UC19 ..> UC21 : <<include>>\nrecalcular
+UC24 ..> UC21 : <<include>>
+UC25 ..> UC21 : <<include>>\nponderar (RN-13)
+
+note bottom of UC18
+  Restricción RN-08: el docente solo accede
+  a los cursos que tiene asignados.
+end note
+@enduml

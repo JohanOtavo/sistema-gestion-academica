@@ -1,0 +1,50 @@
+@startuml 01-actores
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontColor #1F3864
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam rectangle {
+  BorderColor #1F3864
+  BackgroundColor #F2F6FC
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Administrador\nacadémico" as ADM #DCE6F1
+actor "Docente" as DOC #DCE6F1
+actor "Estudiante" as EST #DCE6F1
+actor "Acudiente\n(versión 2)" as ACU #EFEFEF
+
+rectangle "Sistema de Gestión Académica (SGA)" as SGA {
+  usecase "Administrar\npersonas y usuarios" as U1
+  usecase "Configurar\noferta académica" as U2
+  usecase "Gestionar\nmatrículas" as U3
+  usecase "Registrar\ncalificaciones" as U4
+  usecase "Consultar\ninformación académica" as U5
+  usecase "Generar\nreportes" as U6
+}
+
+ADM --> U1
+ADM --> U2
+ADM --> U3
+ADM --> U6
+DOC --> U4
+DOC --> U5
+EST --> U5
+ACU ..> U5 : futuro
+
+
+@enduml

@@ -1,0 +1,92 @@
+@startgantt 08-roadmap-sprints
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+
+<style>
+ganttDiagram {
+  task {
+    BackgroundColor #DCE6F1
+    LineColor #2E75B6
+    FontColor #1F3864
+  }
+  milestone {
+    BackgroundColor #1F3864
+    LineColor #1F3864
+    FontColor #1F3864
+  }
+  separator {
+    BackgroundColor #F2F2F2
+    LineColor #BFBFBF
+    FontColor #1F3864
+    FontStyle bold
+  }
+  note {
+    BackgroundColor #FFF2CC
+    LineColor #BF9000
+  }
+}
+</style>
+
+printscale weekly
+Project starts 2026-09-07
+saturday are closed
+sunday are closed
+
+-- Sprint 1: acceso y estudiantes (28 SP) --
+[HU-03 Administrar usuarios y roles] lasts 4 days
+[HU-01 Iniciar sesión] lasts 3 days
+[HU-02 Cerrar sesión] lasts 1 days
+[HU-04 Restringir por rol] lasts 2 days
+[HU-06 Registrar estudiante] lasts 3 days
+[HU-07 Consultar y buscar estudiantes] lasts 2 days
+[HU-01 Iniciar sesión] starts at [HU-03 Administrar usuarios y roles]'s end
+[HU-02 Cerrar sesión] starts at [HU-01 Iniciar sesión]'s end
+[HU-04 Restringir por rol] starts at [HU-02 Cerrar sesión]'s end
+[HU-06 Registrar estudiante] starts at [HU-04 Restringir por rol]'s end
+[HU-07 Consultar y buscar estudiantes] starts at [HU-06 Registrar estudiante]'s end
+[Demo Sprint 1] happens at [HU-07 Consultar y buscar estudiantes]'s end
+
+-- Sprint 2: oferta académica (29 SP) --
+[HU-08 Actualizar estudiante] lasts 2 days
+[HU-11 Registrar docentes] lasts 3 days
+[HU-13 Administrar períodos] lasts 3 days
+[HU-14 Administrar cursos] lasts 4 days
+[HU-12 Asignar docente a curso] lasts 2 days
+[HU-17 Configurar cortes] lasts 3 days
+[HU-08 Actualizar estudiante] starts at [HU-07 Consultar y buscar estudiantes]'s end
+[HU-11 Registrar docentes] starts at [HU-08 Actualizar estudiante]'s end
+[HU-13 Administrar períodos] starts at [HU-11 Registrar docentes]'s end
+[HU-14 Administrar cursos] starts at [HU-13 Administrar períodos]'s end
+[HU-12 Asignar docente a curso] starts at [HU-14 Administrar cursos]'s end
+[HU-17 Configurar cortes] starts at [HU-12 Asignar docente a curso]'s end
+[Demo Sprint 2] happens at [HU-17 Configurar cortes]'s end
+
+-- Sprint 3: matrícula (24 SP) --
+[HU-15 Matricular estudiante] lasts 6 days
+[HU-16 Cancelar matrícula] lasts 2 days
+[HU-22 Consultar lista de clase] lasts 2 days
+[HU-23 Consultar mis cursos] lasts 2 days
+[HU-15 Matricular estudiante] starts at [HU-17 Configurar cortes]'s end
+[HU-16 Cancelar matrícula] starts at [HU-15 Matricular estudiante]'s end
+[HU-22 Consultar lista de clase] starts at [HU-16 Cancelar matrícula]'s end
+[HU-23 Consultar mis cursos] starts at [HU-22 Consultar lista de clase]'s end
+[Demo Sprint 3] happens at [HU-23 Consultar mis cursos]'s end
+
+-- Sprint 4: calificaciones y consultas (45 SP) --
+[HU-18 Registrar calificaciones] lasts 6 days
+[HU-21 Calcular nota definitiva] lasts 3 days
+[HU-19 Modificar calificación] lasts 3 days
+[HU-24 Consultar mis notas] lasts 2 days
+[HU-25 Consultar mi promedio] lasts 2 days
+[HU-05 y HU-09 complementarias] lasts 2 days
+[HU-18 Registrar calificaciones] starts at [HU-23 Consultar mis cursos]'s end
+[HU-21 Calcular nota definitiva] starts at [HU-18 Registrar calificaciones]'s end
+[HU-19 Modificar calificación] starts at [HU-21 Calcular nota definitiva]'s end
+[HU-24 Consultar mis notas] starts at [HU-19 Modificar calificación]'s end
+[HU-25 Consultar mi promedio] starts at [HU-24 Consultar mis notas]'s end
+[HU-05 y HU-09 complementarias] starts at [HU-25 Consultar mi promedio]'s end
+[Entrega del MVP] happens at [HU-05 y HU-09 complementarias]'s end
+@endgantt

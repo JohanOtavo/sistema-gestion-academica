@@ -1,0 +1,56 @@
+@startuml 02-arbol-problemas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #7F7F7F
+skinparam ArrowThickness 1.4
+skinparam rectangleBorderThickness 1
+hide stereotype
+
+skinparam rectangle<<efecto>> {
+  BackgroundColor #FBE5E5
+  BorderColor #C00000
+  FontColor #833C3C
+}
+skinparam rectangle<<problema>> {
+  BackgroundColor #1F3864
+  BorderColor #1F3864
+  FontColor #FFFFFF
+}
+skinparam rectangle<<causa>> {
+  BackgroundColor #EDEDED
+  BorderColor #808080
+  FontColor #404040
+}
+skinparam rectangle<<banda>> {
+  BackgroundColor #FFFFFF
+  BorderColor #FFFFFF
+  FontColor #1F3864
+  FontStyle bold
+}
+
+rectangle "E F E C T O S" <<banda>> as TE
+rectangle "Boletines con errores\ny reprocesos" <<efecto>> as E1
+rectangle "Reclamos de estudiantes\ny acudientes" <<efecto>> as E2
+rectangle "Decisiones académicas\ntomadas sobre datos falsos" <<efecto>> as E3
+
+rectangle "P R O B L E M A   C E N T R A L\n\nLa información académica (estudiantes, docentes, cursos,\nmatrículas y calificaciones) está dispersa, duplicada y sin\ncontrol de acceso: no existe una fuente única de verdad" <<problema>> as P
+
+rectangle "No hay un sistema centralizado:\nN hojas de cálculo aisladas" <<causa>> as C1
+rectangle "Procesos manuales:\ntranscripción y consolidación" <<causa>> as C2
+rectangle "Sin roles ni permisos:\ncualquiera edita cualquier archivo" <<causa>> as C3
+rectangle "C A U S A S" <<banda>> as TC
+
+P -up-> E1
+P -up-> E2
+P -up-> E3
+C1 -up-> P
+C2 -up-> P
+C3 -up-> P
+
+TE -[hidden]down- E2
+C2 -[hidden]down- TC
+@enduml

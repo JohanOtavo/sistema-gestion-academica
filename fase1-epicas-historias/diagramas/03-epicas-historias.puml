@@ -1,0 +1,92 @@
+@startuml 03-epicas-historias
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #2E75B6
+skinparam ArrowThickness 1.2
+skinparam rectangleBorderThickness 1
+hide stereotype
+
+left to right direction
+
+skinparam rectangle<<raiz>> {
+  BackgroundColor #1F3864
+  BorderColor #1F3864
+  FontColor #FFFFFF
+  FontStyle bold
+  FontSize 14
+}
+skinparam rectangle<<epica>> {
+  BackgroundColor #2E75B6
+  BorderColor #1F3864
+  FontColor #FFFFFF
+  FontStyle bold
+}
+skinparam rectangle<<mvp>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+  FontColor #375623
+}
+skinparam rectangle<<v2>> {
+  BackgroundColor #F2F2F2
+  BorderColor #A6A6A6
+  FontColor #595959
+}
+
+rectangle "Sistema de Gestión\nAcadémica\n(SGA)" <<raiz>> as R
+
+rectangle "EP-01\nAcceso y seguridad" <<epica>> as EP1
+rectangle "EP-02\nEstudiantes" <<epica>> as EP2
+rectangle "EP-03\nDocentes" <<epica>> as EP3
+rectangle "EP-04\nOferta académica" <<epica>> as EP4
+rectangle "EP-05\nMatrícula" <<epica>> as EP5
+rectangle "EP-06\nCalificaciones" <<epica>> as EP6
+rectangle "EP-07\nConsultas del estudiante" <<epica>> as EP7
+rectangle "EP-08\nReportes" <<epica>> as EP8
+rectangle "EP-09\nNotificaciones" <<epica>> as EP9
+
+rectangle "HU-01  Iniciar sesión\nHU-02  Cerrar sesión\nHU-03  Administrar usuarios y roles\nHU-04  Restringir por rol\nHU-05  Cambiar contraseña" <<mvp>> as H1
+rectangle "HU-06  Registrar estudiante\nHU-07  Consultar y buscar\nHU-08  Actualizar\nHU-09  Inactivar" <<mvp>> as H2
+rectangle "HU-10  Ficha completa" <<v2>> as H2b
+rectangle "HU-11  Registrar docentes\nHU-12  Asignar docente a curso" <<mvp>> as H3
+rectangle "HU-13  Administrar períodos\nHU-14  Administrar cursos\nHU-17  Configurar cortes" <<mvp>> as H4
+rectangle "HU-28  Horarios" <<v2>> as H4b
+rectangle "HU-15  Matricular estudiante\nHU-16  Cancelar matrícula\nHU-22  Lista de clase" <<mvp>> as H5
+rectangle "HU-27  Automatrícula" <<v2>> as H5b
+rectangle "HU-18  Registrar calificaciones\nHU-19  Modificar calificación\nHU-21  Calcular definitiva" <<mvp>> as H6
+rectangle "HU-20  Cerrar registro de notas" <<v2>> as H6b
+rectangle "HU-23  Mis cursos\nHU-24  Mis notas\nHU-25  Mi promedio" <<mvp>> as H7
+rectangle "HU-26  Boletín\nHU-29  Ocupación de cursos\nHU-30  Tablero" <<v2>> as H8
+rectangle "HU-31  Aviso de notas\nHU-32  Recuperar contraseña" <<v2>> as H9
+
+R --> EP1
+R --> EP2
+R --> EP3
+R --> EP4
+R --> EP5
+R --> EP6
+R --> EP7
+R --> EP8
+R --> EP9
+
+EP1 --> H1
+EP2 --> H2
+EP2 --> H2b
+EP3 --> H3
+EP4 --> H4
+EP4 --> H4b
+EP5 --> H5
+EP5 --> H5b
+EP6 --> H6
+EP6 --> H6b
+EP7 --> H7
+EP8 --> H8
+EP9 --> H9
+
+legend bottom
+  <back:#E2F0D9>   </back> Historias del MVP (23)    <back:#F2F2F2>   </back> Historias de la versión 2 (9)
+endlegend
+@enduml

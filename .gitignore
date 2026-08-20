@@ -1,0 +1,11 @@
+# Temporales de Office
+~$*.docx
+~$*.xlsx
+
+# Herramientas locales
+plantuml.jar
+node_modules/
+
+# Sistema
+Thumbs.db
+.DS_Store

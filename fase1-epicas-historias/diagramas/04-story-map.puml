@@ -1,0 +1,89 @@
+@startuml 04-story-map
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam rectangleBorderThickness 1
+hide stereotype
+
+skinparam rectangle<<col>> {
+  BackgroundColor #F7FAFE
+  BorderColor #1F3864
+  FontColor #1F3864
+  FontStyle bold
+  FontSize 13
+}
+skinparam rectangle<<mvp>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+  FontColor #375623
+}
+skinparam rectangle<<v2>> {
+  BackgroundColor #F2F2F2
+  BorderColor #A6A6A6
+  FontColor #595959
+}
+skinparam rectangle<<fut>> {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+  FontColor #7F6000
+}
+
+rectangle "1. Acceder al sistema" <<col>> {
+  rectangle "HU-01  Iniciar sesión\nHU-02  Cerrar sesión\nHU-03  Usuarios y roles\nHU-04  Permisos por rol\nHU-05  Cambiar contraseña" <<mvp>> as A1
+  rectangle "Recuperar contraseña\npor correo (HU-32)" <<fut>> as A3
+  A1 -[hidden]down- A3
+}
+
+rectangle "2. Administrar personas" <<col>> {
+  rectangle "HU-06  Registrar estudiante\nHU-07  Consultar y buscar\nHU-08  Actualizar\nHU-09  Inactivar\nHU-11  Registrar docentes\nHU-12  Asignar docente" <<mvp>> as B1
+  rectangle "HU-10  Ficha completa" <<v2>> as B2
+  rectangle "Portal del acudiente" <<fut>> as B3
+  B1 -[hidden]down- B2
+  B2 -[hidden]down- B3
+}
+
+rectangle "3. Configurar la oferta" <<col>> {
+  rectangle "HU-13  Períodos académicos\nHU-14  Cursos y cupos\nHU-17  Cortes evaluativos" <<mvp>> as C1
+  rectangle "HU-28  Horarios" <<v2>> as C2
+  rectangle "Detección de choques\nde horario" <<fut>> as C3
+  C1 -[hidden]down- C2
+  C2 -[hidden]down- C3
+}
+
+rectangle "4. Matricular" <<col>> {
+  rectangle "HU-15  Matricular\nHU-16  Cancelar matrícula\nHU-22  Lista de clase" <<mvp>> as D1
+  rectangle "HU-27  Automatrícula" <<v2>> as D2
+  rectangle "Prerrequisitos\nentre cursos" <<fut>> as D3
+  D1 -[hidden]down- D2
+  D2 -[hidden]down- D3
+}
+
+rectangle "5. Calificar" <<col>> {
+  rectangle "HU-18  Registrar notas\nHU-19  Modificar nota\nHU-21  Nota definitiva" <<mvp>> as E1
+  rectangle "HU-20  Cerrar registro" <<v2>> as E2
+  rectangle "Asistencia por sesión" <<fut>> as E3
+  E1 -[hidden]down- E2
+  E2 -[hidden]down- E3
+}
+
+rectangle "6. Consultar y reportar" <<col>> {
+  rectangle "HU-23  Mis cursos\nHU-24  Mis notas\nHU-25  Mi promedio" <<mvp>> as F1
+  rectangle "HU-26  Boletín\nHU-29  Ocupación\nHU-30  Tablero" <<v2>> as F2
+  rectangle "HU-31  Notificaciones\ny PDF oficial" <<fut>> as F3
+  F1 -[hidden]down- F2
+  F2 -[hidden]down- F3
+}
+
+A1 -[hidden]right- B1
+B1 -[hidden]right- C1
+C1 -[hidden]right- D1
+D1 -[hidden]right- E1
+E1 -[hidden]right- F1
+
+legend bottom
+  <back:#E2F0D9>   </back> MVP — entrega 1    <back:#F2F2F2>   </back> Versión 2    <back:#FFF2CC>   </back> Backlog futuro
+endlegend
+@enduml

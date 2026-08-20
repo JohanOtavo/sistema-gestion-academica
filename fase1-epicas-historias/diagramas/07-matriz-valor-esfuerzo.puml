@@ -1,0 +1,74 @@
+@startuml 07-matriz-valor-esfuerzo
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #FFFFFF
+skinparam rectangleBorderThickness 1
+hide stereotype
+
+skinparam rectangle<<eje>> {
+  BackgroundColor #1F3864
+  BorderColor #1F3864
+  FontColor #FFFFFF
+  FontStyle bold
+}
+skinparam rectangle<<q1>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+  FontColor #375623
+}
+skinparam rectangle<<q2>> {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+  FontColor #7F6000
+}
+skinparam rectangle<<q3>> {
+  BackgroundColor #DEEBF7
+  BorderColor #2E75B6
+  FontColor #1F3864
+}
+skinparam rectangle<<q4>> {
+  BackgroundColor #F2F2F2
+  BorderColor #A6A6A6
+  FontColor #595959
+}
+skinparam rectangle<<lbl>> {
+  BackgroundColor #FFFFFF
+  BorderColor #FFFFFF
+  FontColor #1F3864
+  FontStyle bold
+}
+
+rectangle " " <<lbl>> as ESQ
+rectangle "BAJO ESFUERZO" <<eje>> as EJEX1
+rectangle "ALTO ESFUERZO" <<eje>> as EJEX2
+
+rectangle "ALTO\nVALOR" <<eje>> as EJEY1
+rectangle "BAJO\nVALOR" <<eje>> as EJEY2
+
+rectangle "**HACER PRIMERO**\n\nHU-01  Iniciar sesión\nHU-02  Cerrar sesión\nHU-04  Permisos por rol\nHU-06  Registrar estudiante\nHU-07  Buscar estudiantes\nHU-12  Asignar docente\nHU-13  Períodos\nHU-17  Cortes\nHU-22  Lista de clase\nHU-23  Mis cursos\nHU-24  Mis notas" <<q1>> as Q1
+
+rectangle "**PLANEAR Y DIVIDIR**\n\nHU-03  Usuarios y roles\nHU-14  Administrar cursos\nHU-15  Matricular\nHU-18  Registrar notas\nHU-19  Modificar nota\nHU-21  Nota definitiva\nHU-26  Boletín" <<q2>> as Q2
+
+rectangle "**RELLENO DE SPRINT**\n\nHU-05  Cambiar contraseña\nHU-08  Actualizar estudiante\nHU-09  Inactivar estudiante\nHU-25  Mi promedio" <<q3>> as Q3
+
+rectangle "**DESCARTAR O APLAZAR**\n\nHU-10  Ficha completa\nHU-27  Automatrícula\nHU-28  Horarios\nHU-29  Ocupación\nHU-30  Tablero\nHU-31  Notificar notas\nHU-32  Recuperar clave" <<q4>> as Q4
+
+ESQ -[hidden]right- EJEX1
+EJEX1 -[hidden]right- EJEX2
+
+EJEY1 -[hidden]right- Q1
+Q1 -[hidden]right- Q2
+EJEY2 -[hidden]right- Q3
+Q3 -[hidden]right- Q4
+
+ESQ -[hidden]down- EJEY1
+EJEY1 -[hidden]down- EJEY2
+EJEX1 -[hidden]down- Q1
+EJEX2 -[hidden]down- Q2
+Q1 -[hidden]down- Q3
+Q2 -[hidden]down- Q4
+@enduml
