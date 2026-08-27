@@ -31,6 +31,21 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 
 ---
 
+## Cómo trabajamos
+
+| Documento | Para qué sirve |
+|---|---|
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Convención de commits, ramas, pull requests y manejo de los `.docx` |
+| [`docs/adr/`](docs/adr/) | Decisiones de arquitectura: por qué el sistema es como es |
+| [`docs/seguimiento/velocidad.md`](docs/seguimiento/velocidad.md) | Registro de velocidad por sprint y replanificación |
+| [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) | Plantillas de historia de usuario, tarea técnica y reporte de error |
+
+Los commits siguen **Conventional Commits** en español: `tipo(alcance): descripción`. Toda rama
+entra a `main` por pull request revisado por el otro integrante, que es como cumplimos el criterio
+de la Definición de Terminado.
+
+---
+
 ## Fase 1 — Épicas e historias de usuario
 
 📁 [`fase1-epicas-historias/`](fase1-epicas-historias/)
