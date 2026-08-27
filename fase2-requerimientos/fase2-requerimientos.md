@@ -38,26 +38,26 @@
 
 ### 1.1 Propósito del Documento
 
-Este documento especifica los requerimientos del Sistema de Gestión Académica (SGA) y constituye el entregable de la Fase 2 del trabajo integrador. Su propósito es transformar las treinta y dos historias de usuario definidas en la Fase 1 en un conjunto de requerimientos verificables, no ambiguos y trazables, que sirvan simultáneamente como acuerdo con la institución y como insumo directo del modelado de la Fase 3, del diseño de la base de datos de la Fase 4 y de las pruebas de la Fase 6.
+En la Fase 1 dejamos escritas treinta y dos historias de usuario que describen lo que la institución necesita. Aquí las convertimos en requerimientos: enunciados verificables, sin ambigüedad y que se pueden rastrear hasta su origen. Buscamos dos cosas con eso. La primera, tener un acuerdo claro con la institución sobre qué hará el sistema. La segunda, entregarles a las fases siguientes una base sólida sobre la cual modelar en UML, diseñar la base de datos y escribir las pruebas.
 
-Mientras la historia de usuario expresa una necesidad desde la perspectiva de quien la experimenta, el requerimiento expresa una obligación del sistema en términos verificables. Ambos son necesarios y ninguno reemplaza al otro: la historia conserva el propósito y el requerimiento fija el compromiso. Wiegers y Beatty (2013) advierten que la mayoría de los defectos costosos de un sistema no se originan en la codificación, sino en requerimientos incompletos, ambiguos o no verificados.
+La historia y el requerimiento no son lo mismo ni se reemplazan entre sí. La historia dice qué necesita una persona y por qué; el requerimiento dice a qué se obliga el sistema y cómo lo comprobamos. Conservamos las dos porque cada una responde una pregunta distinta. Wiegers y Beatty (2013) señalan que los defectos más caros de un sistema no nacen al programar, sino en requerimientos incompletos, ambiguos o que nadie verificó.
 
 
 ### 1.2 Alcance del Documento
 
-El documento cubre los requerimientos funcionales de los seis módulos del sistema, los requerimientos no funcionales organizados según el modelo de calidad de la norma ISO/IEC 25010, las reglas de negocio formalizadas, las restricciones del proyecto y del entorno, los criterios de aceptación expresados como casos de prueba, y las matrices de trazabilidad que vinculan todos estos elementos entre sí y con las historias de la Fase 1.
+Cubrimos los requerimientos funcionales de los seis módulos del sistema, los no funcionales organizados con el modelo de calidad de la norma ISO/IEC 25010, las reglas de negocio ya formalizadas, las restricciones del proyecto y del entorno, los criterios de aceptación escritos como casos de prueba y las matrices que relacionan todo lo anterior con las historias de la Fase 1.
 
-No forman parte de este documento el diseño de la solución, la elección de la arquitectura interna, el modelo de datos ni el diseño de las interfaces, que corresponden a las fases posteriores. La especificación se mantiene deliberadamente en el plano del qué y no del cómo, con la única excepción de las restricciones tecnológicas que la institución impone y que se documentan de manera explícita.
+Dejamos por fuera el diseño de la solución, la arquitectura interna, el modelo de datos y el diseño de las pantallas, porque eso les corresponde a las fases 3, 4 y 5. Nos mantuvimos a propósito en el qué y no en el cómo, con una sola excepción: las restricciones tecnológicas que impone la institución, que sí anotamos de forma explícita porque limitan lo que podamos decidir más adelante.
 
 
 ### 1.3 Audiencia
 
-El documento se dirige a cuatro audiencias con necesidades distintas. La coordinación académica lo utiliza para verificar que el sistema hará lo que la institución necesita. El equipo de desarrollo lo emplea como fuente de la verdad durante la construcción. El responsable de pruebas deriva de él los casos de verificación. Y el instructor del curso lo evalúa como entregable de la Fase 2.
+Escribimos pensando en cuatro lectores. La coordinación académica, que necesita confirmar que el sistema hará lo que la institución pide. Nosotros mismos, que trabajaremos con este texto como referencia mientras construimos. Quien haga las pruebas, que sacará de aquí los casos a verificar. Y el instructor del curso, que evalúa la fase.
 
 
 ### 1.4 Convenciones y Nomenclatura
 
-Los elementos de este documento se identifican mediante prefijos estables que se conservarán en las fases siguientes. Cada identificador es único y no se reutiliza aunque el elemento sea eliminado.
+Identificamos cada elemento con un prefijo que mantendremos en las fases siguientes. Los identificadores son únicos y no los reutilizamos: si un requerimiento desaparece, su número queda vacío y no se le asigna a otro.
 
 **Tabla 1.** *Nomenclatura de los elementos de la especificación*
 
@@ -70,9 +70,9 @@ Los elementos de este documento se identifican mediante prefijos estables que se
 | RE | Restricción | RE-02 | 10 restricciones |
 | CP | Caso de prueba de aceptación | CP-06 | 15 casos |
 
-La prioridad de cada requerimiento se expresa en tres niveles. Alta identifica aquello sin lo cual el sistema no cumple su propósito y debe estar presente en el producto mínimo viable. Media identifica lo que aporta valor sustantivo pero admite ser diferido dentro del mismo alcance. Baja identifica lo que se especifica para conservar la visión completa, pero cuya construcción se traslada a la versión 2.
+Manejamos tres niveles de prioridad. Alta es lo que el sistema no puede dejar de hacer, y por eso va en el producto mínimo viable. Media aporta valor real, pero puede esperar dentro del mismo alcance. Baja la especificamos para no perder de vista el producto completo, aunque la construiremos en la versión 2.
 
-Todos los requerimientos se enuncian con la fórmula "el sistema debe", que expresa obligación. No se emplean formulaciones como "debería" o "sería deseable", porque introducen ambigüedad sobre el compromiso adquirido.
+Escribimos todos los requerimientos con la fórmula «el sistema debe», que expresa una obligación. Evitamos «debería» o «sería deseable» porque dejan en duda a qué nos comprometimos.
 
 ---
 
@@ -82,14 +82,14 @@ Todos los requerimientos se enuncian con la fórmula "el sistema debe", que expr
 
 ### 2.1 Perspectiva del Producto
 
-El SGA es un producto nuevo y autónomo: no sustituye a un sistema existente ni se integra con aplicaciones de terceros en esta versión. Reemplaza un conjunto de prácticas manuales —hojas de cálculo independientes, formatos en papel y conocimiento no documentado— por una aplicación web con una base de datos única y control de acceso por rol.
+El SGA es un producto nuevo y autónomo. No reemplaza a otro sistema ni se conecta con aplicaciones de terceros en esta versión: lo que sustituye son prácticas manuales —hojas de cálculo sueltas, formatos en papel y conocimiento que solo está en la cabeza de algunas personas— por una aplicación web con una base de datos única y acceso controlado por rol.
 
-Esta condición de producto autónomo simplifica el alcance, pero traslada una responsabilidad al sistema: al no existir otra fuente de información, la integridad de los datos depende por completo de las validaciones que el propio sistema aplique. Por esa razón las reglas de negocio ocupan un lugar central en esta especificación y cada una se asocia de manera explícita a los requerimientos que la implementan.
+Ser autónomo simplifica el alcance, pero nos deja encima una responsabilidad grande: como no habrá otra fuente de información, la integridad de los datos dependerá únicamente de las validaciones que programemos. Por eso les dimos un lugar central a las reglas de negocio y amarramos cada una a los requerimientos que la implementan.
 
 
 ### 2.2 Módulos Funcionales
 
-Los requerimientos se organizan en seis módulos que agrupan responsabilidades afines. La Figura 1 presenta los módulos y sus dependencias, y la Tabla 2 los describe.
+Agrupamos los requerimientos en seis módulos que reúnen responsabilidades afines. La Figura 1 muestra los módulos y sus dependencias, y la Tabla 2 los describe.
 
 **Figura 1.** *Módulos funcionales del sistema y sus dependencias*
 
@@ -108,24 +108,24 @@ Los requerimientos se organizan en seis módulos que agrupan responsabilidades a
 | M5 | Calificaciones | Registro, corrección, auditoría y cálculo de notas. | 10 |
 | M6 | Consultas y reportes | Consultas del estudiante y reportes operativos del administrador. | 8 |
 
-*Nota.* La suma de requerimientos por módulo corresponde a los 57 requerimientos funcionales especificados.
+*Nota.* Los requerimientos de cada módulo suman los 57 que especificamos en total.
 
 
 ### 2.3 Características de los Usuarios
 
-El sistema atiende tres perfiles con niveles de competencia técnica y frecuencia de uso muy distintos, lo que condiciona directamente los requerimientos de usabilidad. El administrador académico es un usuario intensivo, con dominio de herramientas ofimáticas pero sin formación técnica, que concentra su actividad en la semana de matrícula. El docente es un usuario esporádico que interactúa con el sistema principalmente al cierre de cada corte y cuya tolerancia a la fricción es baja. El estudiante es un usuario ocasional, familiarizado con aplicaciones móviles, que ejecuta consultas breves y espera respuestas inmediatas.
+Los tres perfiles que usarán el sistema tienen niveles de competencia técnica y frecuencia de uso muy distintos, y eso condiciona directamente los requerimientos de usabilidad. El administrador académico es un usuario intensivo, con dominio de herramientas ofimáticas pero sin formación técnica, que concentra su actividad en la semana de matrícula. El docente es un usuario esporádico que interactúa con el sistema principalmente al cierre de cada corte y cuya tolerancia a la fricción es baja. El estudiante es un usuario ocasional, familiarizado con aplicaciones móviles, que ejecuta consultas breves y espera respuestas inmediatas.
 
-De esta caracterización se derivan los requerimientos RNF-09, RNF-11 y RNF-13: el sistema debe poder usarse sin capacitación formal, adaptarse a pantallas móviles y resolver las tareas frecuentes en un máximo de tres interacciones.
+De ahí salieron RNF-09, RNF-11 y RNF-13: el sistema debe poder usarse sin capacitación formal, adaptarse a pantallas de celular y resolver las tareas frecuentes en tres interacciones o menos.
 
 
 ### 2.4 Entorno Operativo
 
-El sistema operará como aplicación web accesible desde los navegadores vigentes en equipos de escritorio de la secretaría y de las salas de docentes, así como desde los dispositivos móviles de los estudiantes. La persistencia se realizará sobre un motor de base de datos relacional, condición impuesta por la naturaleza transaccional de la matrícula, en la cual la creación del registro y la actualización del cupo deben ocurrir de manera indivisible.
+El sistema funcionará como aplicación web, accesible desde los navegadores vigentes en los equipos de la secretaría y de la sala de docentes, y desde los celulares de los estudiantes. Guardaremos los datos en un motor relacional, y esa decisión nos la impone la matrícula: crear el registro y actualizar el cupo tienen que ocurrir juntos o no ocurrir.
 
 
 ### 2.5 Supuestos y Dependencias
 
-La especificación se apoya en los supuestos declarados en la Fase 1, cuya validación con la institución sigue pendiente y condiciona varios requerimientos. Su modificación obligaría a revisar las reglas de negocio asociadas y, en dos casos, el modelo de datos.
+Seguimos trabajando sobre los supuestos que declaramos en la Fase 1. Todavía no los hemos validado con la institución y varios requerimientos dependen de ellos: si alguno cambia, nos tocará revisar las reglas asociadas y, en dos casos, el modelo de datos.
 
 **Tabla 3.** *Supuestos vigentes y requerimientos que dependen de ellos*
 
@@ -137,21 +137,21 @@ La especificación se apoya en los supuestos declarados en la Fase 1, cuya valid
 | S-4 | Cada curso es dictado por un único docente responsable | RN-08, RF-28, RF-41 | Alta |
 | S-5 | La secretaría dispone de conexión estable a internet | RNF-14 | Media |
 
-*Nota.* Los supuestos S-3 y S-4 deben validarse antes del segundo sprint: el primero determina las validaciones de calificación y el segundo condiciona la relación entre curso y docente en el modelo de datos de la Fase 4.
+*Nota.* Debemos validar S-3 y S-4 antes del segundo sprint: el primero define las validaciones de calificación y el segundo condiciona la relación entre curso y docente en el modelo de datos de la Fase 4.
 
 ---
 
 
 ## 3. Requerimientos Funcionales
 
-Se especifican 57 requerimientos funcionales derivados de las historias de usuario de la Fase 1. De ellos, 49 integran el producto mínimo viable y 8 se especifican para conservar la visión completa del producto, aunque su construcción se difiere a la versión 2.
+Definimos 57 requerimientos funcionales a partir de las historias de usuario de la Fase 1. De ellos, 49 integran el producto mínimo viable y 8 los dejamos especificados para no perder de vista el producto completo, aunque los construiremos en la versión 2.
 
-Cada requerimiento se especifica mediante diez atributos: identificador, nombre, descripción de la obligación del sistema, actor que la invoca, entradas que recibe, proceso que ejecuta, salidas que produce, precondición que debe cumplirse antes, postcondición que queda garantizada después, prioridad, historia de usuario que lo origina y reglas de negocio que aplica. Los requerimientos diferidos a la versión 2 se presentan únicamente en la tabla resumen de su módulo.
+De cada requerimiento escribimos su identificador, su nombre y una descripción de lo que el sistema debe hacer, y además diez atributos: módulo, actor que lo invoca, entradas que recibe, proceso que ejecuta, salidas que produce, precondición que debe cumplirse antes, postcondición que queda garantizada después, prioridad, historia que lo origina y reglas de negocio que aplica. De los que dejamos para la versión 2 solo incluimos su fila en la tabla resumen del módulo.
 
 
 ### 3.1 Módulo M1: Seguridad y control de acceso
 
-Autenticación, gestión de cuentas, roles y autorización de operaciones. Este módulo agrupa 9 requerimientos funcionales.
+Autenticación, gestión de cuentas, roles y autorización de operaciones. Reunimos aquí 9 requerimientos funcionales.
 
 **Tabla 4.** *Requerimientos funcionales del módulo M1*
 
@@ -323,7 +323,7 @@ Autenticación, gestión de cuentas, roles y autorización de operaciones. Este 
 
 ### 3.2 Módulo M2: Gestión de personas
 
-Registro y mantenimiento del directorio único de estudiantes y docentes. Este módulo agrupa 10 requerimientos funcionales.
+Registro y mantenimiento del directorio único de estudiantes y docentes. Reunimos aquí 10 requerimientos funcionales.
 
 **Tabla 5.** *Requerimientos funcionales del módulo M2*
 
@@ -493,12 +493,12 @@ Registro y mantenimiento del directorio único de estudiantes y docentes. Este m
 | **Historia de origen** | HU-11 |
 | **Reglas de negocio** | RN-24, RN-15 |
 
-Los requerimientos RF-19 corresponden a la versión 2 y su especificación detallada se elaborará cuando se planifique esa entrega.
+Los requerimientos RF-19 quedan para la versión 2; los especificaremos en detalle cuando planifiquemos esa entrega.
 
 
 ### 3.3 Módulo M3: Oferta académica
 
-Períodos, cursos, cupos, cortes evaluativos y asignación de docentes. Este módulo agrupa 11 requerimientos funcionales.
+Períodos, cursos, cupos, cortes evaluativos y asignación de docentes. Reunimos aquí 11 requerimientos funcionales.
 
 **Tabla 6.** *Requerimientos funcionales del módulo M3*
 
@@ -686,12 +686,12 @@ Períodos, cursos, cupos, cortes evaluativos y asignación de docentes. Este mó
 | **Historia de origen** | HU-17 |
 | **Reglas de negocio** | RN-10, RN-11 |
 
-Los requerimientos RF-57 corresponden a la versión 2 y su especificación detallada se elaborará cuando se planifique esa entrega.
+Los requerimientos RF-57 quedan para la versión 2; los especificaremos en detalle cuando planifiquemos esa entrega.
 
 
 ### 3.4 Módulo M4: Matrícula
 
-Vinculación de estudiantes a cursos con las validaciones de negocio. Este módulo agrupa 9 requerimientos funcionales.
+Vinculación de estudiantes a cursos con las validaciones de negocio. Reunimos aquí 9 requerimientos funcionales.
 
 **Tabla 7.** *Requerimientos funcionales del módulo M4*
 
@@ -843,12 +843,12 @@ Vinculación de estudiantes a cursos con las validaciones de negocio. Este módu
 | **Historia de origen** | HU-22 |
 | **Reglas de negocio** | RN-08 |
 
-Los requerimientos RF-56 corresponden a la versión 2 y su especificación detallada se elaborará cuando se planifique esa entrega.
+Los requerimientos RF-56 quedan para la versión 2; los especificaremos en detalle cuando planifiquemos esa entrega.
 
 
 ### 3.5 Módulo M5: Calificaciones
 
-Registro, corrección, auditoría y cálculo de notas. Este módulo agrupa 10 requerimientos funcionales.
+Registro, corrección, auditoría y cálculo de notas. Reunimos aquí 10 requerimientos funcionales.
 
 **Tabla 8.** *Requerimientos funcionales del módulo M5*
 
@@ -1018,12 +1018,12 @@ Registro, corrección, auditoría y cálculo de notas. Este módulo agrupa 10 re
 | **Historia de origen** | HU-21 |
 | **Reglas de negocio** | RN-12 |
 
-Los requerimientos RF-47 corresponden a la versión 2 y su especificación detallada se elaborará cuando se planifique esa entrega.
+Los requerimientos RF-47 quedan para la versión 2; los especificaremos en detalle cuando planifiquemos esa entrega.
 
 
 ### 3.6 Módulo M6: Consultas y reportes
 
-Consultas del estudiante y reportes operativos del administrador. Este módulo agrupa 8 requerimientos funcionales.
+Consultas del estudiante y reportes operativos del administrador. Reunimos aquí 8 requerimientos funcionales.
 
 **Tabla 9.** *Requerimientos funcionales del módulo M6*
 
@@ -1106,14 +1106,14 @@ Consultas del estudiante y reportes operativos del administrador. Este módulo a
 | **Historia de origen** | HU-25 |
 | **Reglas de negocio** | RN-12 |
 
-Los requerimientos RF-52, RF-53, RF-54, RF-55 corresponden a la versión 2 y su especificación detallada se elaborará cuando se planifique esa entrega.
+Los requerimientos RF-52, RF-53, RF-54, RF-55 quedan para la versión 2; los especificaremos en detalle cuando planifiquemos esa entrega.
 
 ---
 
 
 ## 4. Requerimientos No Funcionales
 
-Los 28 requerimientos no funcionales se organizan según las ocho características del modelo de calidad del producto de la norma ISO/IEC 25010 (International Organization for Standardization, 2011). Cada uno se enuncia junto con una métrica de verificación, condición indispensable para que el requerimiento sea comprobable: un enunciado como "el sistema debe ser rápido" no es un requerimiento, sino una aspiración.
+Organizamos los 28 requerimientos no funcionales con las ocho características del modelo de calidad de la norma ISO/IEC 25010 (International Organization for Standardization, 2011). A cada uno le pusimos una métrica de verificación, porque sin ella no hay forma de comprobarlo: decir que «el sistema debe ser rápido» no es un requerimiento, es un deseo.
 
 **Figura 2.** *Requerimientos no funcionales según el modelo ISO/IEC 25010*
 
@@ -1218,7 +1218,7 @@ Los 28 requerimientos no funcionales se organizan según las ocho característic
 
 ## 5. Reglas de Negocio
 
-Las reglas de negocio son restricciones que provienen del dominio y no de la tecnología: existirían aunque la institución no tuviera un sistema de información. Se documentan por separado de los requerimientos funcionales porque su vigencia es independiente de la aplicación que las implemente y porque un cambio en el reglamento estudiantil debe poder rastrearse hasta todos los requerimientos afectados. Las 27 reglas identificadas se clasifican según su naturaleza.
+Las reglas de negocio vienen del dominio y no de la tecnología: existirían igual aunque la institución nunca tuviera un sistema de información. Las documentamos aparte de los requerimientos funcionales por dos razones. Porque siguen vigentes sin importar qué aplicación las implemente, y porque si mañana cambia el reglamento estudiantil necesitamos rastrear de inmediato todos los requerimientos afectados. Clasificamos las 27 reglas según lo que expresa cada una.
 
 **Tabla 18.** *Tipos de regla de negocio empleados en la especificación*
 
@@ -1265,12 +1265,12 @@ Las reglas de negocio son restricciones que provienen del dominio y no de la tec
 | RN-26 | Validación | El cupo de un curso no puede reducirse por debajo del número de estudiantes matriculados. | Coordinación académica | RF-26 |
 | RN-27 | Cálculo | Los resultados de nota definitiva y promedio se presentan con un decimal, aplicando redondeo estándar. | Reglamento estudiantil | RF-45, RF-50 |
 
-*Nota.* La columna de origen identifica la instancia institucional que establece la regla, dato necesario para saber a quién consultar ante una solicitud de cambio.
+*Nota.* Anotamos el origen de cada regla para saber a quién consultar cuando alguien pida cambiarla.
 
 
 ### 5.1 Ciclo de Vida de las Entidades con Estado
 
-Cuatro reglas de negocio —RN-03, RN-07, RN-16 y RN-17— no se expresan adecuadamente como validaciones puntuales, porque describen transiciones válidas entre estados. Las Figuras 3 y 4 modelan esas transiciones para la matrícula, el período académico y el curso, y anticipan el diagrama de estados que se formalizará en la Fase 3.
+Cuatro reglas —RN-03, RN-07, RN-16 y RN-17— no encajan bien como validaciones puntuales, porque lo que describen son transiciones entre estados. Las modelamos en las Figuras 3 y 4 para la matrícula, el período académico y el curso; con eso adelantamos parte del diagrama de estados que formalizaremos en la Fase 3.
 
 **Figura 3.** *Ciclo de vida de la matrícula*
 
@@ -1287,7 +1287,7 @@ Cuatro reglas de negocio —RN-03, RN-07, RN-16 y RN-17— no se expresan adecua
 
 ### 5.2 Aplicación Encadenada de las Reglas en la Matrícula
 
-El requerimiento RF-30 concentra la mayor densidad de reglas de negocio del sistema: cinco validaciones deben cumplirse simultáneamente para que una matrícula se registre. La Figura 5 presenta el flujo completo, incluidas las salidas de rechazo y la transacción que garantiza la consistencia entre la matrícula creada y el contador de cupo.
+RF-30 es el requerimiento con más reglas de negocio encima: cinco validaciones tienen que cumplirse a la vez para que una matrícula quede registrada. En la Figura 5 dibujamos el flujo completo, con las salidas de rechazo y la transacción que mantiene consistentes la matrícula y el contador de cupo.
 
 **Figura 5.** *Flujo de validaciones del registro de matrícula*
 
@@ -1300,7 +1300,7 @@ El requerimiento RF-30 concentra la mayor densidad de reglas de negocio del sist
 
 ## 6. Restricciones
 
-Las restricciones son condiciones impuestas al proyecto o a la solución que el equipo no puede modificar y que limitan las alternativas de diseño. A diferencia de los requerimientos, no describen lo que el sistema debe hacer, sino el marco dentro del cual debe construirse.
+Las restricciones son condiciones que no podemos cambiar y que nos reducen las alternativas de diseño. No dicen qué debe hacer el sistema, como sí lo hacen los requerimientos, sino dentro de qué marco nos toca construirlo.
 
 **Tabla 20.** *Restricciones del proyecto y de la solución*
 
@@ -1324,9 +1324,9 @@ Las restricciones son condiciones impuestas al proyecto o a la solución que el 
 
 ## 7. Criterios de Aceptación del Sistema
 
-Los criterios de aceptación de cada historia, definidos en la Fase 1, se consolidan aquí en 15 casos de prueba que verifican el sistema en su conjunto. Cada caso enuncia una precondición, una acción y un resultado esperado observable, de modo que su ejecución produzca un veredicto inequívoco de aprobación o rechazo.
+Reunimos los criterios de aceptación que escribimos historia por historia en la Fase 1 y los convertimos en 15 casos de prueba que verifican el sistema completo. Cada caso tiene una precondición, una acción y un resultado observable, de modo que al ejecutarlo quede claro si pasa o no pasa.
 
-La selección privilegia deliberadamente los caminos de excepción sobre los caminos satisfactorios. La razón es que el problema que originó el proyecto no consiste en que la institución no pueda registrar una matrícula, sino en que hoy nada impide registrar una matrícula inválida. En consecuencia, el valor del sistema reside tanto en lo que permite como en lo que impide.
+Escogimos a propósito más casos de excepción que de camino feliz. El problema que originó el proyecto no es que la institución no pueda registrar una matrícula: es que hoy nada le impide registrar una matrícula inválida. El valor del sistema está tanto en lo que permite como en lo que bloquea.
 
 **Tabla 21.** *Casos de prueba de aceptación del sistema*
 
@@ -1348,16 +1348,16 @@ La selección privilegia deliberadamente los caminos de excepción sobre los cam
 | CP-14 | Consulta de calificaciones por el estudiante | El estudiante tiene matrículas con notas parciales registradas | Ingresar con la cuenta del estudiante y consultar cursos, notas y promedio | Visualiza sus cursos, las notas registradas, los cortes pendientes marcados como tales y su promedio parcial |
 | CP-15 | Aislamiento de la información entre estudiantes | Existen dos estudiantes con matrículas distintas | Ingresar con un estudiante e intentar consultar la información del otro | El sistema solo entrega la información del estudiante autenticado |
 
-*Nota.* La columna de requerimientos verificados se presenta en la matriz de trazabilidad de la sección siguiente.
+*Nota.* Los requerimientos que verifica cada caso aparecen en la matriz de trazabilidad de la sección siguiente.
 
-El sistema se considera aceptado cuando la totalidad de los casos de prueba obtiene resultado satisfactorio y las métricas de los requerimientos no funcionales de prioridad alta se cumplen en el entorno de despliegue definitivo.
+Daremos el sistema por aceptado cuando todos los casos de prueba pasen y las métricas de los requerimientos no funcionales de prioridad alta se cumplan en el entorno de despliegue definitivo.
 
 ---
 
 
 ## 8. Matrices de Trazabilidad
 
-La trazabilidad permite responder dos preguntas complementarias. Hacia adelante: dada una necesidad del usuario, ¿qué elementos del sistema la satisfacen y cómo se verifica? Hacia atrás: dado un elemento del sistema, ¿qué necesidad lo justifica? Un requerimiento sin origen es un requerimiento que nadie pidió, y una historia sin requerimientos es una necesidad que nadie se comprometió a satisfacer.
+La trazabilidad nos deja responder dos preguntas. Hacia adelante: dada una necesidad del usuario, ¿qué partes del sistema la resuelven y cómo se comprueba? Hacia atrás: dado un elemento del sistema, ¿qué necesidad lo justifica? Un requerimiento sin origen es algo que nadie pidió, y una historia sin requerimientos es una necesidad que nadie se comprometió a resolver.
 
 **Figura 6.** *Cadena de trazabilidad aplicada a la historia HU-15*
 
@@ -1368,7 +1368,7 @@ La trazabilidad permite responder dos preguntas complementarias. Hacia adelante:
 
 ### 8.1 Matriz de Historias contra Requerimientos Funcionales
 
-La Tabla 15 vincula cada historia de la Fase 1 con los requerimientos que la especifican y con el sprint en que se construirá.
+En la Tabla 22 enlazamos cada historia de la Fase 1 con los requerimientos que la especifican y con el sprint en que la construiremos.
 
 **Tabla 22.** *Trazabilidad de historias de usuario a requerimientos funcionales*
 
@@ -1407,12 +1407,12 @@ La Tabla 15 vincula cada historia de la Fase 1 con los requerimientos que la esp
 | HU-31 | Notificar la publicación de notas | Sin requerimiento: fuera del alcance | — |
 | HU-32 | Recuperar la contraseña por correo | Sin requerimiento: fuera del alcance | — |
 
-*Nota.* Las historias HU-31 y HU-32 fueron clasificadas como excluidas de esta versión en la Fase 1, por lo cual no se les especificó requerimiento alguno. La ausencia es deliberada y no constituye un vacío de la especificación.
+*Nota.* En la Fase 1 clasificamos HU-31 y HU-32 como excluidas de esta versión, así que no les escribimos requerimientos. La ausencia es intencional y no es un vacío.
 
 
 ### 8.2 Matriz de Reglas de Negocio contra Requerimientos y Pruebas
 
-La Tabla 16 verifica que ninguna regla de negocio quede sin implementación y señala qué caso de prueba la comprueba.
+En la Tabla 23 revisamos que ninguna regla de negocio se quede sin implementación y señalamos qué caso de prueba la comprueba.
 
 **Tabla 23.** *Trazabilidad de reglas de negocio a requerimientos y casos de prueba*
 
@@ -1446,7 +1446,7 @@ La Tabla 16 verifica que ninguna regla de negocio quede sin implementación y se
 | RN-26 | RF-26 | Verificación indirecta | Indirecta |
 | RN-27 | RF-45, RF-50 | CP-11, CP-14 | Directa |
 
-*Nota.* Las reglas con cobertura indirecta se verifican a través de los casos que ejercitan los requerimientos que las contienen; su prueba específica se incorporará al plan de pruebas de la Fase 6.
+*Nota.* Las reglas con cobertura indirecta quedan verificadas a través de los casos que ejercitan los requerimientos que las contienen; les escribiremos prueba propia en el plan de la Fase 6.
 
 
 ### 8.3 Cobertura de la Especificación
@@ -1468,7 +1468,7 @@ La Tabla 16 verifica que ninguna regla de negocio quede sin implementación y se
 
 ## 9. Priorización y Asignación de Requerimientos
 
-La prioridad de cada requerimiento se hereda de la historia que lo origina, con una excepción: los requerimientos que implementan reglas de negocio críticas para la integridad de los datos reciben prioridad alta con independencia de la prioridad de su historia. Es el caso de RF-31 a RF-35, cuyas validaciones no admiten ser diferidas sin comprometer la confiabilidad del registro académico.
+Cada requerimiento hereda la prioridad de la historia que lo origina, salvo en un caso: cuando implementa una regla crítica para la integridad de los datos le pusimos prioridad alta aunque su historia no la tuviera. Eso hicimos con RF-31 a RF-35, porque aplazar esas validaciones sería aceptar un registro académico poco confiable.
 
 **Tabla 25.** *Distribución de los requerimientos funcionales por sprint*
 
@@ -1481,7 +1481,7 @@ La prioridad de cada requerimiento se hereda de la historia que lo origina, con 
 | v2 | M2, M3, M4, M5, M6 | RF-19, RF-47, RF-52, RF-53, RF-54, RF-55, RF-56, RF-57 | 8 |
 | Excluido | — | — | 0 |
 
-*Nota.* El sprint de cada requerimiento corresponde al de la primera historia que lo origina. Los requerimientos de la fila v2 se especificaron pero no se construirán en esta entrega.
+*Nota.* Le asignamos a cada requerimiento el sprint de la primera historia que lo origina. Los de la fila v2 los especificamos, pero no los construiremos en esta entrega.
 
 **Tabla 26.** *Distribución de los requerimientos por prioridad*
 
@@ -1494,26 +1494,26 @@ La prioridad de cada requerimiento se hereda de la historia que lo origina, con 
 
 ## 10. Gestión de Cambios de los Requerimientos
 
-Una especificación es un acuerdo vigente en un momento determinado, no un documento inmutable. El riesgo RG-1 identificado en la Fase 1 —el crecimiento no controlado del alcance— se materializa precisamente cuando los cambios se incorporan sin quedar registrados. El equipo adopta por ello el siguiente procedimiento.
+Sabemos que esto va a cambiar: una especificación es un acuerdo válido hoy, no un texto inmutable. El riesgo RG-1 que identificamos en la Fase 1 —que el alcance crezca sin control— se materializa justamente cuando los cambios entran sin quedar registrados. Para evitarlo acordamos este procedimiento.
 
-1. Toda solicitud de cambio se registra por escrito, con su solicitante, su fecha y la justificación de la necesidad.
-2. El equipo evalúa el impacto sobre los requerimientos existentes, sobre las reglas de negocio y sobre la estimación del sprint en curso.
-3. Un cambio que afecte una regla de negocio requiere la confirmación de la instancia institucional que figura como origen de la regla.
-4. El cambio aprobado se incorpora al documento con un nuevo número de versión y queda reflejado en las matrices de trazabilidad.
-5. Un cambio que incremente el alcance del sprint en curso se traslada al siguiente sprint, salvo decisión expresa de la coordinación académica.
+1. Registramos por escrito toda solicitud de cambio, con quién la pide, en qué fecha y por qué la necesita.
+2. Evaluamos el impacto sobre los requerimientos existentes, sobre las reglas de negocio y sobre la estimación del sprint en curso.
+3. Si el cambio toca una regla de negocio, lo confirmamos con la instancia institucional que figura como origen de esa regla.
+4. Cuando aprobamos un cambio, lo incorporamos con un nuevo número de versión y actualizamos las matrices de trazabilidad.
+5. Si el cambio aumenta el alcance del sprint en curso, lo pasamos al siguiente, salvo que la coordinación académica decida otra cosa.
 
-Los identificadores no se reutilizan. Un requerimiento eliminado conserva su número y se marca como derogado, de modo que las referencias históricas de las fases anteriores permanezcan interpretables.
+No reutilizamos identificadores. Si eliminamos un requerimiento, conserva su número y lo marcamos como derogado, para que las referencias de las fases anteriores sigan teniendo sentido.
 
 
 ## 11. Conclusiones
 
-La especificación traduce las treinta y dos historias de la Fase 1 en 57 requerimientos funcionales, 28 requerimientos no funcionales y 27 reglas de negocio, verificables mediante 15 casos de prueba de aceptación. La relación resultante no es de uno a uno: la historia HU-15 requirió seis requerimientos para quedar completamente especificada, mientras que varias historias de consulta se resolvieron con uno solo. Esa asimetría confirma lo observado en la fase anterior, donde la matrícula y el registro de calificaciones concentraban el esfuerzo del proyecto.
+Convertimos las treinta y dos historias de la Fase 1 en 57 requerimientos funcionales, 28 no funcionales y 27 reglas de negocio, que podemos verificar con 15 casos de prueba. La correspondencia no fue de uno a uno: HU-15 necesitó seis requerimientos para quedar bien especificada, mientras que varias historias de consulta se resolvieron con uno solo. Esa diferencia confirma lo que ya habíamos visto en la fase anterior: la matrícula y el registro de calificaciones concentran el esfuerzo del proyecto.
 
-El ejercicio de formalización reveló nueve reglas de negocio que no habían sido identificadas en la Fase 1 —RN-19 a RN-27—, en su mayoría validaciones de datos y restricciones de sesión que las historias daban por supuestas. Este hallazgo respalda el orden metodológico adoptado: la historia de usuario captura el propósito, pero solo la especificación detallada obliga a explicitar las condiciones bajo las cuales ese propósito se cumple.
+Al formalizar aparecieron nueve reglas que no habíamos identificado en la Fase 1 —RN-19 a RN-27—, casi todas validaciones de datos y restricciones de sesión que las historias daban por hechas. Eso justifica el orden que seguimos: la historia captura el propósito, pero solo al especificar en detalle uno se ve obligado a decir bajo qué condiciones ese propósito se cumple.
 
-La organización de los requerimientos no funcionales según la norma ISO/IEC 25010 evidenció, además, una concentración de exigencias en las características de seguridad y fiabilidad. El motivo es coherente con el problema original: el sistema pasará a custodiar el registro académico oficial de la institución, y una calificación alterada o perdida tiene consecuencias que un simple error de cálculo en una hoja de cálculo no tenía, porque ahora el sistema es la única fuente de verdad.
+Ordenar los requerimientos no funcionales con la norma ISO/IEC 25010 nos dejó ver algo más: la mayoría de las exigencias se concentran en seguridad y fiabilidad. Tiene sentido si volvemos al problema original. El sistema pasará a custodiar el registro académico oficial de la institución, y una calificación alterada o perdida ya no es lo mismo que un error en una hoja de cálculo, porque ahora no habrá otra copia contra la cual compararla.
 
-Las matrices de trazabilidad alcanzan cobertura completa en los cinco indicadores definidos, con la única excepción deliberada de las dos historias excluidas del alcance. Con ello, la Fase 2 entrega a la Fase 3 un conjunto de requerimientos cuyo modelado en UML puede abordarse sin necesidad de reinterpretar las necesidades originales.
+Las matrices alcanzan cobertura completa en los cinco indicadores, con la única excepción deliberada de las dos historias que dejamos fuera del alcance. Con eso cerramos la fase: entramos a la Fase 3 con requerimientos que podemos modelar en UML sin tener que volver a interpretar lo que la institución necesita.
 
 ---
 
