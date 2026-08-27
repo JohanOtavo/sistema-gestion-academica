@@ -1,0 +1,47 @@
+name: Reporte de error
+description: Algo que no funciona como lo especificamos
+title: "[ERROR] "
+labels: ["error"]
+body:
+  - type: textarea
+    id: pasos
+    attributes:
+      label: Pasos para reproducirlo
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué esperábamos que pasara
+      description: Cita el requerimiento o el criterio de aceptación que define el comportamiento correcto.
+    validations:
+      required: true
+
+  - type: textarea
+    id: obtenido
+    attributes:
+      label: Qué pasó en realidad
+    validations:
+      required: true
+
+  - type: input
+    id: afectado
+    attributes:
+      label: Requerimiento o regla afectada
+      placeholder: "RF-31, RN-05"
+
+  - type: dropdown
+    id: gravedad
+    attributes:
+      label: Gravedad
+      options:
+        - "Alta — corrompe datos o permite una operación prohibida"
+        - "Media — impide completar una tarea, pero hay forma de rodearlo"
+        - "Baja — molesta, no bloquea"
+    validations:
+      required: true

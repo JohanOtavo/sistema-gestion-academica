@@ -1,0 +1,51 @@
+name: Tarea técnica
+description: Trabajo necesario que no es una historia de usuario
+title: "[TAREA] "
+labels: ["tarea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Para configuración del repositorio, diagramas, documentación, pruebas técnicas o
+        preparación de entornos. Si el trabajo entrega valor directo a un usuario, no es una tarea
+        técnica: es una historia.
+
+  - type: textarea
+    id: descripcion
+    attributes:
+      label: Qué hay que hacer
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivo
+    attributes:
+      label: Por qué hace falta
+      description: Qué se desbloquea o qué riesgo se reduce al hacerlo.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: fase
+    attributes:
+      label: Fase del proyecto
+      options:
+        - "Fase 1 — Épicas e historias"
+        - "Fase 2 — Requerimientos"
+        - "Fase 3 — Diagramas UML"
+        - "Fase 4 — Base de datos"
+        - "Fase 5 — Mockup"
+        - "Fase 6 — Programa funcional"
+        - Transversal
+    validations:
+      required: true
+
+  - type: textarea
+    id: terminado
+    attributes:
+      label: Cómo sabemos que quedó lista
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true

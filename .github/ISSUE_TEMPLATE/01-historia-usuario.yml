@@ -1,0 +1,95 @@
+name: Historia de usuario
+description: Una historia del backlog, con sus criterios de aceptación
+title: "[HU-XX] "
+labels: ["historia"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Las historias ya definidas están en el documento de la Fase 1. Si esta historia es una de
+        ellas, copia su identificador y sus criterios; si es nueva, recuerda que entra al respaldo
+        y no al sprint en curso.
+
+  - type: input
+    id: epica
+    attributes:
+      label: Épica
+      placeholder: "EP-05 Matrícula"
+    validations:
+      required: true
+
+  - type: textarea
+    id: historia
+    attributes:
+      label: Historia
+      description: Rol, funcionalidad y beneficio. Los tres, siempre.
+      value: |
+        Como
+        quiero
+        para
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      description: En formato Dado / Cuando / Entonces. Incluye los caminos de error, no solo el feliz.
+      value: |
+        - CA-1. Dado que ..., cuando ..., entonces ...
+        - CA-2. Dado que ..., cuando ..., entonces ...
+        - CA-3. Dado que ..., cuando ..., entonces ...
+    validations:
+      required: true
+
+  - type: input
+    id: requerimientos
+    attributes:
+      label: Requerimientos funcionales asociados
+      placeholder: "RF-30, RF-31, RF-32"
+
+  - type: input
+    id: reglas
+    attributes:
+      label: Reglas de negocio que aplican
+      placeholder: "RN-04, RN-05, RN-06"
+
+  - type: dropdown
+    id: prioridad
+    attributes:
+      label: Prioridad (MoSCoW)
+      options:
+        - Must have
+        - Should have
+        - Could have
+        - Won't have
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimacion
+    attributes:
+      label: Estimación en puntos de historia
+      description: Si supera 13, hay que dividirla antes de llevarla a un sprint.
+      options:
+        - "2"
+        - "3"
+        - "5"
+        - "8"
+        - "13"
+        - Sin estimar
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: dor
+    attributes:
+      label: Definición de Listo
+      description: Una historia no entra a un sprint hasta que cumple todo esto.
+      options:
+        - label: Está escrita con rol, funcionalidad y beneficio explícitos
+        - label: Tiene al menos tres criterios de aceptación verificables
+        - label: Está estimada y no supera los 13 puntos
+        - label: Sus dependencias están resueltas o planificadas antes
+        - label: Referencia las reglas de negocio que la condicionan
+        - label: Define qué se le muestra al usuario cuando la operación falla

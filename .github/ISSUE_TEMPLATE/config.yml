@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Cómo trabajamos en este repositorio
+    url: https://github.com/JohanOtavo/sistema-gestion-academica/blob/main/CONTRIBUTING.md
+    about: Convención de commits, ramas, pull requests y manejo de los documentos
+  - name: Documento de requerimientos (Fase 2)
+    url: https://github.com/JohanOtavo/sistema-gestion-academica/blob/main/fase2-requerimientos/fase2-requerimientos.md
+    about: Consulta aquí los RF, RNF y reglas de negocio antes de abrir un issue
