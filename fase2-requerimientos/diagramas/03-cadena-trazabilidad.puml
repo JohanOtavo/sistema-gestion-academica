@@ -1,0 +1,90 @@
+@startuml 03-cadena-trazabilidad
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowThickness 1.2
+skinparam rectangleBorderThickness 1
+hide stereotype
+
+left to right direction
+
+skinparam rectangle<<nivel>> {
+  BackgroundColor #1F3864
+  BorderColor #1F3864
+  FontColor #FFFFFF
+  FontStyle bold
+}
+skinparam rectangle<<hu>> {
+  BackgroundColor #DEEBF7
+  BorderColor #2E75B6
+  FontColor #1F3864
+}
+skinparam rectangle<<rf>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+  FontColor #375623
+}
+skinparam rectangle<<rn>> {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+  FontColor #7F6000
+}
+skinparam rectangle<<cp>> {
+  BackgroundColor #FBE5E5
+  BorderColor #C00000
+  FontColor #833C3C
+}
+
+rectangle "NECESIDAD\nFase 1" <<nivel>> as N1
+rectangle "ESPECIFICACIÓN\nFase 2" <<nivel>> as N2
+rectangle "REGLA\nFase 2" <<nivel>> as N3
+rectangle "VERIFICACIÓN\nFase 2" <<nivel>> as N4
+
+rectangle "HU-15\nMatricular un estudiante\nen un curso" <<hu>> as HU
+
+rectangle "RF-30 Registrar matrícula" <<rf>> as RF30
+rectangle "RF-31 Validar cupo" <<rf>> as RF31
+rectangle "RF-32 Validar duplicidad" <<rf>> as RF32
+rectangle "RF-33 Validar estado\ndel estudiante" <<rf>> as RF33
+rectangle "RF-34 Validar período activo" <<rf>> as RF34
+rectangle "RF-35 Validar tope de cursos" <<rf>> as RF35
+
+rectangle "RN-05 Cupo máximo" <<rn>> as RN05
+rectangle "RN-04 No duplicidad" <<rn>> as RN04
+rectangle "RN-06 Estudiante activo" <<rn>> as RN06
+rectangle "RN-07 Período activo" <<rn>> as RN07
+rectangle "RN-14 Máximo 7 cursos" <<rn>> as RN14
+
+rectangle "CP-06 Curso sin cupo" <<cp>> as CP06
+rectangle "CP-07 Matrícula duplicada" <<cp>> as CP07
+
+N1 -[hidden]right- N2
+N2 -[hidden]right- N3
+N3 -[hidden]right- N4
+
+HU --> RF30
+HU --> RF31
+HU --> RF32
+HU --> RF33
+HU --> RF34
+HU --> RF35
+
+RF31 --> RN05
+RF32 --> RN04
+RF33 --> RN06
+RF34 --> RN07
+RF35 --> RN14
+
+RN05 --> CP06
+RN04 --> CP07
+
+note bottom of HU
+  Cada historia de la Fase 1 se descompone en requerimientos verificables,
+  cada requerimiento se apoya en reglas de negocio explícitas y cada regla
+  se comprueba mediante un caso de prueba de aceptación.
+end note
+@enduml

@@ -1,0 +1,55 @@
+@startuml 04-estados-matricula
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam state {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  FontStyle bold
+  AttributeFontSize 11
+  AttributeFontColor #404040
+}
+
+[*] --> Activa : RF-30 registrar matrícula\n[RN-04, RN-05, RN-06, RN-07, RN-14]
+
+state Activa {
+  Activa : El estudiante integra la lista de clase
+  Activa : Ocupa un cupo del curso
+  Activa : Admite registro de calificaciones
+}
+
+state Cancelada {
+  Cancelada : Libera un cupo (RN-16)
+  Cancelada : Conserva las notas registradas
+  Cancelada : No aparece en la lista de clase
+}
+
+state Finalizada {
+  Finalizada : Nota definitiva calculada (RF-45)
+  Finalizada : Estado de aprobación asignado (RN-12)
+  Finalizada : Calificaciones en solo lectura (RN-17)
+}
+
+Activa --> Cancelada : RF-36 cancelar\n[período abierto]
+Activa --> Finalizada : RF-22 cerrar período\n[notas completas]
+Cancelada --> [*]
+Finalizada --> [*]
+
+note right of Cancelada
+  La cancelación no elimina el registro:
+  conserva el historial y decrementa el
+  contador de matriculados del curso.
+end note
+
+note left of Finalizada
+  El cierre del período congela las
+  calificaciones. Solo el administrador
+  puede reabrirlo dejando constancia.
+end note
+@enduml

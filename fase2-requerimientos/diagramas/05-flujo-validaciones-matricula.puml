@@ -1,0 +1,62 @@
+@startuml 05-flujo-validaciones-matricula
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam activity {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  DiamondBackgroundColor #FFF2CC
+  DiamondBorderColor #BF9000
+  DiamondFontColor #7F6000
+}
+
+start
+:El administrador selecciona
+estudiante y curso;
+
+split
+  if (¿Hay período\nactivo?\n<size:10>RF-34 · RN-07</size>) then (no)
+    :"No hay un período
+    académico activo";<<#FBE5E5>>
+    kill
+  endif
+split again
+  if (¿Estudiante\nactivo?\n<size:10>RF-33 · RN-06</size>) then (no)
+    :"El estudiante
+    no está activo";<<#FBE5E5>>
+    kill
+  endif
+split again
+  if (¿Matrícula\nduplicada?\n<size:10>RF-32 · RN-04</size>) then (sí)
+    :"Ya está matriculado
+    en este curso";<<#FBE5E5>>
+    kill
+  endif
+split again
+  if (¿Hay cupo\ndisponible?\n<size:10>RF-31 · RN-05</size>) then (no)
+    :"El curso no tiene
+    cupos disponibles";<<#FBE5E5>>
+    kill
+  endif
+split again
+  if (¿Supera 7\nmatrículas?\n<size:10>RF-35 · RN-14</size>) then (sí)
+    :"Se alcanzó el tope
+    de cursos permitido";<<#FBE5E5>>
+    kill
+  endif
+end split
+
+partition "Transacción única  ·  RNF-15" {
+  :Crear la matrícula en estado ACTIVA;<<#E2F0D9>>
+  :Incrementar el contador de matriculados del curso;<<#E2F0D9>>
+  :Registrar fecha y usuario responsable (RNF-20);<<#E2F0D9>>
+}
+
+:Confirmar "Matrícula registrada correctamente";
+stop
+@enduml

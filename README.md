@@ -23,7 +23,7 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 | Fase | Etapa | Entregable | Estado |
 |------|-------|------------|--------|
 | 1 | Épica y Stories | Épicas + historias de usuario | ✅ Completada |
-| 2 | Requerimientos | Documento de requerimientos | ⏳ Pendiente |
+| 2 | Requerimientos | Documento de requerimientos | ✅ Completada |
 | 3 | Diagramas UML | Casos de uso, clases, secuencia, actividades | ⏳ Pendiente |
 | 4 | Base de datos | Modelo ER/UML + script SQL | ⏳ Pendiente |
 | 5 | Mockup / Prototipo | Prototipo navegable | ⏳ Pendiente |
@@ -68,7 +68,53 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 
 ---
 
-## Diagramas
+## Fase 2 — Documento de requerimientos
+
+📁 [`fase2-requerimientos/`](fase2-requerimientos/)
+
+| Archivo | Descripción |
+|---|---|
+| [`Fase2-Requerimientos-SGA-APA7.docx`](fase2-requerimientos/Fase2-Requerimientos-SGA-APA7.docx) | Documento formal en normas APA 7.ª edición (26 tablas, 6 figuras, referencias) |
+| [`fase2-requerimientos.md`](fase2-requerimientos/fase2-requerimientos.md) | Misma información en Markdown, con los diagramas renderizados |
+| [`diagramas/`](fase2-requerimientos/diagramas/) | 6 diagramas en PlantUML (fuentes `.puml` y renders `.png`) |
+
+### Contenido de la fase
+
+- **57 requerimientos funcionales** en 6 módulos, cada uno con entradas, proceso, salidas, precondición y postcondición
+- **28 requerimientos no funcionales** según las 8 características de la norma ISO/IEC 25010, todos con métrica de verificación
+- **27 reglas de negocio** formalizadas y clasificadas por tipo, con su origen institucional
+- **10 restricciones** técnicas, de proyecto, de negocio y normativas
+- **15 casos de prueba** de aceptación del sistema
+- **5 matrices de trazabilidad** con cobertura completa
+- Procedimiento de gestión de cambios de los requerimientos
+
+### Requerimientos por módulo
+
+| Módulo | Responsabilidad | RF |
+|---|---|---|
+| M1 Seguridad y control de acceso | Autenticación, cuentas, roles y autorización | 9 |
+| M2 Gestión de personas | Directorio único de estudiantes y docentes | 10 |
+| M3 Oferta académica | Períodos, cursos, cupos, cortes y asignación | 11 |
+| M4 Matrícula | Vinculación con validaciones de negocio | 9 |
+| M5 Calificaciones | Registro, corrección, auditoría y cálculo | 10 |
+| M6 Consultas y reportes | Consultas del estudiante y reportes | 8 |
+
+### Diagramas de la fase
+
+| # | Diagrama | Fuente |
+|---|---|---|
+| 1 | Módulos funcionales y dependencias | [`01-modulos-funcionales.puml`](fase2-requerimientos/diagramas/01-modulos-funcionales.puml) |
+| 2 | Requerimientos no funcionales ISO/IEC 25010 | [`02-rnf-iso25010.puml`](fase2-requerimientos/diagramas/02-rnf-iso25010.puml) |
+| 3 | Cadena de trazabilidad | [`03-cadena-trazabilidad.puml`](fase2-requerimientos/diagramas/03-cadena-trazabilidad.puml) |
+| 4 | Ciclo de vida de la matrícula | [`04-estados-matricula.puml`](fase2-requerimientos/diagramas/04-estados-matricula.puml) |
+| 5 | Flujo de validaciones de la matrícula | [`05-flujo-validaciones-matricula.puml`](fase2-requerimientos/diagramas/05-flujo-validaciones-matricula.puml) |
+| 6 | Ciclo de vida del período y del curso | [`06-estados-periodo-curso.puml`](fase2-requerimientos/diagramas/06-estados-periodo-curso.puml) |
+
+![Flujo de validaciones de la matrícula](fase2-requerimientos/diagramas/05-flujo-validaciones-matricula.png)
+
+---
+
+## Diagramas de la Fase 1
 
 | # | Diagrama | Fuente |
 |---|---|---|
@@ -83,7 +129,7 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 
 ### Regenerar los diagramas
 
-Requiere Java y [PlantUML](https://plantuml.com/download). Desde `fase1-epicas-historias/diagramas/`:
+Requiere Java y [PlantUML](https://plantuml.com/download). Desde la carpeta `diagramas/` de cualquiera de las fases:
 
 ```bash
 java -jar plantuml.jar -tpng -charset UTF-8 *.puml

@@ -1,0 +1,82 @@
+@startmindmap 02-rnf-iso25010
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+<style>
+mindmapDiagram {
+  LineColor #2E75B6
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  RoundCorner 8
+  Padding 6
+  Margin 4
+  .raiz {
+    BackgroundColor #1F3864
+    FontColor #FFFFFF
+    FontStyle bold
+  }
+  .car {
+    BackgroundColor #2E75B6
+    FontColor #FFFFFF
+    FontStyle bold
+  }
+  .alta {
+    BackgroundColor #FBE5E5
+    BorderColor #C00000
+    FontColor #833C3C
+  }
+  .media {
+    BackgroundColor #FFF2CC
+    BorderColor #BF9000
+    FontColor #7F6000
+  }
+  .baja {
+    BackgroundColor #F2F2F2
+    BorderColor #A6A6A6
+    FontColor #595959
+  }
+}
+</style>
+
+* Requerimientos\nno funcionales\nISO/IEC 25010 <<raiz>>
+** Adecuación\nfuncional <<car>>
+*** RNF-01 Corrección de los cálculos <<alta>>
+*** RNF-02 Cobertura de las reglas de negocio <<alta>>
+** Eficiencia de\ndesempeño <<car>>
+*** RNF-03 Consultas en menos de 3 s <<alta>>
+*** RNF-04 Guardado de notas en menos de 5 s <<media>>
+*** RNF-05 50 sesiones concurrentes <<media>>
+*** RNF-06 Capacidad de 5 años de histórico <<baja>>
+** Compatibilidad <<car>>
+*** RNF-07 Exportación en formato tabular <<baja>>
+*** RNF-08 Navegadores vigentes <<media>>
+** Usabilidad <<car>>
+*** RNF-09 Uso sin capacitación formal <<alta>>
+*** RNF-10 Mensajes de error accionables <<alta>>
+*** RNF-11 Interfaz adaptable a móviles <<media>>
+*** RNF-12 Contraste WCAG 2.1 nivel AA <<media>>
+*** RNF-13 Tareas frecuentes en 3 clics <<media>>
+left side
+** Fiabilidad <<car>>
+*** RNF-14 Disponibilidad del 99 % <<alta>>
+*** RNF-15 Operaciones transaccionales <<alta>>
+*** RNF-16 Respaldo diario verificado <<alta>>
+** Seguridad <<car>>
+*** RNF-17 Contraseñas con resumen y sal <<alta>>
+*** RNF-18 Aislamiento entre usuarios <<alta>>
+*** RNF-19 Autorización en el servidor <<alta>>
+*** RNF-20 Autoría de notas y matrículas <<alta>>
+*** RNF-21 Bitácora inalterable <<media>>
+*** RNF-22 Canal cifrado HTTPS <<alta>>
+*** RNF-23 Saneamiento de entradas <<alta>>
+** Mantenibilidad <<car>>
+*** RNF-24 Separación en capas <<media>>
+*** RNF-25 Estándar de codificación <<media>>
+*** RNF-26 Pruebas sobre reglas de negocio <<media>>
+** Portabilidad <<car>>
+*** RNF-27 Despliegue reproducible <<baja>>
+*** RNF-28 Independencia del motor de datos <<baja>>
+@endmindmap

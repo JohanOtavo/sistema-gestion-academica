@@ -1,0 +1,44 @@
+@startuml 06-estados-periodo-curso
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam state {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  FontStyle bold
+  AttributeFontSize 11
+  AttributeFontColor #404040
+}
+
+state "Período académico" as PERIODO {
+  [*] --> Planeado : RF-20 crear período\n[RN-19 fechas válidas]
+  Planeado : No admite matrículas
+  Planeado --> Activo : RF-21 activar\n[cierra el activo vigente · RN-03]
+  Activo : Único período activo
+  Activo : Admite matrículas y notas
+  Activo --> Cerrado : RF-22 cerrar período
+  Cerrado : Calificaciones en solo lectura (RN-17)
+  Cerrado --> [*]
+}
+
+state "Curso" as CURSO {
+  [*] --> Creado : RF-24 crear curso\n[RN-20, RN-25]
+  Creado : Cero matriculados
+  Creado : Sin docente asignado
+  Creado --> Disponible : RF-28 asignar docente\n+ RF-29 configurar cortes
+  Disponible : Admite matrícula
+  Disponible : Cupo disponible mayor que cero
+  Disponible --> Lleno : matriculados = cupo\n[RN-05]
+  Lleno --> Disponible : RF-36 cancelar matrícula\n[RN-16]
+  Disponible --> Inactivo : RF-27 inactivar
+  Inactivo : Conserva su historial (RN-15)
+  Inactivo --> [*]
+}
+
+@enduml

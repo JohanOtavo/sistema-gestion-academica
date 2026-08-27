@@ -1,0 +1,55 @@
+@startuml 01-modulos-funcionales
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowThickness 1.2
+skinparam packageStyle rectangle
+hide stereotype
+
+skinparam rectangle<<mod>> {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam rectangle<<seg>> {
+  BackgroundColor #FBE5E5
+  BorderColor #C00000
+  FontColor #833C3C
+  FontStyle bold
+}
+skinparam rectangle<<nucleo>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+  FontColor #375623
+  FontStyle bold
+}
+
+rectangle "M1 · Seguridad y control de acceso\n<size:11>RF-01 a RF-09  —  9 requerimientos</size>" <<seg>> as M1
+rectangle "M2 · Gestión de personas\n<size:11>RF-10 a RF-19  —  10 requerimientos</size>" <<mod>> as M2
+rectangle "M3 · Oferta académica\n<size:11>RF-20 a RF-29, RF-57  —  11 requerimientos</size>" <<mod>> as M3
+rectangle "M4 · Matrícula\n<size:11>RF-30 a RF-37, RF-56  —  9 requerimientos</size>" <<nucleo>> as M4
+rectangle "M5 · Calificaciones\n<size:11>RF-38 a RF-47  —  10 requerimientos</size>" <<nucleo>> as M5
+rectangle "M6 · Consultas y reportes\n<size:11>RF-48 a RF-55  —  8 requerimientos</size>" <<mod>> as M6
+
+M1 -down-> M2 : autoriza
+M1 -down-> M3 : autoriza
+M1 -down-> M4 : autoriza
+M1 -down-> M5 : autoriza
+M1 -down-> M6 : autoriza
+
+M2 -right-> M4 : provee\nestudiantes
+M3 -right-> M4 : provee cursos,\nperíodo y cupo
+M2 -down-> M3 : provee\ndocentes
+M4 -down-> M5 : provee la\nlista de clase
+M5 -right-> M6 : provee notas\ny definitivas
+M4 -right-> M6 : provee\nmatrículas
+
+legend bottom
+  <back:#FBE5E5>   </back> Módulo transversal    <back:#E2F0D9>   </back> Núcleo del sistema    <back:#F7FAFE>   </back> Módulo de apoyo
+endlegend
+@enduml
