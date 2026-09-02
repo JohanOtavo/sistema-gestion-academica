@@ -1,0 +1,62 @@
+@startuml 18-despliegue
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam node {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam artifact {
+  BorderColor #548235
+  BackgroundColor #E2F0D9
+  FontColor #375623
+}
+skinparam database {
+  BorderColor #1F3864
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+}
+
+title Vista de despliegue
+
+node "Equipo de la secretaría\ny sala de docentes" as PC {
+  artifact "Navegador web" as NAV
+}
+
+node "Dispositivo móvil\ndel estudiante" as MOV {
+  artifact "Navegador móvil" as NAVM
+}
+
+node "Servidor de aplicación\n(institución)" as APP {
+  artifact "Aplicación SGA\n(capas de presentación,\nnegocio y datos)" as SGA
+  artifact "Servidor web\ncon TLS" as WEB
+}
+
+node "Servidor de base de datos" as SRVBD {
+  database "SGA\n(motor relacional)" as BD
+  artifact "Respaldo diario\nautomático" as BK
+}
+
+PC -- APP : HTTPS
+MOV -- APP : HTTPS
+APP -- SRVBD : conexión cifrada\nal motor de datos
+BD .. BK : programado
+
+note right of APP
+  RNF-22: todo el tráfico viaja cifrado
+  y HTTP se redirige a HTTPS
+end note
+
+note bottom of SRVBD
+  RNF-16: respaldo diario con
+  restauración verificada en
+  menos de cuatro horas
+end note
+@enduml

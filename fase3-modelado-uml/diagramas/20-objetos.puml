@@ -1,0 +1,98 @@
+@startuml 20-objetos
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam object {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontSize 11
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title Instantánea del modelo: Valentina matriculada en MAT-101
+
+object "p2026_2 : PeriodoAcademico" as P {
+  codigo = "2026-2"
+  estado = ACTIVO
+}
+
+object "carlos : Docente" as D {
+  numeroDocumento = "79.123.456"
+  nombres = "Carlos"
+  areaConocimiento = "Matemáticas"
+}
+
+object "mat101 : Curso" as C {
+  codigo = "MAT-101"
+  nombre = "Matemáticas I"
+  creditos = 3
+  cupoMaximo = 30
+  matriculados = 1
+  estado = DISPONIBLE
+}
+
+object "corte1 : Corte" as C1 {
+  numero = 1
+  porcentaje = 30
+}
+object "corte2 : Corte" as C2 {
+  numero = 2
+  porcentaje = 30
+}
+object "corte3 : Corte" as C3 {
+  numero = 3
+  porcentaje = 40
+}
+
+object "valentina : Estudiante" as E {
+  codigoEstudiante = "EST-0417"
+  numeroDocumento = "1.098.765.432"
+  estado = ACTIVO
+}
+
+object "m1 : Matricula" as M {
+  fechaMatricula = 2026-09-01
+  estado = ACTIVA
+}
+
+object "n1 : Calificacion" as N1 {
+  valor = 4.0
+}
+object "n2 : Calificacion" as N2 {
+  valor = 3.0
+}
+object "n3 : Calificacion" as N3 {
+  valor = 5.0
+}
+
+P -- C
+D -- C
+C *-- C1
+C *-- C2
+C *-- C3
+E -- M
+C -- M
+M *-- N1
+M *-- N2
+M *-- N3
+C1 -- N1
+C2 -- N2
+C3 -- N3
+
+note right of M
+  notaDefinitiva()
+  = 4.0 x 0.30 + 3.0 x 0.30 + 5.0 x 0.40
+  = 1.2 + 0.9 + 2.0
+  = **4.1**  APROBADA [RN-11, RN-12]
+end note
+@enduml

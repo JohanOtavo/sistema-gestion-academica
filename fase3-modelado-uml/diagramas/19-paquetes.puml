@@ -1,0 +1,49 @@
+@startuml 19-paquetes
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title Organización del código en paquetes
+
+package "sga.presentacion" as PRE
+package "sga.negocio" as NEG
+package "sga.dominio" as DOM
+package "sga.datos" as DAT
+package "sga.comun" as COM
+
+PRE ..> NEG
+PRE ..> DOM
+NEG ..> DOM
+NEG ..> DAT
+DAT ..> DOM
+PRE ..> COM
+NEG ..> COM
+DAT ..> COM
+
+note right of DOM
+  El dominio no depende de
+  ninguna otra capa: es el
+  centro del sistema
+end note
+
+note left of PRE
+  Regla de revisión (ADR-005):
+  ninguna sentencia SQL puede
+  aparecer en este paquete
+end note
+@enduml

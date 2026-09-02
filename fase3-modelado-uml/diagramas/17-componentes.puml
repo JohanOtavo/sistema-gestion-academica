@@ -1,0 +1,79 @@
+@startuml 17-componentes
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam component {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam interface {
+  BorderColor #548235
+  BackgroundColor #E2F0D9
+  FontColor #375623
+}
+skinparam database {
+  BorderColor #1F3864
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+}
+
+title Vista de componentes del sistema
+
+component "Interfaz web (navegador)" as UI
+
+package "Servidor de aplicación" {
+  component "Módulo de seguridad" as SEG
+  component "Módulo de personas" as PER
+  component "Módulo de oferta académica" as OFE
+  component "Módulo de matrícula" as MAT
+  component "Módulo de calificaciones" as CAL
+  component "Módulo de consultas" as CON
+  component "Capa de acceso a datos" as DAT
+}
+
+database "Base de datos relacional" as BD
+
+interface "IAutorizacion" as IAuz
+interface "IRepositorio" as IRep
+
+UI --> SEG : HTTPS
+UI --> PER
+UI --> OFE
+UI --> MAT
+UI --> CAL
+UI --> CON
+
+SEG -- IAuz
+PER ..> IAuz
+OFE ..> IAuz
+MAT ..> IAuz
+CAL ..> IAuz
+CON ..> IAuz
+
+MAT --> OFE : consulta cupo y período
+MAT --> PER : consulta estudiante
+CAL --> MAT : consulta lista de clase
+CON --> CAL : consulta notas
+
+DAT -- IRep
+SEG ..> IRep
+PER ..> IRep
+OFE ..> IRep
+MAT ..> IRep
+CAL ..> IRep
+CON ..> IRep
+
+DAT --> BD : SQL
+
+note right of DAT
+  Único componente que conoce
+  el motor concreto (RNF-28)
+end note
+@enduml
