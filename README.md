@@ -24,7 +24,7 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 |------|-------|------------|--------|
 | 1 | Épica y Stories | Épicas + historias de usuario | ✅ Completada |
 | 2 | Requerimientos | Documento de requerimientos | ✅ Completada |
-| 3 | Diagramas UML | Casos de uso, clases, secuencia, actividades | ⏳ Pendiente |
+| 3 | Diagramas UML | Casos de uso, clases, secuencia, actividades | ✅ Completada |
 | 4 | Base de datos | Modelo ER/UML + script SQL | ⏳ Pendiente |
 | 5 | Mockup / Prototipo | Prototipo navegable | ⏳ Pendiente |
 | 6 | Programa funcional | MVP funcional | ⏳ Pendiente |
@@ -126,6 +126,41 @@ de la Definición de Terminado.
 | 6 | Ciclo de vida del período y del curso | [`06-estados-periodo-curso.puml`](fase2-requerimientos/diagramas/06-estados-periodo-curso.puml) |
 
 ![Flujo de validaciones de la matrícula](fase2-requerimientos/diagramas/05-flujo-validaciones-matricula.png)
+
+---
+
+## Fase 3 — Modelado UML
+
+📁 [`fase3-modelado-uml/`](fase3-modelado-uml/)
+
+| Archivo | Descripción |
+|---|---|
+| [`Fase3-Modelado-UML-SGA-APA7.docx`](fase3-modelado-uml/Fase3-Modelado-UML-SGA-APA7.docx) | Documento formal en normas APA 7.ª edición (13 tablas, 20 figuras, referencias) |
+| [`fase3-modelado-uml.md`](fase3-modelado-uml/fase3-modelado-uml.md) | Misma información en Markdown, con los diagramas renderizados |
+| [`diagramas/`](fase3-modelado-uml/diagramas/) | 20 diagramas en PlantUML (fuentes `.puml` y renders `.png`) |
+
+### Contenido de la fase
+
+- **27 casos de uso** con actor iniciador, módulo y requerimientos que agrupa
+- **5 casos de uso expandidos** con flujo principal, flujos alternos y excepciones
+- **11 clases de dominio** y 6 enumeraciones, con las reglas de negocio como restricciones anotadas
+- Tabla de **relaciones y multiplicidades** con la justificación de cada una
+- **Clases de diseño en capas** y organización del código en paquetes
+- **4 diagramas de secuencia**, 2 de actividades con calles y 2 de máquinas de estado
+- Vistas de **componentes, paquetes y despliegue**
+- Matriz de trazabilidad y **verificación de consistencia en 6 condiciones**
+- Registro de **decisiones de modelado** con su justificación y su costo
+
+### Las cuatro vistas del modelo
+
+| Vista | Diagramas | Responde a |
+|---|---|---|
+| Casos de uso | 4 | Qué hace el sistema y para quién |
+| Estructural | 5 | Con qué información trabaja |
+| Dinámica | 8 | Cómo se comporta en el tiempo |
+| Implementación | 3 | Cómo se organiza e instala |
+
+![Proceso académico completo](fase3-modelado-uml/diagramas/13-actividad-proceso-academico.png)
 
 ---
 
