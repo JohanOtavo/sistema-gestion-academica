@@ -1,0 +1,57 @@
+@startuml 14-actividad-registro-calificaciones
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam activity {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  DiamondBackgroundColor #FFF2CC
+  DiamondBorderColor #BF9000
+  DiamondFontColor #7F6000
+}
+skinparam partition {
+  BorderColor #1F3864
+  FontColor #1F3864
+}
+
+title CU-17 · Registro de calificaciones de un corte
+
+|#FAFAFA|Docente|
+start
+:Seleccionar el curso
+y el corte;
+
+|#F2F6FC|Sistema|
+if (¿Es titular del curso [RN-08]\ny el período está abierto [RN-17]?) then (no)
+  :Denegar la operación
+  y registrar el intento;<<#FBE5E5>>
+  stop
+endif
+:Mostrar la lista de clase
+con las notas ya registradas;
+
+|#FAFAFA|Docente|
+:Digitar las notas
+y guardar;
+
+|#F2F6FC|Sistema|
+if (¿Todas las notas están\nentre 0.0 y 5.0? [RN-09]) then (no)
+  :Señalar el campo inválido
+  y no guardar ninguna fila;<<#FBE5E5>>
+  stop
+endif
+:Guardar con autor y fecha [RNF-20];<<#E2F0D9>>
+:Recalcular la definitiva
+de las matrículas afectadas;<<#E2F0D9>>
+:Informar cuántas notas
+quedaron pendientes;
+
+|#FAFAFA|Docente|
+:Verificar el resultado;
+stop
+@enduml

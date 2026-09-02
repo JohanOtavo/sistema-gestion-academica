@@ -1,0 +1,67 @@
+@startuml 16-estados-calificacion
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam state {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  FontStyle bold
+  AttributeFontSize 11
+  AttributeFontColor #404040
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title Ciclo de vida de la Calificación
+
+[*] --> Pendiente : se crea la matrícula
+
+state Pendiente {
+  Pendiente : do / se muestra como "Pendiente"
+  Pendiente : do / no aporta a la definitiva
+}
+
+state Registrada {
+  Registrada : entry / validarRango() [RN-09]
+  Registrada : entry / guardar autor y fecha [RNF-20]
+  Registrada : do / aporta a la nota definitiva
+}
+
+state Corregida {
+  Corregida : entry / conservar valor anterior [RN-18]
+  Corregida : entry / recalcular definitiva
+}
+
+state Bloqueada {
+  Bloqueada : do / solo lectura [RN-17]
+}
+
+Pendiente --> Registrada : registrar(valor)\n[docente titular · RN-08]
+Registrada --> Corregida : modificar(nuevoValor)\n[período abierto]
+Corregida --> Corregida : modificar(nuevoValor)
+Registrada --> Bloqueada : cerrarPeriodo()
+Corregida --> Bloqueada : cerrarPeriodo()
+Pendiente --> Bloqueada : cerrarPeriodo()\n[se cierra sin nota]
+Bloqueada --> [*]
+
+note right of Corregida
+  Cada corrección genera un
+  RegistroAuditoria con el valor
+  anterior, el nuevo, el autor
+  y la fecha
+end note
+
+note bottom of Bloqueada
+  Una calificación que llega bloqueada
+  sin haber sido registrada indica un
+  cierre de período con notas faltantes
+end note
+@enduml

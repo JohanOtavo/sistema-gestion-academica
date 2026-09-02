@@ -1,0 +1,78 @@
+@startuml 11-secuencia-registrar-calificaciones
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam sequence {
+  ParticipantBorderColor #2E75B6
+  ParticipantBackgroundColor #DEEBF7
+  ParticipantFontColor #1F3864
+  ActorBorderColor #1F3864
+  ActorBackgroundColor #DCE6F1
+  LifeLineBorderColor #A6A6A6
+  LifeLineBackgroundColor #F2F2F2
+  GroupBorderColor #2E75B6
+  GroupBackgroundColor #F7FAFE
+  GroupHeaderFontColor #1F3864
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title CU-17 y CU-19 · Registrar calificaciones y calcular la definitiva
+
+actor "Docente" as D
+participant ":ControladorCalificaciones" as C
+participant ":ServicioCalificaciones" as S
+participant ":CalculadoraNotas" as K
+participant ":Repositorios" as R
+
+D -> C : mostrarListaClase(idCurso)
+activate C
+C -> S : listaDeClase(idCurso, docente)
+activate S
+S -> R : matriculasActivas(idCurso)
+S --> C : estudiantes
+deactivate S
+C --> D : formulario con la lista
+deactivate C
+
+D -> C : guardarNotas(idCurso, corte, notas)
+activate C
+C -> S : registrar(idCurso, corte, notas, docente)
+activate S
+
+alt el docente no es titular [RN-08]
+  S --> C : AccesoDenegado
+else el período está cerrado [RN-17]
+  S --> C : PeriodoCerrado
+else alguna nota está fuera de 0.0 a 5.0 [RN-09]
+  S --> C : NotaInvalida
+  note right of S
+    RF-38 CA-2: si una nota es inválida
+    no se guarda ninguna fila del lote
+  end note
+else todas las notas son válidas
+  group Transacción
+    S -> R : guardarLote(calificaciones)
+    loop por cada matrícula afectada
+      S -> K : definitiva(matricula)
+      activate K
+      K -> K : suma(valor x porcentaje) [RN-11]
+      K -> K : redondear a un decimal [RN-27]
+      K --> S : nota definitiva
+      deactivate K
+      S -> R : actualizarDefinitiva(m)
+    end
+  end
+  S --> C : resumen(guardadas, pendientes)
+end
+deactivate S
+
+C --> D : confirmación o mensaje de error
+deactivate C
+@enduml

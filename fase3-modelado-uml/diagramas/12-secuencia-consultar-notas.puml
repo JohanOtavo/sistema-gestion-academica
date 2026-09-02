@@ -1,0 +1,76 @@
+@startuml 12-secuencia-consultar-notas
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam sequence {
+  ParticipantBorderColor #2E75B6
+  ParticipantBackgroundColor #DEEBF7
+  ParticipantFontColor #1F3864
+  ActorBorderColor #1F3864
+  ActorBackgroundColor #DCE6F1
+  LifeLineBorderColor #A6A6A6
+  LifeLineBackgroundColor #F2F2F2
+  GroupBorderColor #2E75B6
+  GroupBackgroundColor #F7FAFE
+  GroupHeaderFontColor #1F3864
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title CU-21 y CU-22 · Consultar mis calificaciones y mi promedio
+
+actor "Estudiante" as E
+participant ":ControladorConsultas" as C
+participant ":ServicioConsultas" as S
+participant ":CalculadoraNotas" as K
+participant ":Repositorios" as R
+
+E -> C : misNotas()
+activate C
+C -> S : notasDe(sesion.estudiante)
+activate S
+
+note right of C
+  RN-23: el estudiante se toma
+  de la sesión, no de la petición
+end note
+
+S -> R : matriculasActivas(estudiante, periodo)
+activate R
+R --> S : matriculas
+deactivate R
+
+loop por cada matrícula
+  S -> R : calificacionesDe(matricula)
+  S -> K : definitiva(matricula)
+  activate K
+  alt faltan cortes
+    K --> S : parcial + "Pendiente"
+  else cortes completos
+    K --> S : definitiva + estado [RN-12]
+  end
+  deactivate K
+end
+
+S -> K : promedioPonderado(matriculas)
+activate K
+K -> K : suma(definitiva x creditos) / suma(creditos) [RN-13]
+K --> S : promedio
+deactivate K
+
+alt promedio inferior a 3.0
+  S --> C : notas + aviso de riesgo
+else
+  S --> C : notas + promedio
+end
+deactivate S
+
+C --> E : consulta en solo lectura
+deactivate C
+@enduml

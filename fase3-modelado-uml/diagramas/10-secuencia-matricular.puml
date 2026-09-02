@@ -1,0 +1,82 @@
+@startuml 10-secuencia-matricular
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam sequence {
+  ParticipantBorderColor #2E75B6
+  ParticipantBackgroundColor #DEEBF7
+  ParticipantFontColor #1F3864
+  ActorBorderColor #1F3864
+  ActorBackgroundColor #DCE6F1
+  LifeLineBorderColor #A6A6A6
+  LifeLineBackgroundColor #F2F2F2
+  GroupBorderColor #2E75B6
+  GroupBackgroundColor #F7FAFE
+  GroupHeaderFontColor #1F3864
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title CU-14 · Matricular estudiante (RF-30 a RF-35)
+
+actor "Administrador" as A
+participant ":ControladorMatricula" as C
+participant ":ServicioAutorizacion" as Z
+participant ":ServicioMatricula" as S
+participant ":Repositorios" as R
+participant "c:Curso" as CU
+
+A -> C : registrarMatricula(idEst, idCurso)
+activate C
+C -> Z : verificar(usuario, "MATRICULAR")
+activate Z
+Z --> C : autorizado
+deactivate Z
+
+C -> S : matricular(idEst, idCurso, usuario)
+activate S
+S -> R : buscarPeriodoActivo()
+S -> R : buscarEstudiante(idEst)
+S -> R : buscarCurso(idCurso)
+S -> CU : tieneCupo()
+activate CU
+CU --> S : disponibilidad
+deactivate CU
+S -> R : contarActivas(idEst, periodo)
+
+alt no hay período activo [RN-07]
+  S --> C : SinPeriodoActivo
+else estudiante inactivo [RN-06]
+  S --> C : EstudianteInactivo
+else ya matriculado en el curso [RN-04]
+  S --> C : MatriculaDuplicada
+else curso sin cupos [RN-05]
+  S --> C : SinCupo
+else alcanzó siete matrículas [RN-14]
+  S --> C : TopeDeCursos
+else todas las validaciones se cumplen
+  group Transacción única [RNF-15]
+    S -> R : guardar(Matricula ACTIVA)
+    S -> CU : ocuparCupo()
+    S -> R : actualizar(c)
+    S -> R : auditar(usuario, ahora)
+  end
+  S --> C : matricula
+end
+deactivate S
+
+C --> A : mensaje de confirmación o de rechazo
+deactivate C
+
+note over S
+  El orden de evaluación determina cuál
+  mensaje se muestra si fallan varias
+  validaciones a la vez
+end note
+@enduml

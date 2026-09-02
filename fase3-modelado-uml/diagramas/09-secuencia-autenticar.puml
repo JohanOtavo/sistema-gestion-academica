@@ -1,0 +1,79 @@
+@startuml 09-secuencia-autenticar
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam sequence {
+  ParticipantBorderColor #2E75B6
+  ParticipantBackgroundColor #DEEBF7
+  ParticipantFontColor #1F3864
+  ActorBorderColor #1F3864
+  ActorBackgroundColor #DCE6F1
+  LifeLineBorderColor #A6A6A6
+  LifeLineBackgroundColor #F2F2F2
+  GroupBorderColor #2E75B6
+  GroupBackgroundColor #F7FAFE
+  GroupHeaderFontColor #1F3864
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title CU-01 · Iniciar sesión (RF-01, RF-07, RF-09)
+
+actor "Usuario" as U
+participant ":ControladorAcceso" as C
+participant ":ServicioAutenticacion" as S
+participant ":RepositorioUsuario" as R
+participant "u:Usuario" as E
+participant ":BitacoraSeguridad" as B
+
+U -> C : enviarCredenciales(correo, clave)
+activate C
+C -> S : autenticar(correo, clave)
+activate S
+S -> R : buscarPorCorreo(correo)
+activate R
+R --> S : u
+deactivate R
+
+alt correo no registrado o clave incorrecta
+  S -> E : verificarHash(clave)
+  activate E
+  E --> S : false
+  deactivate E
+  S -> B : registrar(AUTENTICACION_FALLIDA, correo)
+  S --> C : CredencialesInvalidas
+  C --> U : "Usuario o contraseña incorrectos"
+  note right of C
+    RF-01 CA-2: el mensaje no revela
+    cuál de los dos datos falló
+  end note
+
+else usuario inactivo
+  S --> C : CuentaInactiva
+  C --> U : "La cuenta está inactiva"
+
+else credenciales válidas
+  S -> E : verificarHash(clave)
+  activate E
+  E --> S : true
+  deactivate E
+  S -> E : registrarAcceso(ahora)
+  S -> S : crearSesion(u.rol)
+  S --> C : sesion
+  C --> U : redirigir al panel del rol
+end
+
+deactivate S
+deactivate C
+
+note over S, E
+  RNF-17: se compara el resumen criptográfico
+  con sal; la clave nunca se almacena ni se registra
+end note
+@enduml

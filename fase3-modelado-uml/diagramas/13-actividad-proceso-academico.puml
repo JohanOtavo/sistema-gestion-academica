@@ -1,0 +1,66 @@
+@startuml 13-actividad-proceso-academico
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam activity {
+  BackgroundColor #F7FAFE
+  BorderColor #2E75B6
+  FontColor #1F3864
+  DiamondBackgroundColor #FFF2CC
+  DiamondBorderColor #BF9000
+  DiamondFontColor #7F6000
+}
+skinparam partition {
+  BorderColor #1F3864
+  FontColor #1F3864
+}
+
+title Proceso académico completo de un período
+
+|#F2F6FC|Administrador|
+start
+:Crear y activar el período
+[cierra el anterior · RN-03];
+:Crear los cursos con
+créditos y cupo;
+:Asignar el docente
+responsable;
+:Configurar los cortes
+evaluativos [RN-10];
+:Matricular a los estudiantes
+[RN-04 a RN-14];
+
+|#FAFAFA|Docente|
+:Consultar la lista de clase;
+while (¿Faltan cortes por calificar?) is (sí)
+  :Registrar las calificaciones
+  del corte [RN-09];
+endwhile (no)
+
+|#F2F6FC|Sistema|
+:Calcular la nota definitiva
+de cada matrícula [RN-11];
+:Determinar el estado
+de aprobación [RN-12];
+:Calcular el promedio ponderado
+por créditos [RN-13];
+
+|#EAF3E6|Estudiante|
+:Consultar sus notas
+y su promedio;
+
+|#F2F6FC|Administrador|
+if (¿Todas las notas\nestán registradas?) then (sí)
+  :Cerrar el período: las notas
+  quedan en solo lectura [RN-17];<<#E2F0D9>>
+  stop
+else (no)
+  :Solicitar al docente
+  las notas pendientes;<<#FBE5E5>>
+  stop
+endif
+@enduml
