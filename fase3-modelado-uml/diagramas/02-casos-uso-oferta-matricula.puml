@@ -1,0 +1,55 @@
+@startuml 02-casos-uso-oferta-matricula
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Administrador\nacadémico" as ADM
+actor "Docente" as DOC
+
+package "M3 · Oferta académica" {
+  usecase "CU-10\nAdministrar períodos académicos" as CU10
+  usecase "CU-11\nAdministrar cursos" as CU11
+  usecase "CU-12\nAsignar docente a curso" as CU12
+  usecase "CU-13\nConfigurar cortes evaluativos" as CU13
+}
+
+package "M4 · Matrícula" {
+  usecase "CU-14\nMatricular estudiante" as CU14
+  usecase "CU-15\nCancelar matrícula" as CU15
+  usecase "CU-16\nConsultar lista de clase" as CU16
+}
+
+ADM --> CU10
+ADM --> CU11
+ADM --> CU12
+ADM --> CU13
+ADM --> CU14
+ADM --> CU15
+ADM --> CU16
+DOC --> CU16
+
+CU14 ..> CU11 : <<include>>\nverificar cupo
+CU14 ..> CU10 : <<include>>\nperíodo activo
+CU12 ..> CU11 : <<include>>
+@enduml

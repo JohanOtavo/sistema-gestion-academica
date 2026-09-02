@@ -1,0 +1,139 @@
+@startuml 06-clases-personas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontColor #404040
+  AttributeFontSize 11
+}
+skinparam enum {
+  BorderColor #BF9000
+  BackgroundColor #FFF9E6
+  FontColor #7F6000
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+skinparam class<<abstracta>> {
+  HeaderBackgroundColor #1F3864
+  FontColor #FFFFFF
+}
+hide stereotype
+
+abstract class Persona <<abstracta>> {
+  # idPersona : Long
+  # tipoDocumento : String
+  # numeroDocumento : String {único}
+  # nombres : String
+  # apellidos : String
+  # correo : String
+  # telefono : String
+  # estado : EstadoPersona
+  # fechaRegistro : LocalDate
+  --
+  + nombreCompleto() : String
+  + inactivar() : void
+  + estaActiva() : boolean
+}
+
+class Estudiante {
+  - codigoEstudiante : String {único}
+  - fechaNacimiento : LocalDate
+  - fechaIngreso : LocalDate
+  --
+  + matriculasActivas(p) : List<Matricula>
+  + creditosInscritos(p) : int
+  + promedioGeneral(p) : BigDecimal
+  + puedeMatricular(p) : boolean
+}
+
+class Docente {
+  - codigoDocente : String {único}
+  - areaConocimiento : String
+  - fechaVinculacion : LocalDate
+  --
+  + cursosAsignados(p) : List<Curso>
+  + esTitularDe(c : Curso) : boolean
+  + tieneCursosVigentes() : boolean
+}
+
+class Usuario {
+  - idUsuario : Long
+  - correo : String {único}
+  - hashContrasena : String
+  - sal : String
+  - rol : Rol
+  - estado : EstadoPersona
+  - ultimoAcceso : LocalDateTime
+  --
+  + autenticar(clave : String) : boolean
+  + cambiarContrasena(actual, nueva) : void
+  + tienePermiso(op : String) : boolean
+}
+
+class RegistroAuditoria {
+  - idRegistro : Long
+  - entidad : String
+  - idEntidad : Long
+  - operacion : String
+  - valorAnterior : String
+  - valorNuevo : String
+  - fechaHora : LocalDateTime
+}
+
+class EventoSeguridad {
+  - idEvento : Long
+  - tipo : TipoEvento
+  - correoIntento : String
+  - operacion : String
+  - fechaHora : LocalDateTime
+}
+
+enum Rol {
+  ADMINISTRADOR
+  DOCENTE
+  ESTUDIANTE
+}
+
+enum EstadoPersona {
+  ACTIVO
+  INACTIVO
+}
+
+enum TipoEvento {
+  AUTENTICACION_FALLIDA
+  ACCESO_DENEGADO
+  SESION_EXPIRADA
+}
+
+Persona <|-- Estudiante
+Persona <|-- Docente
+Persona "1" -- "1" Usuario : identifica >
+Usuario "1" -- "0..*" RegistroAuditoria : genera >
+Usuario "0..1" -- "0..*" EventoSeguridad : origina >
+Usuario ..> Rol
+Persona ..> EstadoPersona
+EventoSeguridad ..> TipoEvento
+
+note bottom of Usuario
+  {RN-02} correo único
+  {RN-17} solo se almacena el resumen
+  criptográfico con sal, nunca la clave
+  {RN-21} longitud mínima de 8 caracteres
+end note
+
+note right of Persona
+  {RN-01} numeroDocumento único
+  {RN-15} no se elimina: se inactiva
+end note
+@enduml

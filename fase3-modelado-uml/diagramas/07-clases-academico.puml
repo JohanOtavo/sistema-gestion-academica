@@ -1,0 +1,149 @@
+@startuml 07-clases-academico
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontColor #404040
+  AttributeFontSize 11
+}
+skinparam enum {
+  BorderColor #BF9000
+  BackgroundColor #FFF9E6
+  FontColor #7F6000
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+class PeriodoAcademico {
+  - idPeriodo : Long
+  - codigo : String {único}
+  - fechaInicio : LocalDate
+  - fechaFin : LocalDate
+  - estado : EstadoPeriodo
+  --
+  + activar() : void
+  + cerrar() : void
+  + estaAbierto() : boolean
+  + validarFechas() : boolean
+}
+
+class Curso {
+  - idCurso : Long
+  - codigo : String
+  - nombre : String
+  - creditos : int
+  - cupoMaximo : int
+  - matriculados : int
+  - estado : EstadoCurso
+  --
+  + cuposDisponibles() : int
+  + tieneCupo() : boolean
+  + ocuparCupo() : void
+  + liberarCupo() : void
+  + puedeReducirCupoA(n : int) : boolean
+  + porcentajesSuman100() : boolean
+}
+
+class Corte {
+  - idCorte : Long
+  - numero : int
+  - porcentaje : BigDecimal
+  - descripcion : String
+  --
+  + validarPorcentaje() : boolean
+}
+
+class Matricula {
+  - idMatricula : Long
+  - fechaMatricula : LocalDateTime
+  - estado : EstadoMatricula
+  - usuarioRegistro : String
+  --
+  + cancelar(u : Usuario) : void
+  + notaDefinitiva() : BigDecimal
+  + estaCompleta() : boolean
+  + estaAprobada() : boolean
+}
+
+class Calificacion {
+  - idCalificacion : Long
+  - valor : BigDecimal
+  - fechaRegistro : LocalDateTime
+  - docenteRegistro : String
+  --
+  + validarRango() : boolean
+  + modificar(v, u : Usuario) : void
+  + aporte() : BigDecimal
+}
+
+enum EstadoPeriodo {
+  PLANEADO
+  ACTIVO
+  CERRADO
+}
+
+enum EstadoCurso {
+  CREADO
+  DISPONIBLE
+  INACTIVO
+}
+
+enum EstadoMatricula {
+  ACTIVA
+  CANCELADA
+  FINALIZADA
+}
+
+class Estudiante <<(E,#DCE6F1) externa>>
+class Docente <<(E,#DCE6F1) externa>>
+
+PeriodoAcademico "1" -- "0..*" Curso : ofrece >
+Docente "0..1" -- "0..*" Curso : dicta >
+Curso "1" *-- "1..*" Corte : define >
+Estudiante "1" -- "0..*" Matricula : cursa >
+Curso "1" -- "0..*" Matricula : recibe >
+Matricula "1" *-- "0..*" Calificacion : contiene >
+Corte "1" -- "0..*" Calificacion : evalúa >
+
+PeriodoAcademico ..> EstadoPeriodo
+Curso ..> EstadoCurso
+Matricula ..> EstadoMatricula
+
+note top of Matricula
+  {RN-04} sin duplicados por estudiante,
+  curso y período
+  {RN-14} máximo 7 activas por período
+  {RN-16} al cancelar se libera el cupo
+end note
+
+note right of Curso
+  {RN-05} matriculados <= cupoMaximo
+  {RN-20} codigo único por período
+  {RN-25} creditos y cupoMaximo positivos
+  matriculados es derivable de las
+  matrículas activas; se conserva como
+  contador por RNF-15
+end note
+
+note bottom of Corte
+  {RN-10} los porcentajes de los cortes
+  de un curso suman 100 %
+end note
+
+note bottom of Calificacion
+  {RN-09} 0.0 <= valor <= 5.0
+  {RN-11} definitiva = suma(valor x porcentaje)
+  {RN-18} toda modificación se audita
+end note
+@enduml

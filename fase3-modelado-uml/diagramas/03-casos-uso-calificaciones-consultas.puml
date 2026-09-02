@@ -1,0 +1,52 @@
+@startuml 03-casos-uso-calificaciones-consultas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Docente" as DOC
+actor "Estudiante" as EST
+
+package "M5 · Calificaciones" {
+  usecase "CU-17\nRegistrar calificaciones" as CU17
+  usecase "CU-18\nModificar calificación" as CU18
+  usecase "CU-19\nCalcular nota definitiva" as CU19
+}
+
+package "M6 · Consultas del estudiante" {
+  usecase "CU-20\nConsultar mis cursos" as CU20
+  usecase "CU-21\nConsultar mis calificaciones" as CU21
+  usecase "CU-22\nConsultar mi promedio" as CU22
+}
+
+DOC --> CU17
+DOC --> CU18
+EST --> CU20
+EST --> CU21
+EST --> CU22
+
+CU17 ..> CU19 : <<include>>
+CU18 ..> CU19 : <<include>>
+CU21 ..> CU19 : <<include>>
+CU22 ..> CU19 : <<include>>
+@enduml

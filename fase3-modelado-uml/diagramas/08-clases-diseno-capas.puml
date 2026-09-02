@@ -1,0 +1,92 @@
+@startuml 08-clases-diseno-capas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontSize 11
+}
+skinparam interface {
+  BorderColor #548235
+  BackgroundColor #E2F0D9
+  FontColor #375623
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+package "Presentación" #F7FAFE {
+  class ControladorMatricula {
+    + registrarMatricula(dto) : Respuesta
+    + cancelarMatricula(id) : Respuesta
+  }
+  class ControladorCalificaciones {
+    + mostrarListaClase(idCurso) : Vista
+    + guardarNotas(dto) : Respuesta
+  }
+}
+
+package "Lógica de negocio" #F2F6FC {
+  class ServicioMatricula {
+    + matricular(idEst, idCurso, u) : Matricula
+    + cancelar(idMatricula, u) : void
+    - validarReglas(e, c, p) : void
+  }
+  class ServicioCalificaciones {
+    + registrar(idCurso, corte, notas, doc) : void
+    + modificar(idCal, valor, u) : void
+  }
+  class ServicioAutorizacion {
+    + verificar(u : Usuario, op : String) : void
+  }
+  class CalculadoraNotas {
+    + definitiva(m : Matricula) : BigDecimal
+    + promedioPonderado(ms) : BigDecimal
+  }
+}
+
+package "Acceso a datos" #FAFAFA {
+  interface RepositorioMatricula {
+    + guardar(m) : Matricula
+    + existeActiva(idEst, idCurso, idPer) : boolean
+    + contarActivas(idEst, idPer) : int
+  }
+  interface RepositorioCurso {
+    + buscarPorId(id) : Curso
+    + actualizar(c) : void
+  }
+  class RepositorioMatriculaSQL
+  class RepositorioCursoSQL
+}
+
+ControladorMatricula --> ServicioMatricula
+ControladorCalificaciones --> ServicioCalificaciones
+ServicioMatricula ..> ServicioAutorizacion
+ServicioCalificaciones ..> ServicioAutorizacion
+ServicioCalificaciones --> CalculadoraNotas
+ServicioMatricula --> RepositorioMatricula
+ServicioMatricula --> RepositorioCurso
+RepositorioMatricula <|.. RepositorioMatriculaSQL
+RepositorioCurso <|.. RepositorioCursoSQL
+
+note bottom of RepositorioMatriculaSQL
+  ADR-005: la capa de negocio depende de la interfaz,
+  no de la implementación. Cambiar de motor (RNF-28)
+  solo afecta a las clases con sufijo SQL.
+end note
+@enduml

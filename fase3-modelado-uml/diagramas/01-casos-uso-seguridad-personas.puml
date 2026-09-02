@@ -1,0 +1,60 @@
+@startuml 01-casos-uso-seguridad-personas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+
+left to right direction
+
+actor "Usuario" as USR
+actor "Administrador\nacadémico" as ADM
+
+USR <|-- ADM
+
+package "M1 · Seguridad y control de acceso" {
+  usecase "CU-01\nIniciar sesión" as CU01
+  usecase "CU-02\nAdministrar cuentas de usuario" as CU02
+  usecase "CU-03\nCambiar contraseña" as CU03
+  usecase "CU-23\nAutorizar operación" as CU23
+}
+
+package "M2 · Gestión de personas" {
+  usecase "CU-04\nRegistrar estudiante" as CU04
+  usecase "CU-05\nConsultar estudiantes" as CU05
+  usecase "CU-06\nActualizar estudiante" as CU06
+  usecase "CU-07\nInactivar estudiante" as CU07
+  usecase "CU-08\nRegistrar docente" as CU08
+  usecase "CU-09\nActualizar o inactivar docente" as CU09
+}
+
+USR --> CU01
+USR --> CU03
+ADM --> CU02
+ADM --> CU04
+ADM --> CU05
+ADM --> CU06
+ADM --> CU07
+ADM --> CU08
+ADM --> CU09
+
+CU02 ..> CU23 : <<include>>
+CU04 ..> CU23 : <<include>>
+@enduml

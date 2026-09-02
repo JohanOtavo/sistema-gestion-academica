@@ -1,0 +1,79 @@
+@startuml 04-casos-uso-relaciones
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam ActorBorderColor #1F3864
+skinparam ActorBackgroundColor #DCE6F1
+skinparam packageStyle rectangle
+skinparam package {
+  BorderColor #2E75B6
+  BackgroundColor #F7FAFE
+  FontColor #1F3864
+  FontStyle bold
+}
+skinparam usecase {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+skinparam usecase<<incluido>> {
+  BackgroundColor #E2F0D9
+  BorderColor #548235
+}
+skinparam usecase<<extension>> {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+hide stereotype
+
+left to right direction
+
+actor "Administrador" as ADM
+actor "Docente" as DOC
+actor "Estudiante" as EST
+
+package "Casos de uso base" {
+  usecase "CU-14\nMatricular estudiante" as CU14
+  usecase "CU-17\nRegistrar calificaciones" as CU17
+  usecase "CU-18\nModificar calificación" as CU18
+  usecase "CU-21\nConsultar mis notas" as CU21
+}
+
+package "Casos de uso incluidos" {
+  usecase "CU-23\nAutorizar operación" <<incluido>> as CU23
+  usecase "CU-24\nValidar reglas de matrícula" <<incluido>> as CU24
+  usecase "CU-19\nCalcular nota definitiva" <<incluido>> as CU19
+  usecase "CU-25\nRegistrar auditoría" <<incluido>> as CU25
+}
+
+package "Extensiones" {
+  usecase "CU-26\nInformar tope de cursos" <<extension>> as CU26
+  usecase "CU-27\nAdvertir riesgo académico" <<extension>> as CU27
+}
+
+ADM --> CU14
+DOC --> CU17
+DOC --> CU18
+EST --> CU21
+
+CU14 ..> CU23 : <<include>>
+CU14 ..> CU24 : <<include>>
+CU17 ..> CU23 : <<include>>
+CU17 ..> CU19 : <<include>>
+CU18 ..> CU19 : <<include>>
+CU18 ..> CU25 : <<include>>
+CU21 ..> CU19 : <<include>>
+
+CU26 ..> CU14 : <<extend>>\n[7 matrículas activas]
+CU27 ..> CU21 : <<extend>>\n[promedio < 3.0]
+
+note bottom of CU24
+  Agrupa las cinco validaciones RN-04, RN-05,
+  RN-06, RN-07 y RN-14 (RF-31 a RF-35).
+end note
+@enduml
