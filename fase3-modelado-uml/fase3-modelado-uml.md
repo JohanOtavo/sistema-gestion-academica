@@ -5,7 +5,7 @@
 |---|---|
 | **Proyecto** | Sistema de Gestión Académica (SGA) |
 | **Grupo** | 6 |
-| **Integrantes** | Jannier Johan Otavo · Sergio David Vargas |
+| **Integrante** | Jannier Johan Otavo |
 | **Fase** | 3 de 6 — Diagramas UML |
 | **Entregable** | Modelo UML: casos de uso, clases, secuencia, actividades, estados, componentes, paquetes, objetos y despliegue |
 | **Versión** | 1.0 |
@@ -49,7 +49,7 @@ Con las reglas de negocio hicimos lo contrario: en vez de dejarlas en el texto, 
 
 ### 1.3 Notación y herramienta
 
-Usamos UML 2.5.1 (Object Management Group, 2017), la versión vigente del estándar. Los diagramas están escritos en PlantUML y se versionan como texto junto a su imagen, según la decisión ADR-006 del repositorio. Cualquiera de los dos integrantes puede modificarlos sin depender de una herramienta gráfica instalada, y el control de versiones muestra exactamente qué cambió en cada revisión.
+Usamos UML 2.5.1 (Object Management Group, 2017), la versión vigente del estándar. Los diagramas están escritos en PlantUML y se versionan como texto junto a su imagen, según la decisión ADR-006 del repositorio. Se modifican sin depender de una herramienta gráfica instalada, y el control de versiones muestra exactamente qué cambió en cada revisión.
 
 
 ### 1.4 Cómo leer este documento

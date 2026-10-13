@@ -1,0 +1,167 @@
+@startuml 03-modelo-fisico
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Consolas"
+skinparam defaultFontSize 10
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 10
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontColor #404040
+  AttributeFontSize 10
+}
+hide circle
+
+title Modelo fisico para PostgreSQL 16
+
+entity persona {
+  id_persona        BIGINT IDENTITY  <<PK>>
+  --
+  tipo_documento    VARCHAR(2)   NOT NULL
+  numero_documento  VARCHAR(20)  NOT NULL <<UQ>>
+  nombres           VARCHAR(60)  NOT NULL
+  apellidos         VARCHAR(60)  NOT NULL
+  correo            VARCHAR(120) NOT NULL <<UQ>>
+  telefono          VARCHAR(20)
+  estado            VARCHAR(10)  NOT NULL
+  fecha_registro    DATE         NOT NULL
+}
+
+entity estudiante {
+  id_persona         BIGINT      <<PK, FK>>
+  --
+  codigo_estudiante  VARCHAR(15) NOT NULL <<UQ>>
+  fecha_nacimiento   DATE        NOT NULL
+  fecha_ingreso      DATE        NOT NULL
+}
+
+entity docente {
+  id_persona         BIGINT      <<PK, FK>>
+  --
+  codigo_docente     VARCHAR(15) NOT NULL <<UQ>>
+  area_conocimiento  VARCHAR(60) NOT NULL
+  fecha_vinculacion  DATE        NOT NULL
+}
+
+entity usuario {
+  id_usuario               BIGINT IDENTITY <<PK>>
+  --
+  id_persona               BIGINT       NOT NULL <<FK, UQ>>
+  correo                   VARCHAR(120) NOT NULL <<UQ>>
+  hash_contrasena          CHAR(64)     NOT NULL
+  sal                      CHAR(32)     NOT NULL
+  rol                      VARCHAR(15)  NOT NULL
+  estado                   VARCHAR(10)  NOT NULL
+  debe_cambiar_contrasena  BOOLEAN      NOT NULL
+  ultimo_acceso            TIMESTAMP
+  fecha_creacion           TIMESTAMP    NOT NULL
+}
+
+entity periodo_academico {
+  id_periodo    BIGINT IDENTITY <<PK>>
+  --
+  codigo        VARCHAR(10) NOT NULL <<UQ>>
+  nombre        VARCHAR(60) NOT NULL
+  fecha_inicio  DATE        NOT NULL
+  fecha_fin     DATE        NOT NULL
+  estado        VARCHAR(10) NOT NULL
+  .. uq_periodo_unico_activo: indice unico parcial ..
+}
+
+entity curso {
+  id_curso      BIGINT IDENTITY <<PK>>
+  --
+  id_periodo    BIGINT      NOT NULL <<FK>>
+  id_docente    BIGINT               <<FK>>
+  codigo        VARCHAR(15) NOT NULL
+  nombre        VARCHAR(80) NOT NULL
+  creditos      SMALLINT    NOT NULL
+  cupo_maximo   SMALLINT    NOT NULL
+  matriculados  SMALLINT    NOT NULL
+  estado        VARCHAR(12) NOT NULL
+  .. UQ (id_periodo, codigo) ..
+  .. CHECK matriculados BETWEEN 0 AND cupo_maximo ..
+}
+
+entity corte {
+  id_corte     BIGINT IDENTITY <<PK>>
+  --
+  id_curso     BIGINT       NOT NULL <<FK>>
+  numero       SMALLINT     NOT NULL
+  porcentaje   NUMERIC(5,2) NOT NULL
+  descripcion  VARCHAR(60)
+  .. UQ (id_curso, numero) ..
+}
+
+entity matricula {
+  id_matricula            BIGINT IDENTITY <<PK>>
+  --
+  id_estudiante           BIGINT       NOT NULL <<FK>>
+  id_curso                BIGINT       NOT NULL <<FK>>
+  fecha_matricula         TIMESTAMP    NOT NULL
+  estado                  VARCHAR(12)  NOT NULL
+  id_usuario_registro     BIGINT       NOT NULL <<FK>>
+  fecha_cancelacion       TIMESTAMP
+  id_usuario_cancelacion  BIGINT                <<FK>>
+  motivo_cancelacion      VARCHAR(120)
+  nota_definitiva         NUMERIC(2,1)
+  aprobada                BOOLEAN
+  .. uq_matricula_activa: indice unico parcial ..
+}
+
+entity calificacion {
+  id_calificacion      BIGINT IDENTITY <<PK>>
+  --
+  id_matricula         BIGINT       NOT NULL <<FK>>
+  id_corte             BIGINT       NOT NULL <<FK>>
+  valor                NUMERIC(2,1) NOT NULL
+  estado               VARCHAR(12)  NOT NULL
+  id_usuario_registro  BIGINT       NOT NULL <<FK>>
+  fecha_registro       TIMESTAMP    NOT NULL
+  fecha_modificacion   TIMESTAMP
+  .. UQ (id_matricula, id_corte) ..
+  .. CHECK valor BETWEEN 0.0 AND 5.0 ..
+}
+
+entity registro_auditoria {
+  id_registro     BIGINT IDENTITY <<PK>>
+  --
+  entidad         VARCHAR(30)  NOT NULL
+  id_entidad      BIGINT       NOT NULL
+  operacion       VARCHAR(15)  NOT NULL
+  valor_anterior  VARCHAR(255)
+  valor_nuevo     VARCHAR(255)
+  id_usuario      BIGINT                <<FK>>
+  fecha_hora      TIMESTAMP    NOT NULL
+  .. solo INSERT: trg_auditoria_inmutable ..
+}
+
+entity evento_seguridad {
+  id_evento       BIGINT IDENTITY <<PK>>
+  --
+  tipo            VARCHAR(25)  NOT NULL
+  correo_intento  VARCHAR(120)
+  id_usuario      BIGINT                <<FK>>
+  operacion       VARCHAR(60)
+  direccion_ip    VARCHAR(45)
+  fecha_hora      TIMESTAMP    NOT NULL
+}
+
+persona ||--o| estudiante
+persona ||--o| docente
+persona ||--|| usuario
+periodo_academico ||--o{ curso
+docente |o--o{ curso
+curso ||--|{ corte
+estudiante ||--o{ matricula
+curso ||--o{ matricula
+matricula ||--o{ calificacion
+corte ||--o{ calificacion
+usuario ||--o{ registro_auditoria
+usuario |o--o{ evento_seguridad
+@enduml

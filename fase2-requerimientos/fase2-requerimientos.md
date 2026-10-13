@@ -5,7 +5,7 @@
 |---|---|
 | **Proyecto** | Sistema de Gestión Académica (SGA) |
 | **Grupo** | 6 |
-| **Integrantes** | Jannier Johan Otavo · Sergio David Vargas |
+| **Integrante** | Jannier Johan Otavo |
 | **Fase** | 2 de 6 — Requerimientos |
 | **Entregable** | Documento de requerimientos funcionales, no funcionales, reglas de negocio y matriz de trazabilidad |
 | **Versión** | 1.0 |
@@ -1311,7 +1311,7 @@ Las restricciones son condiciones que no podemos cambiar y que nos reducen las a
 | RE-03 | Técnica | El sistema debe operar sobre la infraestructura disponible en la institución, sin requerir servidores dedicados de alto costo. |
 | RE-04 | De proyecto | El trabajo se desarrolla en seis fases con entregables definidos por la metodología del curso. |
 | RE-05 | De proyecto | El equipo dispone de cuatro sprints de dos semanas para construir el producto mínimo viable. |
-| RE-06 | De proyecto | El equipo está conformado por dos integrantes, lo que limita la capacidad por sprint. |
+| RE-06 | De proyecto | El desarrollo lo realiza una sola persona, lo que limita la capacidad por sprint y elimina la revisión por pares. |
 | RE-07 | De negocio | El sistema no administrará información financiera ni procesos de pago. |
 | RE-08 | De negocio | La escala de calificación y el umbral de aprobación son los definidos por el reglamento estudiantil y no son configurables en esta versión. |
 | RE-09 | Normativa | El tratamiento de datos personales de menores de edad debe ceñirse a la normativa de protección de datos aplicable. |

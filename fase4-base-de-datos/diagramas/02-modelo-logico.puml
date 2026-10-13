@@ -1,0 +1,165 @@
+@startuml 02-modelo-logico
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 10
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontColor #404040
+  AttributeFontSize 10
+}
+hide circle
+
+title Modelo logico relacional del SGA
+
+entity persona {
+  * id_persona : PK
+  --
+  * numero_documento : UQ
+  * tipo_documento
+  * nombres
+  * apellidos
+  * correo : UQ
+  telefono
+  * estado
+  * fecha_registro
+}
+
+entity estudiante {
+  * id_persona : PK, FK
+  --
+  * codigo_estudiante : UQ
+  * fecha_nacimiento
+  * fecha_ingreso
+}
+
+entity docente {
+  * id_persona : PK, FK
+  --
+  * codigo_docente : UQ
+  * area_conocimiento
+  * fecha_vinculacion
+}
+
+entity usuario {
+  * id_usuario : PK
+  --
+  * id_persona : FK, UQ
+  * correo : UQ
+  * hash_contrasena
+  * sal
+  * rol
+  * estado
+  * debe_cambiar_contrasena
+  ultimo_acceso
+  * fecha_creacion
+}
+
+entity periodo_academico {
+  * id_periodo : PK
+  --
+  * codigo : UQ
+  * nombre
+  * fecha_inicio
+  * fecha_fin
+  * estado
+}
+
+entity curso {
+  * id_curso : PK
+  --
+  * id_periodo : FK
+  id_docente : FK
+  * codigo
+  * nombre
+  * creditos
+  * cupo_maximo
+  * matriculados
+  * estado
+  .. UQ (id_periodo, codigo) ..
+}
+
+entity corte {
+  * id_corte : PK
+  --
+  * id_curso : FK
+  * numero
+  * porcentaje
+  descripcion
+  .. UQ (id_curso, numero) ..
+}
+
+entity matricula {
+  * id_matricula : PK
+  --
+  * id_estudiante : FK
+  * id_curso : FK
+  * fecha_matricula
+  * estado
+  * id_usuario_registro : FK
+  fecha_cancelacion
+  id_usuario_cancelacion : FK
+  motivo_cancelacion
+  nota_definitiva
+  aprobada
+  .. UQ parcial (id_estudiante, id_curso) solo si estado es ACTIVA ..
+}
+
+entity calificacion {
+  * id_calificacion : PK
+  --
+  * id_matricula : FK
+  * id_corte : FK
+  * valor
+  * estado
+  * id_usuario_registro : FK
+  * fecha_registro
+  fecha_modificacion
+  .. UQ (id_matricula, id_corte) ..
+}
+
+entity registro_auditoria {
+  * id_registro : PK
+  --
+  * entidad
+  * id_entidad
+  * operacion
+  valor_anterior
+  valor_nuevo
+  id_usuario : FK
+  * fecha_hora
+}
+
+entity evento_seguridad {
+  * id_evento : PK
+  --
+  * tipo
+  correo_intento
+  id_usuario : FK
+  operacion
+  direccion_ip
+  * fecha_hora
+}
+
+persona ||--o| estudiante
+persona ||--o| docente
+persona ||--|| usuario
+periodo_academico ||--o{ curso
+docente |o--o{ curso
+curso ||--|{ corte
+estudiante ||--o{ matricula
+curso ||--o{ matricula
+matricula ||--o{ calificacion
+corte ||--o{ calificacion
+usuario ||--o{ matricula
+usuario ||--o{ calificacion
+usuario ||--o{ registro_auditoria
+usuario |o--o{ evento_seguridad
+@enduml

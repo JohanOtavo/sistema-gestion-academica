@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada
 - **Fecha:** 2026-08-20
-- **Decidido por:** Jannier Johan Otavo, Sergio David Vargas
+- **Decidido por:** Jannier Johan Otavo
 - **Relacionado con:** RNF-17, RNF-22, RN-21, RF-01, RF-04, RF-08
 
 ## Contexto
@@ -13,7 +13,7 @@ asigna el administrador (RF-04), de modo que muchas personas empezarán con una 
 eligieron.
 
 Si las contraseñas se guardaran en texto plano, cualquier acceso a la base de datos —incluido el de
-un integrante del equipo durante el desarrollo— expondría las credenciales reales de personas que,
+el propio desarrollador durante la construcción— expondría las credenciales reales de personas que,
 además, probablemente reutilizan esa contraseña en otros servicios.
 
 ## Decisión

@@ -1,0 +1,67 @@
+@startuml 06-integridad-referencial
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowFontSize 10
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+hide circle
+hide members
+
+title Acciones referenciales del esquema
+
+entity persona
+entity estudiante
+entity docente
+entity usuario
+entity periodo_academico
+entity curso
+entity corte
+entity matricula
+entity calificacion
+entity registro_auditoria
+
+persona -[#C00000]-> estudiante : RESTRICT
+persona -[#C00000]-> docente : RESTRICT
+persona -[#C00000]-> usuario : RESTRICT
+periodo_academico -[#C00000]-> curso : RESTRICT
+docente -[#C00000]-> curso : RESTRICT
+curso -[#00B050]-> corte : CASCADE
+estudiante -[#C00000]-> matricula : RESTRICT
+curso -[#C00000]-> matricula : RESTRICT
+matricula -[#00B050]-> calificacion : CASCADE
+corte -[#C00000]-> calificacion : RESTRICT
+usuario -[#C00000]-> registro_auditoria : RESTRICT
+
+note top of corte
+  En verde las dos composiciones del
+  modelo UML. El rombo relleno se
+  traduce como ON DELETE CASCADE: el
+  corte no existe sin su curso y la
+  calificacion no sobrevive a su
+  matricula.
+end note
+
+note bottom of matricula
+  En rojo las asociaciones, todas con
+  ON DELETE RESTRICT. Ninguna se
+  dispara en la practica, porque
+  trg_persona_no_borrar y
+  trg_curso_no_borrar prohiben el
+  borrado fisico antes de llegar a la
+  clave foranea (RN-15, ADR-004).
+  Todas las claves usan
+  ON UPDATE CASCADE.
+end note
+@enduml
