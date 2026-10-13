@@ -18,9 +18,14 @@ institución, sin servidores dedicados costosos (RE-03).
 
 ## Decisión
 
-Pendiente. La tomaremos aplicando estos criterios, en orden de peso:
+Pendiente **en lo que respecta al lenguaje y al marco de trabajo**. La parte de persistencia ya se
+resolvió: la Fase 4 necesitaba un script SQL ejecutable y por eso el motor quedó decidido en
+[ADR-009](ADR-009-motor-postgresql.md), que fija PostgreSQL 16. Lo que sigue abierto es el lenguaje
+del servidor y el marco de trabajo de la capa de presentación.
 
-1. **Dominio actual del equipo.** Somos dos personas con cuatro sprints; aprender un ecosistema
+La tomaremos aplicando estos criterios, en orden de peso:
+
+1. **Dominio actual de quien desarrolla.** Una sola persona con cuatro sprints; aprender un ecosistema
    nuevo consumiría el tiempo de construcción.
 2. **Soporte transaccional y de restricciones** en el acceso a datos, por ADR-002.
 3. **Facilidad de despliegue** sobre la infraestructura de la institución, por RE-03.
@@ -28,9 +33,13 @@ Pendiente. La tomaremos aplicando estos criterios, en orden de peso:
 
 ## Consecuencias
 
-Mientras la decisión siga pendiente, las fases 3 y 4 deben mantenerse independientes de la
-tecnología: el diagrama de clases y el modelo de datos se elaborarán en notación estándar, sin
-apoyarse en construcciones propias de un lenguaje o de un motor concreto.
+Mientras la decisión siga pendiente, las fases 3 y 4 deben mantenerse independientes del lenguaje:
+el diagrama de clases y el modelo de datos se elaboran en notación estándar, sin apoyarse en
+construcciones propias de un lenguaje de programación.
+
+El modelo de datos sí depende ya de un motor, por ADR-009. El acoplamiento se acotó a los
+disparadores en PL/pgSQL: las tablas, las claves y las restricciones se escribieron en SQL estándar
+precisamente para que la decisión del lenguaje del servidor siga siendo libre.
 
 ## Alternativas consideradas
 

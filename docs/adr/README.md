@@ -19,6 +19,8 @@ Registramos aquí solo las decisiones que cumplen dos condiciones: **son costosa
 | [ADR-006](ADR-006-diagramas-como-codigo.md) | Diagramas como código con PlantUML | Aceptada | Decisión del equipo |
 | [ADR-007](ADR-007-almacenamiento-de-contrasenas.md) | Contraseñas con función de resumen y sal, y canal cifrado | Aceptada | RNF-17, RNF-22 |
 | [ADR-008](ADR-008-stack-tecnologico.md) | Conjunto tecnológico de construcción | **Pendiente** | RE-03, Fase 6 |
+| [ADR-009](ADR-009-motor-postgresql.md) | PostgreSQL como motor de base de datos | Aceptada | ADR-002, RN-03, RN-04, RN-10 |
+| [ADR-010](ADR-010-mapeo-de-la-herencia.md) | Tabla por clase para la jerarquía Persona | Aceptada | RN-01, Fase 3 |
 
 ## Estados posibles
 
