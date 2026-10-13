@@ -3,7 +3,7 @@
 Trabajo integrador — **Grupo 6**. Sistema de información web para centralizar la gestión académica
 de una institución educativa: estudiantes, docentes, cursos, matrículas y calificaciones.
 
-**Integrantes:** Jannier Johan Otavo · Sergio David Vargas
+**Autor:** Jannier Johan Otavo
 
 ---
 
@@ -25,7 +25,7 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 | 1 | Épica y Stories | Épicas + historias de usuario | ✅ Completada |
 | 2 | Requerimientos | Documento de requerimientos | ✅ Completada |
 | 3 | Diagramas UML | Casos de uso, clases, secuencia, actividades | ✅ Completada |
-| 4 | Base de datos | Modelo ER/UML + script SQL | ⏳ Pendiente |
+| 4 | Base de datos | Modelo ER/UML + script SQL | ✅ Completada |
 | 5 | Mockup / Prototipo | Prototipo navegable | ⏳ Pendiente |
 | 6 | Programa funcional | MVP funcional | ⏳ Pendiente |
 
@@ -41,8 +41,8 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 | [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) | Plantillas de historia de usuario, tarea técnica y reporte de error |
 
 Los commits siguen **Conventional Commits** en español: `tipo(alcance): descripción`. Toda rama
-entra a `main` por pull request revisado por el otro integrante, que es como cumplimos el criterio
-de la Definición de Terminado.
+entra a `main` por pull request con su autorrevisión escrita contra la lista de verificación, que
+es como cumplimos el criterio de la Definición de Terminado.
 
 ---
 
@@ -161,6 +161,69 @@ de la Definición de Terminado.
 | Implementación | 3 | Cómo se organiza e instala |
 
 ![Proceso académico completo](fase3-modelado-uml/diagramas/13-actividad-proceso-academico.png)
+
+---
+
+## Fase 4 — Diseño de la base de datos
+
+📁 [`fase4-base-de-datos/`](fase4-base-de-datos/)
+
+| Archivo | Descripción |
+|---|---|
+| [`Fase4-Base-de-Datos-SGA-APA7.docx`](fase4-base-de-datos/Fase4-Base-de-Datos-SGA-APA7.docx) | Documento formal en normas APA 7.ª edición (24 tablas, 9 figuras, referencias) |
+| [`fase4-base-de-datos.md`](fase4-base-de-datos/fase4-base-de-datos.md) | Misma información en Markdown, con los diagramas renderizados |
+| [`sql/`](fase4-base-de-datos/sql/) | 5 scripts SQL: esquema, reglas de negocio, índices y vistas, datos de prueba y verificación |
+| [`diagramas/`](fase4-base-de-datos/diagramas/) | 9 diagramas en PlantUML (fuentes `.puml` y renders `.png`) |
+
+### Contenido de la fase
+
+- **Modelo conceptual** con 11 entidades, sus dominios y sus cardinalidades
+- **Normalización** desde la planilla de cálculo actual hasta la tercera forma normal, con las dos desnormalizaciones deliberadas justificadas
+- **Modelo lógico**: estrategia de herencia, claves subrogadas y política de nulos
+- **Modelo físico** para PostgreSQL 16: **11 tablas, 14 índices, 9 disparadores, 7 funciones y 8 vistas**
+- Las **27 reglas de negocio** ubicadas una por una: 23 impuestas por el motor y 4 en la capa de negocio
+- **Script SQL completo** con datos de prueba y **22 comprobaciones** de las reglas, **ejecutadas contra PostgreSQL 16.10** con las 22 en verde
+- Matrices de trazabilidad clase-tabla y módulo-objeto, y verificación de consistencia en 6 condiciones
+- Dos decisiones nuevas de arquitectura: [ADR-009](docs/adr/ADR-009-motor-postgresql.md) y [ADR-010](docs/adr/ADR-010-mapeo-de-la-herencia.md)
+
+### Los cinco scripts
+
+| Archivo | Contenido |
+|---|---|
+| [`01-esquema.sql`](fase4-base-de-datos/sql/01-esquema.sql) | Esquema, tablas, claves y restricciones declarativas |
+| [`02-reglas-de-negocio.sql`](fase4-base-de-datos/sql/02-reglas-de-negocio.sql) | Funciones de cálculo y disparadores de las reglas |
+| [`03-indices-y-vistas.sql`](fase4-base-de-datos/sql/03-indices-y-vistas.sql) | Índices de rendimiento y vistas de consulta |
+| [`04-datos-de-prueba.sql`](fase4-base-de-datos/sql/04-datos-de-prueba.sql) | Juego de datos ficticios con todos los estados del sistema |
+| [`05-verificacion.sql`](fase4-base-de-datos/sql/05-verificacion.sql) | 22 pruebas que confirman que las reglas se cumplen |
+
+### Crear la base de datos
+
+Requiere PostgreSQL 16 o superior. Desde la carpeta `fase4-base-de-datos/sql/`:
+
+```bash
+createdb -E UTF8 sga
+psql -d sga -f 01-esquema.sql
+psql -d sga -f 02-reglas-de-negocio.sql
+psql -d sga -f 03-indices-y-vistas.sql
+psql -d sga -f 04-datos-de-prueba.sql
+psql -d sga -f 05-verificacion.sql
+```
+
+### Diagramas de la fase
+
+| # | Diagrama | Fuente |
+|---|---|---|
+| 1 | Modelo conceptual de datos | [`01-modelo-conceptual.puml`](fase4-base-de-datos/diagramas/01-modelo-conceptual.puml) |
+| 2 | Modelo lógico relacional | [`02-modelo-logico.puml`](fase4-base-de-datos/diagramas/02-modelo-logico.puml) |
+| 3 | Modelo físico para PostgreSQL 16 | [`03-modelo-fisico.puml`](fase4-base-de-datos/diagramas/03-modelo-fisico.puml) |
+| 4 | Estrategias de mapeo de la herencia | [`04-estrategias-herencia.puml`](fase4-base-de-datos/diagramas/04-estrategias-herencia.puml) |
+| 5 | Proceso de normalización | [`05-normalizacion.puml`](fase4-base-de-datos/diagramas/05-normalizacion.puml) |
+| 6 | Acciones de integridad referencial | [`06-integridad-referencial.puml`](fase4-base-de-datos/diagramas/06-integridad-referencial.puml) |
+| 7 | Dónde se hace cumplir cada regla | [`07-reglas-en-el-esquema.puml`](fase4-base-de-datos/diagramas/07-reglas-en-el-esquema.puml) |
+| 8 | Transacción de la matrícula | [`08-transaccion-matricula.puml`](fase4-base-de-datos/diagramas/08-transaccion-matricula.puml) |
+| 9 | De las tablas a los casos de uso | [`09-vistas-y-consultas.puml`](fase4-base-de-datos/diagramas/09-vistas-y-consultas.puml) |
+
+![Modelo físico para PostgreSQL 16](fase4-base-de-datos/diagramas/03-modelo-fisico.png)
 
 ---
 
