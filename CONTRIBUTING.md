@@ -1,8 +1,9 @@
 # Cómo trabajamos en este repositorio
 
-Somos un equipo de dos: **Jannier Johan Otavo** y **Sergio David Vargas**. Este documento fija los
-acuerdos que seguimos para que el trabajo de ambos se integre sin pisarse y para que el historial
-del repositorio cuente lo que pasó en el proyecto.
+El proyecto lo desarrolla una sola persona: **Jannier Johan Otavo**. Este documento fija los
+acuerdos de trabajo para que el historial del repositorio cuente lo que pasó en el proyecto y para
+que cualquiera que llegue después —un revisor, un instructor o yo mismo dentro de tres meses— pueda
+reconstruir por qué cada cosa quedó como quedó.
 
 ---
 
@@ -18,6 +19,8 @@ sistema-gestion-academica/
 │       └── velocidad.md          Registro de velocidad por sprint
 ├── fase1-epicas-historias/       Entregable de la Fase 1
 ├── fase2-requerimientos/         Entregable de la Fase 2
+├── fase3-modelado-uml/           Entregable de la Fase 3
+├── fase4-base-de-datos/          Entregable de la Fase 4, con su carpeta sql/
 └── .github/
     ├── ISSUE_TEMPLATE/           Plantillas de historias, tareas y errores
     └── pull_request_template.md
@@ -98,17 +101,22 @@ git push -u origin feat/HU-15-matricular
 
 ## 4. Pull requests
 
-Toda rama entra a `main` por pull request, nunca por merge directo. Esto no es burocracia: es lo
-que hace cumplible el criterio de la Definición de Terminado que dice *"revisado por al menos otro
-integrante del equipo"*.
+Toda rama entra a `main` por pull request, nunca por merge directo. Siendo una sola persona no hay
+revisión por pares, y conviene decirlo sin adornos: **se perdió un control real**. El pull request
+se mantiene porque lo que sí conserva es valioso: obliga a leer el diff completo antes de integrar,
+deja la revisión escrita en el historial y permite que un instructor o un revisor externo comente
+sobre el cambio.
 
-Quien revisa verifica tres cosas:
+La revisión es una autorrevisión contra la lista de verificación de la plantilla, hecha **en una
+sesión aparte de la de escritura**, nunca a continuación. Verifica tres cosas:
 
 1. Que los criterios de aceptación de la historia se cumplan.
 2. Que las validaciones de negocio estén aplicadas y no solo el camino feliz.
 3. Que los mensajes de error sean claros y estén en español.
 
-El PR se abre con la plantilla del repositorio, que ya trae la lista de verificación.
+Lo que compensa en parte la ausencia del segundo par de ojos son las pruebas automatizadas
+(RNF-26) y las restricciones declaradas en la base de datos: una regla impuesta por el motor no
+depende de que alguien la recuerde en la revisión.
 
 ---
 
@@ -144,12 +152,12 @@ Cuando cambies un diagrama, commitea el `.puml` y el `.png` juntos en el mismo c
 
 ## 7. Documentos de las fases
 
-Los archivos `.docx` son binarios: Git no puede fusionarlos. Si dos personas editan el mismo Word al
-tiempo, uno de los dos pierde su trabajo y el conflicto no se puede resolver línea por línea.
+Los archivos `.docx` son binarios: Git no puede fusionarlos. Un conflicto en un Word no se resuelve
+línea por línea, se resuelve perdiendo una de las dos versiones. El riesgo sigue existiendo aunque
+trabaje una sola persona, porque basta editar el mismo documento en dos equipos distintos.
 
 Para evitarlo:
 
-- Solo una persona edita un `.docx` a la vez. Avisar antes de empezar.
 - Hacer `git pull` inmediatamente antes de abrir el documento en Word.
 - Commitear y subir apenas se termine la sesión de edición, sin dejarlo abierto días.
 - Al actualizar la tabla de contenido con `F9`, hacerlo justo antes del commit final.

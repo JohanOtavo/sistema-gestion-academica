@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada
 - **Fecha:** 2026-08-20
-- **Decidido por:** Jannier Johan Otavo, Sergio David Vargas
+- **Decidido por:** Jannier Johan Otavo
 - **Relacionado con:** Decisión del equipo sobre la documentación de las seis fases
 
 ## Contexto
@@ -22,7 +22,7 @@ ambos se commitean juntos. Los `.png` nunca se editan a mano.
 
 ## Consecuencias
 
-Se vuelve más fácil: ver en un diff qué cambió exactamente en un diagrama; que cualquiera de los dos
+Se vuelve más fácil: ver en un diff qué cambió exactamente en un diagrama; que quien retome el proyecto
 lo modifique sin depender de una herramienta instalada ni de una cuenta; y regenerar todos los
 diagramas de una fase con un solo comando cuando se ajusta el estilo.
 

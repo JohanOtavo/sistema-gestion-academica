@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada
 - **Fecha:** 2026-08-20
-- **Decidido por:** Jannier Johan Otavo, Sergio David Vargas
+- **Decidido por:** Jannier Johan Otavo
 - **Relacionado con:** RE-02, RF-30, RF-36, RNF-15
 
 ## Contexto

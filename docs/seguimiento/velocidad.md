@@ -20,7 +20,29 @@ contrastar el plan contra la realidad; con dos o tres, se puede proyectar.
 - No comparamos nuestra velocidad con la de ningún otro equipo. Los puntos son una unidad interna:
   fuera de este equipo no significan nada.
 
-## Plan inicial
+## Replanificación por el cambio de capacidad
+
+> **Vigente desde octubre de 2026.** El plan original se dimensionó para dos personas. El proyecto
+> pasó a un solo integrante (RE-06), de modo que **la capacidad por sprint se reduce a la mitad** y
+> la distribución de abajo dejó de ser alcanzable tal como está.
+>
+> El propio registro ya advertía que con 27 puntos de velocidad los 126 del producto mínimo viable
+> necesitaban cinco sprints en lugar de cuatro. Con la mitad de capacidad la advertencia deja de ser
+> un riesgo y pasa a ser un hecho: **126 puntos no caben en cuatro sprints de una sola persona.**
+>
+> Las dos salidas siguen siendo las mismas y ahora hay que tomar ambas, no una:
+>
+> 1. **Recortar alcance.** Mover HU-05 (3), HU-09 (3) y HU-25 (5) a la versión 2 baja el MVP a
+>    115 puntos.
+> 2. **Ampliar el calendario.** Con una velocidad estimada de 14 puntos por sprint, 115 puntos son
+>    ocho sprints.
+>
+> La decisión entre recortar más alcance o ampliar el calendario es de la coordinación académica.
+> Lo que me corresponde es entregar el dato antes del Sprint 1, no en la semana del cierre. Mientras
+> la decisión no se tome, el plan de abajo se conserva como referencia histórica de lo que se
+> comprometió y con qué supuestos.
+
+## Plan inicial (dimensionado para dos personas)
 
 Distribución de los 126 puntos del producto mínimo viable, según la Fase 1:
 
@@ -76,7 +98,6 @@ nuestra; lo que nos corresponde es darle el dato a tiempo.
 
 ## Qué no es la velocidad
 
-No es una medida de productividad ni sirve para comparar el rendimiento de los dos integrantes. Un
-equipo que quiera subir su velocidad solo tiene que inflar sus estimaciones, y con eso el número
-sube sin que se entregue nada más. Por eso el número solo lo usamos para planear, nunca para
-evaluarnos.
+No es una medida de productividad. Quien quiera subir su velocidad solo tiene que inflar sus
+estimaciones, y con eso el número sube sin que se entregue nada más. Por eso el número solo se usa
+para planear, nunca para evaluar a quien desarrolla.

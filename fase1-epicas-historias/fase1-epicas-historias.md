@@ -5,7 +5,7 @@
 |---|---|
 | **Proyecto** | Sistema de Gestión Académica (SGA) |
 | **Grupo** | 6 |
-| **Integrantes** | Jannier Johan Otavo · Sergio David Vargas |
+| **Integrante** | Jannier Johan Otavo |
 | **Fase** | 1 de 6 — Épica y Stories |
 | **Entregable** | Épicas + Historias de usuario con criterios de aceptación y priorización |
 | **Versión** | 1.0 |
@@ -1249,12 +1249,12 @@ Al terminar el sprint 4 este recorrido debe funcionar completo:
 - [ ] Está estimada por el equipo y no supera los 13 SP (si los supera, se divide).
 - [ ] Tiene identificadas sus dependencias y estas ya están resueltas o planificadas antes.
 - [ ] Referencia las reglas de negocio que la condicionan.
-- [ ] El equipo comprende la historia sin necesidad de consultar a una sola persona.
+- [ ] La historia se entiende sin consultar a su autor: lo escrito basta para implementarla.
 - [ ] Tiene definido qué se muestra al usuario cuando la operación falla.
 
 ### 12.2 Definition of Done (DoD) — una historia está terminada si:
 
-- [ ] El código está en la rama principal, revisado por al menos otro integrante del equipo.
+- [ ] El código está en la rama principal, integrado por un pull request con su autorrevisión escrita.
 - [ ] Todos los criterios de aceptación pasan la prueba manual documentada.
 - [ ] Se aplicaron las validaciones de negocio correspondientes, no solo el "camino feliz".
 - [ ] Los mensajes de error son claros y en español.

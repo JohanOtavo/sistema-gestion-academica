@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada
 - **Fecha:** 2026-08-20
-- **Decidido por:** Jannier Johan Otavo, Sergio David Vargas
+- **Decidido por:** Jannier Johan Otavo
 - **Relacionado con:** RNF-24, RNF-26, RNF-28
 
 ## Contexto
@@ -37,7 +37,7 @@ capa de presentación, el pull request no se aprueba.
 
 ## Alternativas consideradas
 
-**Todo en una sola capa.** Es más rápido al comienzo y por eso resulta tentador con dos personas y
+**Todo en una sola capa.** Es más rápido al comienzo y por eso resulta tentador con una sola persona y
 cuatro sprints. Descartada porque haría imposible cumplir RNF-26 y volvería a duplicar las reglas,
 que es la causa raíz del problema original del proyecto.
 

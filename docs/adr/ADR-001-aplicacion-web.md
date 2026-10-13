@@ -2,7 +2,7 @@
 
 - **Estado:** Aceptada
 - **Fecha:** 2026-08-20
-- **Decidido por:** Jannier Johan Otavo, Sergio David Vargas
+- **Decidido por:** Jannier Johan Otavo
 - **Relacionado con:** RE-01, RNF-08, RNF-11, RNF-13
 
 ## Contexto
@@ -12,7 +12,7 @@ académica y la secretaría trabajan desde equipos de escritorio durante toda la
 usan los equipos de la sala de profesores en momentos puntuales del período. Los estudiantes
 consultan sus notas casi siempre desde el celular.
 
-Somos dos personas y disponemos de cuatro sprints para construir el producto mínimo viable. La
+El desarrollo lo hace una sola persona en cuatro sprints para construir el producto mínimo viable. La
 institución no cuenta con presupuesto para publicar y mantener una aplicación en las tiendas de
 aplicaciones.
 
@@ -38,7 +38,7 @@ desplazamiento horizontal desde 360 píxeles de ancho.
 ## Alternativas consideradas
 
 **Aplicación móvil nativa para estudiantes más aplicación web para el personal.** Descartada porque
-duplica el esfuerzo de construcción y de mantenimiento, y nuestro equipo de dos personas no lo
+duplica el esfuerzo de construcción y de mantenimiento, y con una sola persona de desarrollo no lo
 sostiene en cuatro sprints.
 
 **Aplicación de escritorio instalable.** Descartada porque obligaría a instalar y actualizar el

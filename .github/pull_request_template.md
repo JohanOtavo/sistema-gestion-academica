@@ -22,4 +22,4 @@ Closes #
 - [ ] La funcionalidad respeta el control de acceso por rol
 - [ ] No se rompió nada de los sprints anteriores
 - [ ] Los diagramas modificados incluyen su `.puml` y su `.png` en el mismo commit
-- [ ] Revisado por el otro integrante del equipo
+- [ ] Autorrevisión del diff completo hecha en una sesión aparte de la de escritura
