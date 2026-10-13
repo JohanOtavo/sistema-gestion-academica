@@ -1,0 +1,74 @@
+@startuml 09-vistas-y-consultas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 10
+skinparam rectangle {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+skinparam package {
+  BorderColor #808080
+  BackgroundColor #F8F8F8
+  FontColor #404040
+}
+
+title De las tablas a los casos de uso: las ocho vistas
+
+package "Tablas" #F2F2F2 {
+  rectangle "persona\nestudiante\ndocente" as t1
+  rectangle "periodo_academico\ncurso\ncorte" as t2
+  rectangle "matricula\ncalificacion" as t3
+  rectangle "registro_auditoria" as t4
+}
+
+package "Vistas" #DEEBF7 {
+  rectangle "vw_estudiante" as v1
+  rectangle "vw_docente" as v2
+  rectangle "vw_oferta_academica" as v3
+  rectangle "vw_lista_clase" as v4
+  rectangle "vw_nota_definitiva" as v5
+  rectangle "vw_notas_estudiante" as v6
+  rectangle "vw_promedio_estudiante" as v7
+  rectangle "vw_auditoria_calificacion" as v8
+}
+
+package "Casos de uso de la Fase 3" #E2F0D9 {
+  rectangle "CU-05 consultar estudiantes" as c1
+  rectangle "CU-11 administrar cursos\nRF-53 ocupacion" as c2
+  rectangle "CU-16 consultar lista de clase" as c3
+  rectangle "CU-19 calcular definitiva" as c4
+  rectangle "CU-21 consultar mis notas" as c5
+  rectangle "CU-22 consultar mi promedio\nCU-27 riesgo academico" as c6
+  rectangle "CU-25 registrar auditoria" as c7
+}
+
+t1 --> v1
+t1 --> v2
+t2 --> v3
+t3 --> v4
+t3 --> v5
+t3 --> v6
+t3 --> v7
+t4 --> v8
+
+v1 --> c1
+v3 --> c2
+v4 --> c3
+v5 --> c4
+v6 --> c5
+v7 --> c6
+v8 --> c7
+
+note bottom of v6
+  vw_notas_estudiante une matricula con
+  corte por la izquierda: un corte sin
+  fila en calificacion se presenta como
+  PENDIENTE y nunca como 0.0.
+end note
+@enduml

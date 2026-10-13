@@ -1,0 +1,62 @@
+@startuml 07-reglas-en-el-esquema
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam rectangle {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+skinparam package {
+  BorderColor #808080
+  BackgroundColor #F8F8F8
+  FontColor #404040
+}
+
+title Donde se hace cumplir cada regla de negocio
+
+package "1. Restricciones declarativas del motor" #DEEBF7 {
+  rectangle "UNIQUE\nRN-01 documento\nRN-02 correo\nRN-20 codigo por periodo" as uq
+  rectangle "CHECK\nRN-09 rango de la nota\nRN-19 fechas del periodo\nRN-25 creditos y cupo\nRN-26 cupo no menor a matriculados\nRN-05 contador dentro del cupo" as ck
+  rectangle "FOREIGN KEY\nIntegridad referencial\nde las diez relaciones" as fk
+  rectangle "TIPO DE DATO\nRN-27 NUMERIC(2,1)\nimpone el unico decimal" as tp
+}
+
+package "2. Indices unicos parciales" #E2F0D9 {
+  rectangle "RN-03\nun solo periodo ACTIVO" as ip1
+  rectangle "RN-04\nuna sola matricula ACTIVA\npor estudiante y curso" as ip2
+}
+
+package "3. Disparadores y funciones" #FFF2CC {
+  rectangle "Validacion de la matricula\nRN-05 cupo\nRN-06 estudiante activo\nRN-07 periodo activo\nRN-14 tope de siete" as tg1
+  rectangle "Integridad del cupo\nRN-05 y RN-16" as tg2
+  rectangle "Verificacion diferida\nRN-10 los cortes suman 100" as tg3
+  rectangle "Solo lectura al cerrar\nRN-17" as tg4
+  rectangle "Auditoria automatica\nRN-18 y RNF-21" as tg5
+  rectangle "Inactivacion logica\nRN-15 y RN-24" as tg6
+  rectangle "Calculos\nRN-11 definitiva\nRN-12 aprobacion\nRN-13 promedio\nRN-27 redondeo" as tg7
+}
+
+package "4. Capa de negocio y de seguridad" #FBE5D6 {
+  rectangle "RN-08 el docente solo ve sus cursos\nRN-21 longitud de la contrasena\nRN-22 expiracion de la sesion\nRN-23 cada usuario ve lo suyo" as app
+}
+
+note bottom of app
+  Estas cuatro reglas dependen de la
+  sesion del usuario, que la base de datos
+  no conoce. Se verifican en el servidor
+  conforme a ADR-003 y se registran en
+  evento_seguridad.
+end note
+
+note bottom of tg1
+  Criterio de ADR-002: si incumplir la
+  regla corrompe el registro academico, la
+  regla baja al motor. Asi se sostiene
+  aunque el codigo la omita.
+end note
+@enduml

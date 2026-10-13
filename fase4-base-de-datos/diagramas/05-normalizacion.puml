@@ -1,0 +1,90 @@
+@startuml 05-normalizacion
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 10
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+  AttributeFontSize 10
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+hide circle
+
+title Del formato actual de la institucion a la tercera forma normal
+
+entity planilla as "Planilla de calculo actual" #FFE6E6 {
+  documento
+  nombre_estudiante
+  curso
+  nombre_docente
+  nota1
+  nota2
+  nota3
+  definitiva
+}
+
+note right of planilla
+  Una fila por estudiante y curso.
+  1FN: nota1, nota2 y nota3 son un grupo
+  repetido disfrazado de columnas.
+  2FN: nombre_estudiante depende solo del
+  documento, no de la fila completa.
+  3FN: nombre_docente depende del curso, y
+  definitiva se deduce de las notas.
+end note
+
+entity n1 as "Paso a 1FN" #FFF2CC {
+  documento
+  curso
+  numero_corte
+  nota
+  --
+  Cada nota es una fila, no una columna.
+  El numero de cortes deja de estar
+  fijado en tres.
+}
+
+entity n2 as "Paso a 2FN" #E2F0D9 {
+  estudiante: documento, nombre
+  curso: codigo, nombre, docente
+  matricula: estudiante, curso
+  calificacion: matricula, corte, nota
+  --
+  Los datos del estudiante y del curso
+  salen de la tabla de notas.
+}
+
+entity n3 as "Paso a 3FN: modelo final" #DEEBF7 {
+  persona, estudiante, docente
+  periodo_academico, curso, corte
+  matricula, calificacion
+  --
+  El docente pasa a su propia tabla y el
+  curso solo guarda su clave.
+  La definitiva no se almacena mientras
+  la matricula esta activa: la calcula
+  fn_nota_definitiva (RN-11).
+}
+
+planilla --> n1
+n1 --> n2
+n2 --> n3
+
+note bottom of n3
+  Excepcion deliberada: curso.matriculados
+  es un dato derivable que se conserva
+  como contador, porque RN-05 debe
+  validarse de forma inmediata y
+  transaccional (RNF-15).
+end note
+@enduml

@@ -1,0 +1,57 @@
+@startuml 01-modelo-conceptual
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam ArrowFontSize 11
+skinparam class {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+  HeaderBackgroundColor #DEEBF7
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+hide circle
+hide members
+
+title Modelo conceptual de datos del SGA
+
+entity PERSONA
+entity ESTUDIANTE
+entity DOCENTE
+entity USUARIO
+entity PERIODO_ACADEMICO
+entity CURSO
+entity CORTE
+entity MATRICULA
+entity CALIFICACION
+entity REGISTRO_AUDITORIA
+entity EVENTO_SEGURIDAD
+
+PERSONA ||--o| ESTUDIANTE : es un
+PERSONA ||--o| DOCENTE : es un
+PERSONA ||--|| USUARIO : tiene cuenta
+PERIODO_ACADEMICO ||--o{ CURSO : ofrece
+DOCENTE |o--o{ CURSO : dicta
+CURSO ||--|{ CORTE : define
+ESTUDIANTE ||--o{ MATRICULA : cursa
+CURSO ||--o{ MATRICULA : recibe
+MATRICULA ||--o{ CALIFICACION : contiene
+CORTE ||--o{ CALIFICACION : evalua
+USUARIO ||--o{ REGISTRO_AUDITORIA : genera
+USUARIO |o--o{ EVENTO_SEGURIDAD : origina
+
+note bottom of PERSONA
+  Once entidades, obtenidas de las once
+  clases de dominio de la Fase 3.
+  Las seis enumeraciones del modelo UML
+  no son entidades: se vuelven columnas
+  con restriccion de dominio.
+end note
+@enduml

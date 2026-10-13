@@ -1,0 +1,76 @@
+@startuml 08-transaccion-matricula
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam sequenceArrowColor #1F3864
+skinparam participant {
+  BorderColor #2E75B6
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+}
+skinparam note {
+  BackgroundColor #FFF2CC
+  BorderColor #BF9000
+}
+
+title Transaccion de la matricula en la base de datos (CU-14, RNF-15)
+
+participant "Capa de negocio" as neg
+participant "fn_matricular" as fn
+participant "trg_matricula_valida" as tgv
+participant "tabla matricula" as tm
+participant "trg_matricula_cupo" as tgc
+participant "tabla curso" as tc
+
+neg -> fn : BEGIN y fn_matricular(estudiante, curso)
+activate fn
+
+fn -> tm : INSERT INTO matricula
+activate tm
+tm -> tgv : BEFORE INSERT
+activate tgv
+
+tgv -> tc : SELECT ... FOR UPDATE
+note right of tgv
+  El bloqueo de la fila del curso serializa
+  los intentos simultaneos: dos matriculas
+  no pueden tomar el ultimo cupo a la vez.
+end note
+
+alt alguna validacion falla
+  tgv --> neg : EXCEPTION y ROLLBACK
+  note right of neg
+    RN-05 sin cupo
+    RN-06 estudiante inactivo
+    RN-07 periodo no activo
+    RN-14 tope de siete alcanzado
+    Nada queda escrito.
+  end note
+else las cuatro validaciones pasan
+  tgv --> tm : fila aceptada
+  deactivate tgv
+  tm -> tgc : AFTER INSERT
+  activate tgc
+  tgc -> tc : UPDATE curso SET matriculados = matriculados + 1
+  note right of tc
+    ck_curso_ocupacion actua como red:
+    si el contador excediera el cupo, el
+    motor rechaza la operacion completa.
+  end note
+  deactivate tgc
+  deactivate tm
+  fn --> neg : id_matricula
+  deactivate fn
+  neg -> neg : COMMIT
+end
+
+note across
+  La matricula y el contador se escriben juntos o no se escriben:
+  es la garantia que ADR-002 buscaba al elegir un motor transaccional.
+  El indice unico parcial uq_matricula_activa hace cumplir RN-04 sin
+  codigo y sin posibilidad de condicion de carrera.
+end note
+@enduml
