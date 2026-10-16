@@ -10,7 +10,7 @@
 | **Entregable** | Documento de requerimientos funcionales, no funcionales, reglas de negocio y matriz de trazabilidad |
 | **Versión** | 1.0 |
 | **Fecha** | 20 de agosto de 2026 |
-| **Fase anterior** | [Fase 1 — Épicas e historias de usuario](../fase1/fase1-epicas-historias.md) |
+| **Fase anterior** | [Fase 1 — Épicas e historias de usuario](../fase1-epicas-historias/fase1-epicas-historias.md) |
 | **Estado** | Listo para revisión / entrada a Fase 3 (UML) |
 
 ---
@@ -64,11 +64,11 @@ Identificamos cada elemento con un prefijo que mantendremos en las fases siguien
 | Prefijo | Elemento | Ejemplo | Cantidad |
 |---|---|---|---|
 | HU | Historia de usuario (Fase 1) | HU-15 | 32 historias |
-| RF | Requerimiento funcional | RF-30 | 57 requerimientos |
+| RF | Requerimiento funcional | RF-30 | 60 requerimientos |
 | RNF | Requerimiento no funcional | RNF-15 | 28 requerimientos |
-| RN | Regla de negocio | RN-05 | 27 reglas |
+| RN | Regla de negocio | RN-05 | 31 reglas |
 | RE | Restricción | RE-02 | 10 restricciones |
-| CP | Caso de prueba de aceptación | CP-06 | 15 casos |
+| CP | Caso de prueba de aceptación | CP-06 | 18 casos |
 
 Manejamos tres niveles de prioridad. Alta es lo que el sistema no puede dejar de hacer, y por eso va en el producto mínimo viable. Media aporta valor real, pero puede esperar dentro del mismo alcance. Baja la especificamos para no perder de vista el producto completo, aunque la construiremos en la versión 2.
 
@@ -144,7 +144,7 @@ Seguimos trabajando sobre los supuestos que declaramos en la Fase 1. Todavía no
 
 ## 3. Requerimientos Funcionales
 
-Definimos 57 requerimientos funcionales a partir de las historias de usuario de la Fase 1. De ellos, 49 integran el producto mínimo viable y 8 los dejamos especificados para no perder de vista el producto completo, aunque los construiremos en la versión 2.
+Definimos 60 requerimientos funcionales a partir de las historias de usuario de la Fase 1. De ellos, 52 integran el producto mínimo viable y 8 los dejamos especificados para no perder de vista el producto completo, aunque los construiremos en la versión 2.
 
 De cada requerimiento escribimos su identificador, su nombre y una descripción de lo que el sistema debe hacer, y además diez atributos: módulo, actor que lo invoca, entradas que recibe, proceso que ejecuta, salidas que produce, precondición que debe cumplirse antes, postcondición que queda garantizada después, prioridad, historia que lo origina y reglas de negocio que aplica. De los que dejamos para la versión 2 solo incluimos su fila en la tabla resumen del módulo.
 
@@ -166,6 +166,9 @@ Autenticación, gestión de cuentas, roles y autorización de operaciones. Reuni
 | RF-07 | Autorizar las operaciones según el rol | Alta | HU-04 | MVP |
 | RF-08 | Cambiar la contraseña propia | Media | HU-05 | MVP |
 | RF-09 | Registrar los eventos de seguridad | Media | HU-01, HU-04 | MVP |
+| RF-58 | Solicitar el restablecimiento de la contraseña | Alta | HU-32 | MVP |
+| RF-59 | Validar el enlace de restablecimiento | Alta | HU-32 | MVP |
+| RF-60 | Fijar la contraseña nueva desde el enlace | Alta | HU-32 | MVP |
 
 #### RF-01. Autenticar usuario
 
@@ -319,6 +322,57 @@ Autenticación, gestión de cuentas, roles y autorización de operaciones. Reuni
 | **Prioridad** | Media |
 | **Historia de origen** | HU-01, HU-04 |
 | **Reglas de negocio** | RN-23 |
+
+#### RF-58. Solicitar el restablecimiento de la contraseña
+
+> El sistema debe permitir que un usuario que olvidó su contraseña solicite un enlace de restablecimiento indicando su correo institucional.
+
+| Atributo | Especificación |
+|---|---|
+| **Módulo** | M1 — Seguridad y control de acceso |
+| **Actor** | Usuario |
+| **Entradas** | Correo institucional |
+| **Proceso** | Busca una cuenta activa con ese correo. Si existe, genera un enlace de un solo uso con vencimiento y lo envía por correo. Responde siempre lo mismo, exista o no la cuenta |
+| **Salidas** | Mensaje neutro de confirmación y, cuando corresponde, un correo con el enlace |
+| **Precondición** | Ninguna: la pantalla es pública |
+| **Postcondición** | Queda registrada la solicitud y, si aplica, un enlace vigente |
+| **Prioridad** | Alta |
+| **Historia de origen** | HU-32 |
+| **Reglas de negocio** | RN-28, RN-29, RN-30 |
+
+#### RF-59. Validar el enlace de restablecimiento
+
+> El sistema debe verificar que el enlace recibido esté vigente, no haya sido usado y corresponda a una cuenta activa.
+
+| Atributo | Especificación |
+|---|---|
+| **Módulo** | M1 — Seguridad y control de acceso |
+| **Actor** | Usuario |
+| **Entradas** | Identificador del enlace |
+| **Proceso** | Compara el resumen criptográfico del enlace recibido con el almacenado, comprueba que no esté vencido ni usado y que la cuenta siga activa |
+| **Salidas** | Formulario de contraseña nueva, o mensaje de enlace no válido con la opción de solicitar otro |
+| **Precondición** | Existe una solicitud de restablecimiento |
+| **Postcondición** | El enlace queda habilitado para fijar la contraseña, o rechazado |
+| **Prioridad** | Alta |
+| **Historia de origen** | HU-32 |
+| **Reglas de negocio** | RN-28 |
+
+#### RF-60. Fijar la contraseña nueva desde el enlace
+
+> El sistema debe permitir que el usuario establezca una contraseña nueva a través de un enlace válido, sin conocer la anterior.
+
+| Atributo | Especificación |
+|---|---|
+| **Módulo** | M1 — Seguridad y control de acceso |
+| **Actor** | Usuario |
+| **Entradas** | Identificador del enlace, contraseña nueva y su confirmación |
+| **Proceso** | Verifica la longitud mínima y que ambas coincidan, almacena el resumen criptográfico con una sal nueva, marca el enlace como usado, invalida cualquier otro enlace vigente de la cuenta y cierra las sesiones abiertas |
+| **Salidas** | Confirmación y redirección a la pantalla de acceso |
+| **Precondición** | El enlace es válido según RF-59 |
+| **Postcondición** | La contraseña queda cambiada y el enlace inutilizable |
+| **Prioridad** | Alta |
+| **Historia de origen** | HU-32 |
+| **Reglas de negocio** | RN-21, RN-28, RN-31 |
 
 
 ### 3.2 Módulo M2: Gestión de personas
@@ -1129,7 +1183,7 @@ Organizamos los 28 requerimientos no funcionales con las ocho características d
 | ID | Subcaracterística | Enunciado | Métrica de verificación | Prior. |
 |---|---|---|---|---|
 | RNF-01 | Corrección funcional | Los cálculos de nota definitiva y de promedio general deben producir el mismo resultado que el cálculo manual verificado. | Cero discrepancias en una muestra de 30 matrículas contrastadas manualmente | Alta |
-| RNF-02 | Pertinencia funcional | El sistema debe implementar la totalidad de las reglas de negocio declaradas en este documento. | 100 % de las reglas RN-01 a RN-27 con al menos un requerimiento funcional asociado | Alta |
+| RNF-02 | Pertinencia funcional | El sistema debe implementar la totalidad de las reglas de negocio declaradas en este documento. | 100 % de las reglas RN-01 a RN-31 con al menos un requerimiento funcional asociado | Alta |
 
 
 ### 4.2 Eficiencia de desempeño
@@ -1218,19 +1272,19 @@ Organizamos los 28 requerimientos no funcionales con las ocho características d
 
 ## 5. Reglas de Negocio
 
-Las reglas de negocio vienen del dominio y no de la tecnología: existirían igual aunque la institución nunca tuviera un sistema de información. Las documentamos aparte de los requerimientos funcionales por dos razones. Porque siguen vigentes sin importar qué aplicación las implemente, y porque si mañana cambia el reglamento estudiantil necesitamos rastrear de inmediato todos los requerimientos afectados. Clasificamos las 27 reglas según lo que expresa cada una.
+Las reglas de negocio vienen del dominio y no de la tecnología: existirían igual aunque la institución nunca tuviera un sistema de información. Las documentamos aparte de los requerimientos funcionales por dos razones. Porque siguen vigentes sin importar qué aplicación las implemente, y porque si mañana cambia el reglamento estudiantil necesitamos rastrear de inmediato todos los requerimientos afectados. Clasificamos las 31 reglas según lo que expresa cada una.
 
 **Tabla 18.** *Tipos de regla de negocio empleados en la especificación*
 
 | Tipo | Qué expresa | Reglas |
 |---|---|---|
 | Restricción de unicidad | Un atributo o combinación no puede repetirse en el sistema | RN-01, RN-02, RN-20 |
-| Restricción de estado | Limita las transiciones o la coexistencia de estados | RN-03, RN-07, RN-17, RN-22 |
-| Restricción de integridad | Protege la consistencia histórica de la información | RN-15 |
-| Validación | Condición que debe cumplirse para aceptar una operación | RN-04, RN-05, RN-06, RN-09, RN-10, RN-14, RN-19, RN-21, RN-24, RN-25, RN-26 |
+| Restricción de estado | Limita las transiciones o la coexistencia de estados | RN-03, RN-07, RN-17, RN-22, RN-28 |
+| Restricción de integridad | Protege la consistencia histórica de la información | RN-15, RN-31 |
+| Validación | Condición que debe cumplirse para aceptar una operación | RN-04, RN-05, RN-06, RN-09, RN-10, RN-14, RN-19, RN-21, RN-24, RN-25, RN-26, RN-30 |
 | Cálculo | Define cómo se obtiene un valor a partir de otros | RN-11, RN-13, RN-27 |
 | Derivación | Establece un hecho que se deduce de otros datos | RN-12, RN-16 |
-| Autorización | Determina quién puede ejecutar o consultar qué | RN-08, RN-23 |
+| Autorización | Determina quién puede ejecutar o consultar qué | RN-08, RN-23, RN-29 |
 | Auditoría | Obliga a conservar evidencia de una operación | RN-18 |
 
 **Tabla 19.** *Catálogo de reglas de negocio*
@@ -1264,6 +1318,10 @@ Las reglas de negocio vienen del dominio y no de la tecnología: existirían igu
 | RN-25 | Validación | Los créditos y el cupo de un curso deben ser números enteros positivos. | Coordinación académica | RF-24 |
 | RN-26 | Validación | El cupo de un curso no puede reducirse por debajo del número de estudiantes matriculados. | Coordinación académica | RF-26 |
 | RN-27 | Cálculo | Los resultados de nota definitiva y promedio se presentan con un decimal, aplicando redondeo estándar. | Reglamento estudiantil | RF-45, RF-50 |
+| RN-28 | Restricción de estado | El enlace de restablecimiento de contraseña sirve una sola vez y vence a los treinta minutos de haberse generado. | Equipo de desarrollo | RF-58, RF-59, RF-60 |
+| RN-29 | Autorización | La solicitud de restablecimiento responde lo mismo exista o no una cuenta con ese correo, para no revelar qué correos están registrados. | Rectoría | RF-58 |
+| RN-30 | Validación | Una cuenta admite como máximo tres solicitudes de restablecimiento por hora. | Equipo de desarrollo | RF-58 |
+| RN-31 | Restricción de integridad | Al fijar una contraseña nueva se invalidan los demás enlaces vigentes de la cuenta y se cierran sus sesiones abiertas. | Equipo de desarrollo | RF-60 |
 
 *Nota.* Anotamos el origen de cada regla para saber a quién consultar cuando alguien pida cambiarla.
 
@@ -1316,6 +1374,7 @@ Las restricciones son condiciones que no podemos cambiar y que nos reducen las a
 | RE-08 | De negocio | La escala de calificación y el umbral de aprobación son los definidos por el reglamento estudiantil y no son configurables en esta versión. |
 | RE-09 | Normativa | El tratamiento de datos personales de menores de edad debe ceñirse a la normativa de protección de datos aplicable. |
 | RE-10 | Normativa | La información académica debe conservarse durante el tiempo que establezca la institución, sin eliminación física de registros. |
+| RE-11 | Técnica | El restablecimiento de contraseña por autoservicio requiere un servidor de correo saliente institucional. Se asume disponible porque la institución ya provee correo propio a estudiantes y docentes (supuesto S-1). |
 
 *Nota.* Las restricciones RE-01 y RE-02 condicionan las decisiones tecnológicas de la Fase 6; RE-05 y RE-06 determinan la capacidad de trabajo por sprint definida en la Fase 1.
 
@@ -1324,7 +1383,7 @@ Las restricciones son condiciones que no podemos cambiar y que nos reducen las a
 
 ## 7. Criterios de Aceptación del Sistema
 
-Reunimos los criterios de aceptación que escribimos historia por historia en la Fase 1 y los convertimos en 15 casos de prueba que verifican el sistema completo. Cada caso tiene una precondición, una acción y un resultado observable, de modo que al ejecutarlo quede claro si pasa o no pasa.
+Reunimos los criterios de aceptación que escribimos historia por historia en la Fase 1 y los convertimos en 18 casos de prueba que verifican el sistema completo. Cada caso tiene una precondición, una acción y un resultado observable, de modo que al ejecutarlo quede claro si pasa o no pasa.
 
 Escogimos a propósito más casos de excepción que de camino feliz. El problema que originó el proyecto no es que la institución no pueda registrar una matrícula: es que hoy nada le impide registrar una matrícula inválida. El valor del sistema está tanto en lo que permite como en lo que bloquea.
 
@@ -1347,6 +1406,9 @@ Escogimos a propósito más casos de excepción que de camino feliz. El problema
 | CP-13 | Bloqueo de notas de un período cerrado | El período 2026-1 se encuentra cerrado | Intentar modificar una calificación de ese período | El sistema impide la operación indicando que el período está cerrado |
 | CP-14 | Consulta de calificaciones por el estudiante | El estudiante tiene matrículas con notas parciales registradas | Ingresar con la cuenta del estudiante y consultar cursos, notas y promedio | Visualiza sus cursos, las notas registradas, los cortes pendientes marcados como tales y su promedio parcial |
 | CP-15 | Aislamiento de la información entre estudiantes | Existen dos estudiantes con matrículas distintas | Ingresar con un estudiante e intentar consultar la información del otro | El sistema solo entrega la información del estudiante autenticado |
+| CP-16 | Restablecimiento de la contraseña olvidada | Existe una cuenta activa con correo conocido | Solicitar el restablecimiento, abrir el enlace recibido y fijar una contraseña nueva | Se puede iniciar sesión con la contraseña nueva, y el mismo enlace deja de funcionar |
+| CP-17 | Enlace de restablecimiento vencido o reutilizado | Existe un enlace ya usado o con más de treinta minutos | Abrir ese enlace | El sistema informa que no es válido y ofrece solicitar uno nuevo |
+| CP-18 | La solicitud no revela qué correos existen | Un correo registrado y otro inexistente | Solicitar el restablecimiento con cada uno | El sistema responde exactamente lo mismo en ambos casos |
 
 *Nota.* Los requerimientos que verifica cada caso aparecen en la matriz de trazabilidad de la sección siguiente.
 
@@ -1379,6 +1441,7 @@ En la Tabla 22 enlazamos cada historia de la Fase 1 con los requerimientos que l
 | HU-03 | Administrar usuarios y roles | RF-04, RF-05, RF-06 | 1 |
 | HU-04 | Restringir funcionalidades por rol | RF-07, RF-09 | 1 |
 | HU-05 | Cambiar mi contraseña | RF-08 | 4 |
+| HU-32 | Restablecer mi contraseña olvidada | RF-58, RF-59, RF-60 | 1 |
 | HU-06 | Registrar un estudiante | RF-10, RF-11 | 1 |
 | HU-07 | Consultar y buscar estudiantes | RF-12, RF-13, RF-14 | 1 |
 | HU-08 | Actualizar los datos de un estudiante | RF-11, RF-15 | 2 |
@@ -1405,7 +1468,6 @@ En la Tabla 22 enlazamos cada historia de la Fase 1 con los requerimientos que l
 | HU-29 | Consultar la ocupación de los cursos | RF-53, RF-55 | v2 |
 | HU-30 | Tablero resumen del administrador | RF-54 | v2 |
 | HU-31 | Notificar la publicación de notas | Sin requerimiento: fuera del alcance | — |
-| HU-32 | Recuperar la contraseña por correo | Sin requerimiento: fuera del alcance | — |
 
 *Nota.* En la Fase 1 clasificamos HU-31 y HU-32 como excluidas de esta versión, así que no les escribimos requerimientos. La ausencia es intencional y no es un vacío.
 
@@ -1445,6 +1507,10 @@ En la Tabla 23 revisamos que ninguna regla de negocio se quede sin implementaci�
 | RN-25 | RF-24 | Verificación indirecta | Indirecta |
 | RN-26 | RF-26 | Verificación indirecta | Indirecta |
 | RN-27 | RF-45, RF-50 | CP-11, CP-14 | Directa |
+| RN-28 | RF-58, RF-59, RF-60 | CP-16 | Directa |
+| RN-29 | RF-58 | CP-16 | Directa |
+| RN-30 | RF-58 | CP-16 | Directa |
+| RN-31 | RF-60 | CP-16 | Directa |
 
 *Nota.* Las reglas con cobertura indirecta quedan verificadas a través de los casos que ejercitan los requerimientos que las contienen; les escribiremos prueba propia en el plan de la Fase 6.
 
@@ -1507,7 +1573,7 @@ No reutilizamos identificadores. Si eliminamos un requerimiento, conserva su nú
 
 ## 11. Conclusiones
 
-Convertimos las treinta y dos historias de la Fase 1 en 57 requerimientos funcionales, 28 no funcionales y 27 reglas de negocio, que podemos verificar con 15 casos de prueba. La correspondencia no fue de uno a uno: HU-15 necesitó seis requerimientos para quedar bien especificada, mientras que varias historias de consulta se resolvieron con uno solo. Esa diferencia confirma lo que ya habíamos visto en la fase anterior: la matrícula y el registro de calificaciones concentran el esfuerzo del proyecto.
+Convertimos las treinta y dos historias de la Fase 1 en 60 requerimientos funcionales, 28 no funcionales y 31 reglas de negocio, que podemos verificar con 18 casos de prueba. La correspondencia no fue de uno a uno: HU-15 necesitó seis requerimientos para quedar bien especificada, mientras que varias historias de consulta se resolvieron con uno solo. Esa diferencia confirma lo que ya habíamos visto en la fase anterior: la matrícula y el registro de calificaciones concentran el esfuerzo del proyecto.
 
 Al formalizar aparecieron nueve reglas que no habíamos identificado en la Fase 1 —RN-19 a RN-27—, casi todas validaciones de datos y restricciones de sesión que las historias daban por hechas. Eso justifica el orden que seguimos: la historia captura el propósito, pero solo al especificar en detalle uno se ve obligado a decir bajo qué condiciones ese propósito se cumple.
 
@@ -1536,4 +1602,4 @@ Las matrices alcanzan cobertura completa en los cinco indicadores, con la única
 
 ---
 
-**Resumen del entregable:** 57 requerimientos funcionales · 28 requerimientos no funcionales · 27 reglas de negocio · 15 casos de prueba de aceptación · 5 matrices de trazabilidad con cobertura completa.
+**Resumen del entregable:** 60 requerimientos funcionales · 28 requerimientos no funcionales · 31 reglas de negocio · 18 casos de prueba de aceptación · 5 matrices de trazabilidad con cobertura completa.

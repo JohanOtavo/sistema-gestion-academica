@@ -99,6 +99,18 @@ class EventoSeguridad {
   - fechaHora : LocalDateTime
 }
 
+class SolicitudRestablecimiento {
+  - idSolicitud : Long
+  - hashEnlace : String
+  - fechaCreacion : LocalDateTime
+  - fechaVencimiento : LocalDateTime
+  - fechaUso : LocalDateTime
+  - direccionIp : String
+  --
+  + estaVigente() : boolean
+  + marcarUsada() : void
+}
+
 enum Rol {
   ADMINISTRADOR
   DOCENTE
@@ -121,9 +133,19 @@ Persona <|-- Docente
 Persona "1" -- "1" Usuario : identifica >
 Usuario "1" -- "0..*" RegistroAuditoria : genera >
 Usuario "0..1" -- "0..*" EventoSeguridad : origina >
+Usuario "1" *-- "0..*" SolicitudRestablecimiento : solicita >
 Usuario ..> Rol
 Persona ..> EstadoPersona
 EventoSeguridad ..> TipoEvento
+
+note bottom of SolicitudRestablecimiento
+  {RN-28} un solo uso, vence a los 30 minutos
+  {RN-30} maximo 3 solicitudes por hora
+  {RN-31} al usarse invalida las demas y
+  cierra las sesiones de la cuenta
+  Se guarda el resumen del enlace, nunca
+  el enlace en claro (mismo criterio ADR-007)
+end note
 
 note bottom of Usuario
   {RN-02} correo único

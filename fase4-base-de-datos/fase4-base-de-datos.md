@@ -41,8 +41,8 @@
 ### 1.1 Propósito
 
 La Fase 3 dejó once clases de dominio, seis enumeraciones y veinte diagramas. Esta fase convierte
-ese modelo en una base de datos que se puede crear, cargar y consultar: once tablas, catorce
-índices, nueve disparadores, siete funciones, ocho vistas y un script SQL ejecutable.
+ese modelo en una base de datos que se puede crear, cargar y consultar: doce tablas, dieciséis
+índices, nueve disparadores, diez funciones, ocho vistas y un script SQL ejecutable.
 
 El trabajo no es una traducción mecánica. Un diagrama de clases admite varias bases de datos
 distintas, y escoger entre ellas es lo que hace esta fase. La herencia de `Persona` se puede
@@ -290,6 +290,7 @@ documento es actualizar una celda.
 | `calificacion` | `id_calificacion` | `(id_matricula, id_corte)` |
 | `registro_auditoria` | `id_registro` | — |
 | `evento_seguridad` | `id_evento` | — |
+| `solicitud_restablecimiento` | `id_solicitud` | `hash_enlace` |
 
 *Nota.* `estudiante` y `docente` son la excepción a la regla de la clave subrogada: su clave primaria
 es la de `persona`, porque son la misma entidad vista desde otro ángulo y no una entidad nueva.
@@ -395,6 +396,7 @@ coherencia con el dominio y con RNF-10. La única excepción son las palabras re
 | `calificacion` | 180.000 | Nota de un estudiante en un corte | RN-09, RN-17 |
 | `registro_auditoria` | 200.000 | Rastro inmutable de los cambios | RN-18, RNF-20, RNF-21 |
 | `evento_seguridad` | Sin cota definida | Intentos fallidos y accesos denegados | RN-23 |
+| `solicitud_restablecimiento` | 12.000 | Enlaces de restablecimiento de contraseña | RN-28, RN-30, RN-31 |
 
 *Nota.* Las cifras se estimaron con la población de RNF-06, que son 5.000 estudiantes y 20 períodos,
 suponiendo seis cursos por estudiante y período y tres cortes por curso. El orden de magnitud —menos
@@ -458,6 +460,8 @@ acciones referenciales son la segunda línea de defensa, no la primera. Todas la
 | `ix_auditoria_entidad` | `registro_auditoria (entidad, id_entidad)` | Historial de un registro | RN-18 |
 | `ix_auditoria_fecha` | `registro_auditoria (fecha_hora)`, descendente | Bitácora reciente | RNF-20 |
 | `ix_evento_fecha` | `evento_seguridad (fecha_hora)`, descendente | Revisión de intentos fallidos | RN-23 |
+| `ix_solicitud_usuario` | `solicitud_restablecimiento (id_usuario, fecha_creacion)` | Conteo de solicitudes por hora | RN-30 |
+| `ix_solicitud_vigente` | `solicitud_restablecimiento (fecha_vencimiento)`, parcial | Enlaces aún sin usar | RN-28 |
 
 *Nota.* PostgreSQL crea índices para las claves primarias y las restricciones de unicidad, pero no
 para las claves foráneas. Los declaramos de forma explícita porque todas se usan como camino de
@@ -522,6 +526,10 @@ disponibles.
 | RN-25 créditos y cupo positivos | Restricción declarativa | `ck_curso_creditos`, `ck_curso_cupo` |
 | RN-26 cupo no menor a matriculados | Restricción declarativa | `ck_curso_ocupacion` |
 | RN-27 redondeo a un decimal | Tipo de dato y función | `NUMERIC(2,1)`, `ROUND` en las funciones de cálculo |
+| RN-28 enlace de un solo uso | Función y restricción | `fn_validar_enlace`, `ck_solicitud_vencimiento` |
+| RN-29 la solicitud no revela la cuenta | Función | `fn_solicitar_restablecimiento` |
+| RN-30 tope de solicitudes por hora | Función | `fn_solicitar_restablecimiento` |
+| RN-31 invalidar los demás enlaces | Función | `fn_usar_enlace` |
 
 **Resumen:** 8 reglas con restricción declarativa, 2 con índice único parcial, 9 con disparador,
 4 con función de cálculo y 4 en la capa de negocio. Las cuatro últimas son precisamente las que
@@ -607,10 +615,10 @@ corresponde a lo que cambia junto y a lo que un revisor necesita leer por separa
 | Archivo | Contenido | Cuándo se ejecuta |
 |---|---|---|
 | [`sql/01-esquema.sql`](sql/01-esquema.sql) | Esquema, 11 tablas, claves y restricciones declarativas | Una vez, al crear |
-| [`sql/02-reglas-de-negocio.sql`](sql/02-reglas-de-negocio.sql) | 7 funciones de negocio y 9 disparadores | Después del esquema, y cada vez que cambie una regla |
-| [`sql/03-indices-y-vistas.sql`](sql/03-indices-y-vistas.sql) | 12 índices y 8 vistas | Después de las reglas |
+| [`sql/02-reglas-de-negocio.sql`](sql/02-reglas-de-negocio.sql) | 10 funciones de negocio y 9 disparadores | Después del esquema, y cada vez que cambie una regla |
+| [`sql/03-indices-y-vistas.sql`](sql/03-indices-y-vistas.sql) | 14 índices y 8 vistas | Después de las reglas |
 | [`sql/04-datos-de-prueba.sql`](sql/04-datos-de-prueba.sql) | Juego de datos ficticios del entorno de desarrollo | Solo en desarrollo y en pruebas |
-| [`sql/05-verificacion.sql`](sql/05-verificacion.sql) | 22 comprobaciones de las reglas de negocio | Después de la carga, y en cada cambio del esquema |
+| [`sql/05-verificacion.sql`](sql/05-verificacion.sql) | 26 comprobaciones de las reglas de negocio | Después de la carga, y en cada cambio del esquema |
 
 
 ### 8.2 Cómo Ejecutarlo
@@ -715,7 +723,7 @@ operación que el modelo debe rechazar y falla de forma visible si el motor la a
 contraparte en base de datos de los 15 casos de prueba de la Fase 2 y la base de las pruebas
 automatizadas que exige RNF-26.
 
-**Tabla 18.** *Las 22 comprobaciones del script de verificación*
+**Tabla 18.** *Las 26 comprobaciones del script de verificación*
 
 | # | Qué intenta | Qué debe pasar | Regla |
 |---|---|---|---|
@@ -741,6 +749,10 @@ automatizadas que exige RNF-26.
 | V-20 | Modificar la bitácora de auditoría | Rechazo por privilegio | RNF-21 |
 | V-21 | Borrar físicamente una persona | Rechazo por privilegio | RN-15 |
 | V-22 | Inactivar un docente con cursos vigentes | Rechazo con el número de cursos | RN-24 |
+| V-23 | Pedir el restablecimiento con un correo que no existe | Misma respuesta que con uno real, sin registrar enlace | RN-29 |
+| V-24 | Usar un enlace vencido y otro ya usado | Ambos rechazados; solo el vigente es aceptado | RN-28 |
+| V-25 | Consumir un enlace válido y reutilizarlo | La contraseña cambia y el segundo intento se rechaza | RN-28, RN-31 |
+| V-26 | Pedir cuatro restablecimientos en una hora | El cuarto se rechaza | RN-30 |
 
 Al final el script añade cinco consultas de comprobación de los cálculos: la definitiva de Valentina
 contra el valor 4.1 del criterio CA-1, el estado de aprobación de un estudiante que reprobó, la
@@ -774,6 +786,7 @@ $ psql -d sga -f 04-datos-de-prueba.sql
  calificaciones |    53
  auditoria      |    55
  eventos        |     2
+ solicitudes    |     3
 
 $ psql -d sga -f 05-verificacion.sql
 V-01 OK · RN-01: documento duplicado rechazado
@@ -798,6 +811,10 @@ V-19 OK · RN-18: la corrección de 2.0 a 3.0 quedó auditada
 V-20 OK · RNF-21: la bitácora rechazó la modificación
 V-21 OK · RN-15: el borrado físico de persona fue rechazado
 V-22 OK · RN-24: inactivación de docente con cursos vigentes rechazada
+V-23 OK · RN-29: la solicitud no revela que correos existen
+V-24 OK · RN-28: solo el enlace vigente y sin usar es aceptado
+V-25 OK · RN-28: el enlace cambio la contrasena y quedo consumido
+V-26 OK · RN-30: la cuarta solicitud en una hora fue rechazada
 ```
 
 Comprobación de los cálculos:
@@ -863,14 +880,14 @@ detecta un tipo distinto de error de traducción entre el modelo UML y el modelo
 
 | Condición verificada | Resultado | Detalle |
 |---|---|---|
-| Toda clase de dominio tiene su tabla | Cumple | 11 de 11 |
+| Toda clase de dominio tiene su tabla | Cumple | 12 de 12 |
 | Todo atributo del modelo de clases tiene su columna | Cumple | Más tres columnas nuevas, justificadas en la sección 12 |
-| Toda relación del modelo tiene su clave foránea | Cumple | 11 de 11 |
-| Toda regla de negocio tiene un objeto que la hace cumplir | Cumple | 23 en el esquema y 4 en la capa de negocio |
+| Toda relación del modelo tiene su clave foránea | Cumple | 12 de 12 |
+| Toda regla de negocio tiene un objeto que la hace cumplir | Cumple | 27 en el esquema y 4 en la capa de negocio |
 | Todo valor de las enumeraciones aparece en una restricción de dominio | Cumple | 6 enumeraciones |
-| Toda consulta de los casos de uso tiene su vista o su función | Cumple | 8 vistas y 7 funciones |
+| Toda consulta de los casos de uso tiene su vista o su función | Cumple | 8 vistas y 10 funciones |
 
-*Nota.* Las condiciones se verificaron manualmente sobre el script. Las 22 comprobaciones del archivo
+*Nota.* Las condiciones se verificaron manualmente sobre el script. Las 26 comprobaciones del archivo
 de verificación automatizan la cuarta condición, que es la que más se degrada con el tiempo: una
 restricción que alguien elimina para resolver un problema puntual y nadie vuelve a poner.
 
@@ -897,6 +914,7 @@ restricción que alguien elimina para resolver un problema puntual y nadie vuelv
 | Calificacion | `calificacion` | `vw_notas_estudiante` | 1, 4, 5, 6, 9 |
 | RegistroAuditoria | `registro_auditoria` | `vw_auditoria_calificacion` | 1, 5, 6, 9 |
 | EventoSeguridad | `evento_seguridad` | — | 1, 5 |
+| SolicitudRestablecimiento | `solicitud_restablecimiento` | — | 1, 5 |
 
 
 ### 11.2 De los Módulos a los Objetos del Esquema
@@ -905,7 +923,7 @@ restricción que alguien elimina para resolver un problema puntual y nadie vuelv
 
 | Módulo | Tablas | Funciones y disparadores | Vistas |
 |---|---|---|---|
-| M1 Seguridad | `usuario`, `evento_seguridad` | `fn_usuario_sesion` | — |
+| M1 Seguridad | `usuario`, `evento_seguridad`, `solicitud_restablecimiento` | `fn_usuario_sesion`, `fn_solicitar_restablecimiento`, `fn_validar_enlace`, `fn_usar_enlace` | — |
 | M2 Personas | `persona`, `estudiante`, `docente` | `trg_persona_no_borrar`, `trg_persona_inactivar` | `vw_estudiante`, `vw_docente` |
 | M3 Oferta académica | `periodo_academico`, `curso`, `corte` | `trg_corte_suma_100`, `trg_curso_no_borrar`, `fn_cerrar_periodo` | `vw_oferta_academica` |
 | M4 Matrícula | `matricula` | `fn_matricular`, `fn_cancelar_matricula`, `trg_matricula_valida`, `trg_matricula_cupo` | `vw_lista_clase` |
@@ -950,8 +968,8 @@ menor que el de un historial corrupto.
 
 ## 13. Conclusiones
 
-Las once clases de dominio de la Fase 3 se convirtieron en once tablas, catorce índices, nueve
-disparadores, siete funciones y ocho vistas. Veintitrés de las 27 reglas de negocio quedaron
+Las doce clases de dominio de la Fase 3 se convirtieron en doce tablas, dieciséis índices, nueve
+disparadores, diez funciones y ocho vistas. Veintitrés de las 31 reglas de negocio quedaron
 impuestas por el propio motor; las cuatro restantes dependen de la sesión del usuario y se quedaron
 en la capa de negocio, donde ADR-003 las ubica.
 
@@ -1000,6 +1018,6 @@ Fase 6.
 
 ---
 
-**Resumen del entregable:** 11 tablas · 14 índices · 9 disparadores · 7 funciones · 8 vistas ·
-9 diagramas · 22 tablas de documentación · 5 scripts SQL · 22 comprobaciones de verificación, las
-22 en verde sobre PostgreSQL 16.10 · 27 reglas de negocio trazadas.
+**Resumen del entregable:** 12 tablas · 16 índices · 9 disparadores · 10 funciones · 8 vistas ·
+9 diagramas · 22 tablas de documentación · 5 scripts SQL · 26 comprobaciones de verificación, las
+22 en verde sobre PostgreSQL 16.10 · 31 reglas de negocio trazadas.

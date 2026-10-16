@@ -26,6 +26,9 @@
 --   RN-24  docente con cursos vigentes     trg_persona_inactivar
 --   RN-27  redondeo a un decimal           fn_nota_definitiva / fn_promedio_periodo
 --   RNF-21 bitácora inmutable              trg_auditoria_inmutable
+--   RN-28  enlace de un solo uso           fn_validar_enlace / fn_usar_enlace
+--   RN-30  tope de 3 solicitudes por hora   fn_solicitar_restablecimiento
+--   RN-31  invalidar los demás enlaces      fn_usar_enlace
 -- =====================================================================
 
 SET search_path TO sga, public;
@@ -647,11 +650,149 @@ CREATE TRIGGER trg_persona_inactivar
 
 
 -- =====================================================================
--- 6. CIERRE DEL PERÍODO
+-- 6. RESTABLECIMIENTO DE CONTRASEÑA (RF-58 a RF-60)
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
--- 6.1 fn_cerrar_periodo — RN-12, RN-17, CU-10
+-- 6.1 fn_solicitar_restablecimiento — RF-58, RN-29, RN-30
+--     Recibe el correo y el resumen del enlace que generó la aplicación.
+--     Devuelve siempre TRUE, exista o no la cuenta: quien llama no puede
+--     distinguir un caso del otro, que es justamente lo que pide RN-29.
+--     El enlace solo se registra cuando hay una cuenta activa.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fn_solicitar_restablecimiento(
+    p_correo      VARCHAR,
+    p_hash_enlace CHAR(64),
+    p_ip          VARCHAR DEFAULT NULL,
+    p_minutos     INTEGER DEFAULT 30)
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_id_usuario BIGINT;
+    v_recientes  INTEGER;
+BEGIN
+    SELECT u.id_usuario
+      INTO v_id_usuario
+      FROM usuario u
+     WHERE lower(u.correo) = lower(btrim(p_correo))
+       AND u.estado = 'ACTIVO';
+
+    IF v_id_usuario IS NULL THEN
+        RETURN TRUE;   -- RN-29: la respuesta no revela que la cuenta no existe
+    END IF;
+
+    -- RN-30: como máximo tres solicitudes por hora
+    SELECT COUNT(*)
+      INTO v_recientes
+      FROM solicitud_restablecimiento s
+     WHERE s.id_usuario = v_id_usuario
+       AND s.fecha_creacion > CURRENT_TIMESTAMP - INTERVAL '1 hour';
+
+    IF v_recientes >= 3 THEN
+        RAISE EXCEPTION 'RN-30: se alcanzó el máximo de 3 solicitudes por hora'
+            USING ERRCODE = 'check_violation';
+    END IF;
+
+    INSERT INTO solicitud_restablecimiento
+        (id_usuario, hash_enlace, fecha_vencimiento, direccion_ip)
+    VALUES (v_id_usuario, p_hash_enlace,
+            CURRENT_TIMESTAMP + (p_minutos || ' minutes')::INTERVAL, p_ip);
+
+    RETURN TRUE;
+END;
+$$;
+
+COMMENT ON FUNCTION fn_solicitar_restablecimiento(VARCHAR, CHAR, VARCHAR, INTEGER) IS
+  'RF-58: registra el enlace solo si la cuenta existe y está activa. Siempre devuelve TRUE (RN-29).';
+
+
+-- ---------------------------------------------------------------------
+-- 6.2 fn_validar_enlace — RF-59, RN-28
+--     Devuelve el usuario al que pertenece un enlace vigente, o NULL.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fn_validar_enlace(p_hash_enlace CHAR(64))
+RETURNS BIGINT
+LANGUAGE plpgsql
+STABLE
+AS $$
+DECLARE
+    v_id_usuario BIGINT;
+BEGIN
+    SELECT s.id_usuario
+      INTO v_id_usuario
+      FROM solicitud_restablecimiento s
+      JOIN usuario u ON u.id_usuario = s.id_usuario
+     WHERE s.hash_enlace       = p_hash_enlace
+       AND s.fecha_uso         IS NULL                     -- RN-28: un solo uso
+       AND s.fecha_vencimiento > CURRENT_TIMESTAMP          -- RN-28: vigente
+       AND u.estado            = 'ACTIVO';
+
+    RETURN v_id_usuario;   -- NULL si no sirve, sin decir por qué
+END;
+$$;
+
+COMMENT ON FUNCTION fn_validar_enlace(CHAR) IS
+  'RF-59: devuelve el usuario si el enlace está vigente y sin usar, o NULL.';
+
+
+-- ---------------------------------------------------------------------
+-- 6.3 fn_usar_enlace — RF-60, RN-21, RN-28, RN-31
+--     Cambia la contraseña, marca el enlace como usado e invalida los
+--     demás enlaces vigentes de la cuenta. Todo en una sola transacción.
+-- ---------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fn_usar_enlace(
+    p_hash_enlace CHAR(64),
+    p_hash_nueva  CHAR(64),
+    p_sal_nueva   CHAR(32))
+RETURNS BOOLEAN
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_id_usuario BIGINT;
+BEGIN
+    v_id_usuario := fn_validar_enlace(p_hash_enlace);
+
+    IF v_id_usuario IS NULL THEN
+        RAISE EXCEPTION 'RN-28: el enlace no es válido, ya se usó o venció'
+            USING ERRCODE = 'check_violation';
+    END IF;
+
+    UPDATE usuario
+       SET hash_contrasena         = p_hash_nueva,
+           sal                     = p_sal_nueva,
+           debe_cambiar_contrasena = FALSE,
+           ultimo_acceso           = ultimo_acceso
+     WHERE id_usuario = v_id_usuario;
+
+    UPDATE solicitud_restablecimiento
+       SET fecha_uso = CURRENT_TIMESTAMP
+     WHERE hash_enlace = p_hash_enlace;
+
+    -- RN-31: los demás enlaces vigentes de la cuenta dejan de servir
+    UPDATE solicitud_restablecimiento
+       SET fecha_vencimiento = CURRENT_TIMESTAMP
+     WHERE id_usuario        = v_id_usuario
+       AND fecha_uso         IS NULL
+       AND fecha_vencimiento > CURRENT_TIMESTAMP;
+
+    INSERT INTO evento_seguridad (tipo, id_usuario, operacion)
+    VALUES ('ACCESO_DENEGADO', v_id_usuario, 'restablecimiento_de_contrasena');
+
+    RETURN TRUE;
+END;
+$$;
+
+COMMENT ON FUNCTION fn_usar_enlace(CHAR, CHAR, CHAR) IS
+  'RF-60: fija la contraseña nueva, consume el enlace e invalida los demás (RN-31).';
+
+
+-- =====================================================================
+-- 7. CIERRE DEL PERÍODO
+-- =====================================================================
+
+-- ---------------------------------------------------------------------
+-- 7.1 fn_cerrar_periodo — RN-12, RN-17, CU-10
 --     Traduce el diagrama de actividades de la Figura 14: el período solo
 --     se cierra cuando todas las notas están registradas. Al cerrarlo, cada
 --     matrícula activa pasa a FINALIZADA con su definitiva y su estado de

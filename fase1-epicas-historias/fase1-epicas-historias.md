@@ -300,7 +300,7 @@ DEL USUARIO  al sistema   personas      la oferta                               
 | **Valor de negocio** | Protege la integridad de las notas y da trazabilidad: se sabe quién hizo qué. |
 | **Actores** | Administrador, docente, estudiante |
 | **Criterio de éxito** | Ninguna funcionalidad sensible es accesible sin sesión válida y rol autorizado. |
-| **Historias** | HU-01, HU-02, HU-03, HU-04, HU-05 |
+| **Historias** | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32 |
 | **Prioridad** | Must have — es la base de todo lo demás |
 
 ### EP-02 — Gestión de estudiantes
@@ -387,7 +387,7 @@ DEL USUARIO  al sistema   personas      la oferta                               
 | **Descripción** | Como estudiante quiero enterarme por correo de la publicación de notas y de cambios en mi matrícula. |
 | **Valor de negocio** | Mejora la experiencia, pero no resuelve el problema central. |
 | **Actores** | Estudiante, docente |
-| **Historias** | HU-31, HU-32 |
+| **Historias** | HU-31 |
 | **Prioridad** | Could have — versión 2 |
 
 ---
@@ -1098,11 +1098,30 @@ de historia (escala Fibonacci) y dependencias.
 > **para** enterarme sin revisar el sistema todos los días.
 > **Prioridad:** Won't have (esta versión) · **Estimación:** 8 SP
 
-#### HU-32 — Recuperar contraseña por correo
+#### HU-32 — Restablecer mi contraseña olvidada
 
-> **Como** usuario **quiero** recuperar mi contraseña desde un enlace enviado a mi correo
-> **para** no depender del administrador cuando la olvide.
-> **Prioridad:** Won't have (esta versión) · **Estimación:** 8 SP
+> **Como** usuario **quiero** restablecer yo mismo mi contraseña desde un enlace enviado a mi
+> correo institucional **para** recuperar el acceso sin depender de que alguien esté en la
+> secretaría.
+> **Prioridad:** Must have · **Estimación:** 8 SP · **Sprint:** 1
+
+**Criterios de aceptación**
+
+- **CA-1.** *Dado* que estoy en la pantalla de acceso, *cuando* pulso «Olvidé mi contraseña» y
+  escribo mi correo institucional, *entonces* el sistema me responde que si la cuenta existe
+  recibiré un enlace, **sin confirmar ni negar que el correo esté registrado**.
+- **CA-2.** *Dado* que mi correo sí corresponde a una cuenta activa, *cuando* se procesa la
+  solicitud, *entonces* recibo un correo con un enlace de un solo uso que vence en 30 minutos.
+- **CA-3.** *Dado* que abro el enlace dentro del plazo, *cuando* escribo la contraseña nueva dos
+  veces y coinciden, *entonces* la contraseña queda cambiada y puedo iniciar sesión con ella.
+- **CA-4.** *Dado* que el enlace ya venció o ya se usó, *cuando* lo abro, *entonces* el sistema me
+  informa que no es válido y me ofrece solicitar uno nuevo.
+- **CA-5.** *Dado* que solicito el restablecimiento varias veces, *cuando* llego a la cuarta
+  solicitud en una hora, *entonces* el sistema la rechaza e informa cuándo podré intentarlo de nuevo.
+- **CA-6.** *Dado* que mi cuenta está inactiva, *cuando* solicito el restablecimiento, *entonces*
+  el sistema responde lo mismo que en CA-1 pero no envía ningún correo.
+- **CA-7.** *Dado* que uso el enlace con éxito, *cuando* la contraseña queda cambiada, *entonces*
+  el evento queda registrado en la bitácora de seguridad.
 
 ---
 
@@ -1157,7 +1176,7 @@ A mayor índice, antes se implementa.
 | HU-28 | Horario del curso | EP-04 | 3 | 2 | 8 | 0.63 | Could | v2 |
 | HU-30 | Tablero del administrador | EP-08 | 2 | 1 | 8 | 0.38 | Could | v2 |
 | HU-31 | Notificar notas | EP-09 | 2 | 1 | 8 | 0.38 | Won't | — |
-| HU-32 | Recuperar contraseña | EP-09 | 2 | 2 | 8 | 0.50 | Won't | — |
+| HU-32 | Restablecer contraseña olvidada | EP-01 | 5 | 4 | 8 | 1.13 | Must | 1 |
 
 > **Nota sobre HU-15 y HU-18:** su índice es bajo únicamente por su tamaño (13 SP), no por su
 > importancia. Son el núcleo del sistema y por eso se ubican en sprints propios; si el equipo
@@ -1169,10 +1188,10 @@ A mayor índice, antes se implementa.
   ALTO  |  HU-01 HU-02 HU-04     |  HU-03 HU-14 HU-15
  VALOR  |  HU-06 HU-07 HU-12     |  HU-18 HU-19 HU-21
         |  HU-13 HU-22 HU-23     |  HU-26
-        |  HU-24 HU-17           |
+        |  HU-24 HU-17           |  HU-32
         |------------------------+------------------------
   BAJO  |  HU-05 HU-08 HU-09     |  HU-10 HU-27 HU-28
- VALOR  |  HU-25                 |  HU-29 HU-30 HU-31 HU-32
+ VALOR  |  HU-25                 |  HU-29 HU-30 HU-31
         |    BAJO ESFUERZO       |    ALTO ESFUERZO
            (hacer primero)          (planear y dividir)
 ```
@@ -1186,18 +1205,18 @@ A mayor índice, antes se implementa.
 El MVP es la versión más pequeña del sistema que **resuelve el problema central**: tener una fuente
 única de verdad para estudiantes, docentes, cursos, matrículas y notas.
 
-**23 historias · 126 puntos de historia · 4 sprints de 2 semanas.**
+**24 historias · 134 puntos de historia · 4 sprints de 2 semanas.**
 
 | Épica | Historias del MVP | SP |
 |---|---|---|
-| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05 | 23 |
+| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32 | 31 |
 | EP-02 Estudiantes | HU-06, HU-07, HU-08, HU-09 | 14 |
 | EP-03 Docentes | HU-11, HU-12 | 8 |
 | EP-04 Oferta académica | HU-13, HU-14, HU-17 | 18 |
 | EP-05 Matrícula | HU-15, HU-16, HU-22 | 21 |
 | EP-06 Calificaciones | HU-18, HU-19, HU-21 | 29 |
 | EP-07 Consultas del estudiante | HU-23, HU-24, HU-25 | 13 |
-| **Total** | **23 historias** | **126** |
+| **Total** | **24 historias** | **134** |
 
 ### 11.2 Qué no entra y por qué
 
@@ -1209,7 +1228,7 @@ El MVP es la versión más pequeña del sistema que **resuelve el problema centr
 | HU-27 Automatrícula | La matrícula por ventanilla (HU-15) cubre la necesidad inicial |
 | HU-28 Horarios | Requiere un modelo de bloques horarios que multiplica el alcance |
 | HU-29, HU-30 Reportes | Son analítica, no operación: el sistema funciona sin ellos |
-| HU-31, HU-32 Notificaciones | Dependen de infraestructura de correo, fuera del alcance académico |
+| HU-31 Notificar notas | Depende de envíos masivos programados; el estudiante ya consulta en pantalla (HU-24) |
 
 ### 11.3 Roadmap por sprints
 
@@ -1320,7 +1339,7 @@ requerimientos funcionales.
 
 | Épica | Historias | ¿En el MVP? | Objetivo específico que cumple |
 |---|---|---|---|
-| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05 | Sí | OE-1 |
+| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32 | Sí | OE-1 |
 | EP-02 Gestión de estudiantes | HU-06, HU-07, HU-08, HU-09 / HU-10 (v2) | Sí (parcial) | OE-2 |
 | EP-03 Gestión de docentes | HU-11, HU-12 | Sí | OE-2, OE-3 |
 | EP-04 Oferta académica | HU-13, HU-14, HU-17 / HU-28 (v2) | Sí (parcial) | OE-3 |
@@ -1328,9 +1347,9 @@ requerimientos funcionales.
 | EP-06 Calificaciones | HU-18, HU-19, HU-21 / HU-20 (v2) | Sí (parcial) | OE-5 |
 | EP-07 Consultas del estudiante | HU-23, HU-24, HU-25 | Sí | OE-6 |
 | EP-08 Reportes | HU-22 / HU-26, HU-29, HU-30 (v2) | Parcial | OE-7 |
-| EP-09 Notificaciones | HU-31, HU-32 | No | — |
+| EP-09 Notificaciones | HU-31 | No | — |
 
-**Resumen:** 9 épicas · 32 historias de usuario · 23 en el MVP · 126 puntos de historia.
+**Resumen:** 9 épicas · 32 historias de usuario · 24 en el MVP · 134 puntos de historia.
 
 ---
 
