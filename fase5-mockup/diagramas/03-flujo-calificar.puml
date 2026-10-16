@@ -1,0 +1,45 @@
+@startuml 03-flujo-calificar
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam activity {
+  BorderColor #2E75B6
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+  DiamondBorderColor #BF9000
+  DiamondBackgroundColor #FFF9E6
+  DiamondFontColor #7F6000
+}
+
+title Flujo de pantallas para registrar calificaciones
+
+start
+:Mis cursos del docente;
+note right: Clic 1
+:Registrar notas;
+note right: Clic 2
+:Escoger curso y corte;
+:Digitar las notas de la lista;
+:Pulsar Guardar notas del corte;
+note right: Clic 3
+
+if (Todas las notas estan entre 0.0 y 5.0) then (si)
+  #E2F0D9:Se guardan todas y se recalcula\nla definitiva de cada matricula;
+  :Mensaje con cuantas quedan pendientes;
+  stop
+else (no)
+  #FCE8E6:No se guarda ninguna nota del lote;
+  :Se marca el campo invalido\ncon borde, color y texto;
+  note right
+    Guardar la mitad de un lote
+    dejaria al docente sin saber
+    que alcanzo a registrar.
+  end note
+  detach
+endif
+
+@enduml

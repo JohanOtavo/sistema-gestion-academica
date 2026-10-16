@@ -9,3 +9,12 @@ node_modules/
 # Sistema
 Thumbs.db
 .DS_Store
+
+# Configuracion local de herramientas
+.claude/
+
+# Maqueta de trabajo de la Fase 5. Es el instrumento con el que se midieron
+# RNF-11 y RNF-12 en un navegador, no un entregable: el prototipo que se
+# entrega es el archivo de Figma que genera fase5-mockup/figma-plugin/.
+# Ver ADR-011.
+fase5-mockup/prototipo/

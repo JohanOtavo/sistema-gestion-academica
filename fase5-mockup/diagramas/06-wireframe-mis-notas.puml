@@ -1,0 +1,44 @@
+@startsalt 06-wireframe-mis-notas
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam backgroundColor #FFFFFF
+title Boceto de la pantalla Mis notas del estudiante
+{
+  {* SGA Estudiante | Valentina Rios | Cerrar sesion }
+  {
+    {
+      <b>MI INFORMACION
+      Mis cursos
+      <b>Mis notas
+    } |
+    {
+      Mis cursos > Mis notas
+      <b>Mis notas
+      ..
+      Periodo | Curso | Mostrar
+      ^2026-2 en curso^ | ^Todos mis cursos^ | ^Detalle por corte^
+      ..
+      <b>MAT-101 Matematicas I
+      Mejia Ruiz, Carlos Andres - 4 creditos
+      {#
+        Corte | Peso | Nota | Aporte
+        Corte 1 | 30 % | 4.0 | 1.20
+        Corte 2 | 30 % | 3.0 | 0.90
+        Corte 3 | 40 % | 5.0 | 2.00
+      }
+      <b>Definitiva: 4.1   Aprobada
+      ..
+      <b>LEN-201 Lengua Castellana II
+      {#
+        Corte | Peso | Nota | Aporte
+        Corte 1 | 30 % | 4.3 | 1.29
+        Corte 2 | 30 % | 4.0 | 1.20
+        Corte 3 | 40 % | Pendiente | Sin calcular
+      }
+      <b>Definitiva: en curso, falta el corte 3
+    }
+  }
+}
+@endsalt

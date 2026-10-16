@@ -1,0 +1,88 @@
+@startuml 01-mapa-navegacion
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam rectangle {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+skinparam package {
+  BorderColor #808080
+  BackgroundColor #F8F8F8
+  FontColor #404040
+}
+
+title Mapa de navegacion del SGA
+
+rectangle "Acceso\nindex.html" as login #DEEBF7
+rectangle "Cambio obligatorio\nde contrasena\ncambiar-clave.html" as clave #FFF2CC
+
+login --> clave : primer ingreso
+package "Administrador" {
+  rectangle "Panel\npanel.html" as admin
+  rectangle "Estudiantes\nestudiantes.html" as lista_est
+  rectangle "Formulario\nestudiante-form.html" as form_est
+  rectangle "Ficha\nestudiante-detalle.html" as det_est
+  rectangle "Docentes\ndocentes.html" as docentes
+  rectangle "Cuentas y roles\nusuarios.html" as usuarios
+  rectangle "Periodos\nperiodos.html" as periodos
+  rectangle "Cursos\ncursos.html" as cursos
+  rectangle "Formulario de curso\ncurso-form.html" as form_curso
+  rectangle "Matricular\nmatricular.html" as matricular
+  rectangle "Lista de clase\nlista-clase.html" as lista_clase
+}
+
+admin --> lista_est
+admin --> docentes
+admin --> usuarios
+admin --> periodos
+admin --> cursos
+admin --> matricular
+admin --> lista_clase
+lista_est --> form_est
+lista_est --> det_est
+det_est --> matricular
+cursos --> form_curso
+matricular --> lista_clase
+
+package "Docente" {
+  rectangle "Mis cursos\npanel.html" as docente
+  rectangle "Registrar notas\ncalificar.html" as calificar
+}
+
+docente --> calificar
+docente --> lista_clase : solo sus cursos
+
+package "Estudiante" {
+  rectangle "Mis cursos\npanel.html" as estudiante
+  rectangle "Mis notas\nmis-notas.html" as notas
+}
+
+estudiante --> notas
+
+login --> admin : rol ADMINISTRADOR
+login --> docente : rol DOCENTE
+login --> estudiante : rol ESTUDIANTE
+clave --> estudiante : contrasena actualizada
+
+rectangle "Catalogo de mensajes\nestados.html" as estados #FFF2CC
+login --> estados
+
+note bottom of estados
+  No es una pantalla del sistema.
+  Es la referencia de los mensajes
+  de error, confirmacion, aviso y
+  estado vacio (RNF-10).
+end note
+
+note right of admin
+  Tres niveles como maximo desde
+  cualquier panel hasta cualquier
+  tarea (RNF-13).
+end note
+@enduml

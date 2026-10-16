@@ -1,0 +1,46 @@
+@startsalt 05-wireframe-matricular
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 12
+skinparam backgroundColor #FFFFFF
+title Boceto de la pantalla Matricular estudiante
+{
+  {* SGA Administracion | Laura Restrepo | Cerrar sesion }
+  {
+    {
+      <b>PERSONAS
+      Estudiantes
+      Docentes
+      Cuentas y roles
+      <b>OFERTA
+      Periodos
+      Cursos
+      <b>MATRICULA
+      <b>Matricular
+      Listas de clase
+    } |
+    {
+      Panel > Matricular
+      <b>Matricular estudiante
+      Periodo activo: 2026-2
+      ..
+      Estudiante*       | Curso*
+      ^EST-2026-001 Rios Cardenas, Valentina^ | ^MAT-201 Matematicas II, 21 cupos^
+      Solo estudiantes activos | Solo cursos del periodo activo
+      ..
+      <b>Validaciones del sistema
+      {#
+        Regla | Que verifica | Resultado
+        RN-07 | Hay periodo activo | Cumple
+        RN-06 | El estudiante esta activo | Cumple
+        RN-04 | No esta ya matriculado | Cumple
+        RN-05 | El curso tiene cupo | Cumple, quedan 21
+        RN-14 | No supera 7 matriculas | Sera la 5 de 7
+      }
+      ..
+      [ Registrar matricula ] | [ Cancelar ]
+    }
+  }
+}
+@endsalt
