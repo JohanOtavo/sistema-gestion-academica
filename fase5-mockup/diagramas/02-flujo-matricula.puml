@@ -1,0 +1,43 @@
+@startuml 02-flujo-matricula
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam activity {
+  BorderColor #2E75B6
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+  DiamondBorderColor #BF9000
+  DiamondBackgroundColor #FFF9E6
+  DiamondFontColor #7F6000
+}
+
+title Flujo de pantallas para matricular un estudiante
+
+start
+:Panel del administrador;
+note right: Clic 1
+:Pantalla Matricular;
+note right: Clic 2
+:Escoger estudiante y curso;
+:Pulsar Registrar matricula;
+note right: Clic 3
+
+if (Las cinco reglas se cumplen) then (si)
+  #E2F0D9:Lista de clase con el mensaje\nMatricula registrada correctamente;
+  stop
+else (no)
+  #FCE8E6:Permanece en Matricular\ncon el mensaje de rechazo;
+  note right
+    El formulario conserva lo
+    seleccionado. El mensaje dice
+    la causa y la accion correctiva.
+  end note
+  :Corregir la seleccion;
+  detach
+endif
+
+@enduml

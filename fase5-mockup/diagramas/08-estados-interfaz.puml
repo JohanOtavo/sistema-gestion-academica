@@ -1,0 +1,58 @@
+@startuml 08-estados-interfaz
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam state {
+  BorderColor #2E75B6
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+}
+
+title Estados de una pantalla con datos
+
+[*] --> Cargando
+
+state Cargando #FFF9E6
+Cargando : El sistema busca los datos
+Cargando : Se muestra un aviso breve
+
+state ConDatos #E2F0D9
+ConDatos : Listado, formulario o ficha
+ConDatos : con la informacion pedida
+
+state Vacio #F1F3F4
+Vacio : No hay datos todavia
+Vacio : Se explica que falta y
+Vacio : se ofrece el siguiente paso
+
+state SinResultados #F1F3F4
+SinResultados : El filtro no encontro nada
+SinResultados : Se ofrece quitar el filtro
+
+state Error #FCE8E6
+Error : La operacion no se pudo hacer
+Error : Se dice la causa y que hacer
+
+Cargando --> ConDatos : hay registros
+Cargando --> Vacio : no hay registros
+Cargando --> Error : fallo la consulta
+ConDatos --> SinResultados : se aplica un filtro\nsin coincidencias
+SinResultados --> ConDatos : se quita el filtro
+ConDatos --> Error : una regla rechaza\nla operacion
+Error --> ConDatos : el usuario corrige
+Vacio --> ConDatos : se crea el primer registro
+
+note right of Error
+  Un error nunca deja la pantalla
+  en blanco ni pierde lo digitado.
+end note
+
+note right of Vacio
+  Vacio no es un error. Confundirlos
+  asusta al usuario sin motivo.
+end note
+@enduml

@@ -354,7 +354,31 @@ UPDATE persona
    SET estado = 'INACTIVO'
  WHERE numero_documento = '1098765412';
 
--- 6.4 Eventos de seguridad de ejemplo (RN-23, CU-01)
+-- 6.4 Solicitudes de restablecimiento (RF-58, RN-28): una vigente, una usada
+--     y una vencida, para cubrir los tres estados posibles del enlace.
+INSERT INTO solicitud_restablecimiento
+    (id_usuario, hash_enlace, fecha_creacion, fecha_vencimiento, fecha_uso, direccion_ip)
+SELECT u.id_usuario, v.hash_enlace, v.creacion, v.vencimiento, v.uso, v.ip
+  FROM (VALUES
+        ('sara.osorio@sga.edu.co',
+         encode(sha256('enlace-vigente-de-prueba'::bytea), 'hex'),
+         CURRENT_TIMESTAMP - INTERVAL '5 minutes',
+         CURRENT_TIMESTAMP + INTERVAL '25 minutes',
+         NULL::TIMESTAMP, '192.168.10.61'),
+        ('nicolas.franco@sga.edu.co',
+         encode(sha256('enlace-ya-usado-de-prueba'::bytea), 'hex'),
+         CURRENT_TIMESTAMP - INTERVAL '2 hours',
+         CURRENT_TIMESTAMP - INTERVAL '90 minutes',
+         CURRENT_TIMESTAMP - INTERVAL '110 minutes', '192.168.10.62'),
+        ('juan.herrera@sga.edu.co',
+         encode(sha256('enlace-vencido-de-prueba'::bytea), 'hex'),
+         CURRENT_TIMESTAMP - INTERVAL '3 hours',
+         CURRENT_TIMESTAMP - INTERVAL '150 minutes',
+         NULL::TIMESTAMP, '192.168.10.63')
+       ) AS v(correo, hash_enlace, creacion, vencimiento, uso, ip)
+  JOIN usuario u ON u.correo = v.correo;
+
+-- 6.5 Eventos de seguridad de ejemplo (RN-23, CU-01)
 INSERT INTO evento_seguridad (tipo, correo_intento, id_usuario, operacion, direccion_ip) VALUES
     ('AUTENTICACION_FALLIDA', 'desconocido@sga.edu.co', NULL, 'iniciar_sesion', '192.168.10.44'),
     ('ACCESO_DENEGADO', 'santiago.moreno@sga.edu.co',
@@ -377,4 +401,5 @@ UNION ALL SELECT 'cortes',         COUNT(*) FROM corte
 UNION ALL SELECT 'matriculas',     COUNT(*) FROM matricula
 UNION ALL SELECT 'calificaciones', COUNT(*) FROM calificacion
 UNION ALL SELECT 'auditoria',      COUNT(*) FROM registro_auditoria
-UNION ALL SELECT 'eventos',        COUNT(*) FROM evento_seguridad;
+UNION ALL SELECT 'eventos',        COUNT(*) FROM evento_seguridad
+UNION ALL SELECT 'solicitudes',    COUNT(*) FROM solicitud_restablecimiento;

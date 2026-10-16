@@ -10,7 +10,7 @@
 | **Entregable** | Modelo UML: casos de uso, clases, secuencia, actividades, estados, componentes, paquetes, objetos y despliegue |
 | **Versión** | 1.0 |
 | **Fecha** | 1 de septiembre de 2026 |
-| **Fase anterior** | [Fase 2 — Documento de requerimientos](../fase2/fase2-requerimientos.md) |
+| **Fase anterior** | [Fase 2 — Documento de requerimientos](../fase2-requerimientos/fase2-requerimientos.md) |
 | **Estado** | Listo para revisión / entrada a Fase 4 (Base de datos) |
 
 ---
@@ -42,7 +42,7 @@ No es un ejercicio de dibujo. Cada diagrama responde una pregunta que la Fase 4 
 
 ### 1.2 Del requerimiento al modelo
 
-La correspondencia entre lo escrito en la Fase 2 y lo modelado aquí no es de uno a uno, y conviene decir cómo la manejamos. Un requerimiento funcional describe una obligación del sistema; un caso de uso describe un objetivo completo del usuario. Por eso los 49 requerimientos del producto mínimo viable se agrupan en 27 casos de uso: RF-30 a RF-35, por ejemplo, describen la matrícula y sus cinco validaciones, y todos juntos forman el caso de uso CU-14.
+La correspondencia entre lo escrito en la Fase 2 y lo modelado aquí no es de uno a uno, y conviene decir cómo la manejamos. Un requerimiento funcional describe una obligación del sistema; un caso de uso describe un objetivo completo del usuario. Por eso los 49 requerimientos del producto mínimo viable se agrupan en 28 casos de uso: RF-30 a RF-35, por ejemplo, describen la matrícula y sus cinco validaciones, y todos juntos forman el caso de uso CU-14.
 
 Con las reglas de negocio hicimos lo contrario: en vez de dejarlas en el texto, las llevamos al modelo como restricciones anotadas sobre las clases. Así, quien lea el diagrama de clases ve al lado del atributo cupoMaximo la restricción que lo gobierna, sin tener que volver al documento anterior.
 
@@ -84,7 +84,7 @@ Mantenemos los seis actores identificados en la Fase 1, con una precisión que e
 
 ### 2.2 Diagramas de Casos de Uso
 
-El sistema tiene 27 casos de uso. Dibujarlos en una sola lámina produce una figura ilegible, así que la dividimos en tres por afinidad de módulos. Las tres juntas conforman el modelo completo.
+El sistema tiene 28 casos de uso. Dibujarlos en una sola lámina produce una figura ilegible, así que la dividimos en tres por afinidad de módulos. Las tres juntas conforman el modelo completo.
 
 **Figura 1.** *Casos de uso de seguridad y gestión de personas*
 
@@ -153,6 +153,7 @@ La tabla siguiente relaciona cada caso de uso con su actor iniciador, su módulo
 | CU-25 | Registrar auditoría | Servicio de auditoría | RF-43 | Incluido |
 | CU-26 | Informar tope de cursos alcanzado | Sistema | RF-35 | Extensión |
 | CU-27 | Advertir riesgo académico | Sistema | RF-51 | Extensión |
+| CU-28 | Restablecer contraseña olvidada | Usuario | RF-58, RF-59, RF-60 | Base |
 
 *Nota.* Los casos marcados como incluidos no los inicia un actor humano: se ejecutan siempre dentro de otro caso de uso. Las extensiones se activan solo cuando se cumple su condición.
 
@@ -343,6 +344,45 @@ Excepciones:
 - 3a. El estudiante no tiene matrículas en el período: El sistema informa que no tiene cursos matriculados en el período actual.
 - 2a. Se intenta consultar el identificador de otro estudiante: El sistema ignora el dato recibido y responde con la información del estudiante autenticado.
 
+
+#### CU-28. Restablecer contraseña olvidada
+
+**Tabla 7b.** *Especificación del caso de uso CU-28*
+
+| Elemento | Descripción |
+|---|---|
+| Actor principal | Usuario (administrador, docente o estudiante) |
+| Interesados | La secretaría académica, que deja de ser el único camino para recuperar el acceso. |
+| Precondición | Ninguna: la solicitud se hace desde la pantalla pública de acceso. |
+| Garantía de éxito | La contraseña queda cambiada y el enlace usado deja de servir, o no cambia nada. |
+| Frecuencia de uso | Baja y dispersa, con picos al inicio de cada período. |
+| Requerimientos | RF-58, RF-59, RF-60 |
+| Reglas de negocio | RN-21, RN-28, RN-29, RN-30, RN-31 |
+
+Flujo principal:
+
+1. El usuario pulsa «Olvidé mi contraseña» en la pantalla de acceso.
+2. El usuario escribe su correo institucional.
+3. El sistema verifica que no se hayan hecho más de tres solicitudes de esa cuenta en la última hora.
+4. El sistema busca una cuenta activa con ese correo.
+5. El sistema genera un identificador aleatorio, almacena su resumen criptográfico con fecha de vencimiento a treinta minutos y envía el enlace al correo.
+6. El sistema muestra el mensaje neutro: si la cuenta existe, llegará un enlace.
+7. El usuario abre el enlace recibido.
+8. El sistema compara el resumen del identificador recibido con el almacenado y comprueba que no esté vencido ni usado.
+9. El usuario escribe la contraseña nueva dos veces.
+10. El sistema valida la longitud mínima y la coincidencia, guarda el resumen con una sal nueva, marca el enlace como usado, invalida los demás enlaces de la cuenta y cierra sus sesiones abiertas.
+11. El sistema confirma el cambio y lleva a la pantalla de acceso.
+
+Flujos alternos:
+
+- 4a. El correo no corresponde a ninguna cuenta, o la cuenta está inactiva: El sistema muestra el mismo mensaje del paso 6 y no envía nada. Revelar la diferencia confirmaría qué correos están registrados (RN-29).
+
+Excepciones:
+
+- 3a. Se superó el límite de tres solicitudes por hora: El sistema lo informa e indica a partir de cuándo se puede reintentar.
+- 8a. El enlace está vencido o ya se usó: El sistema informa que no es válido y ofrece solicitar uno nuevo.
+- 10a. Las dos contraseñas no coinciden o son más cortas de ocho caracteres: El sistema marca el campo y no cambia nada.
+
 ---
 
 
@@ -351,7 +391,7 @@ Excepciones:
 
 ### 3.1 Panorama del Modelo de Clases
 
-El modelo tiene once clases y seis enumeraciones. Presentamos primero la vista sin atributos ni operaciones, que permite entender la estructura de un vistazo, y luego dos vistas detalladas: una de personas y seguridad, otra del núcleo académico. Las tres muestran el mismo modelo con distinto nivel de detalle.
+El modelo tiene doce clases y seis enumeraciones. Presentamos primero la vista sin atributos ni operaciones, que permite entender la estructura de un vistazo, y luego dos vistas detalladas: una de personas y seguridad, otra del núcleo académico. Las tres muestran el mismo modelo con distinto nivel de detalle.
 
 **Figura 5.** *Vista general del modelo de clases*
 
@@ -399,6 +439,7 @@ Aquí está el corazón del sistema. Curso custodia el cupo, que es el recurso e
 | Calificacion | Nota de un estudiante en un corte. Pertenece a la matrícula y desaparece con ella. | validarRango(), modificar(), aporte() | RN-09, RN-11, RN-18 |
 | RegistroAuditoria | Conserva el rastro de toda modificación de una calificación: valor anterior, nuevo, autor y fecha. | — | RN-18 |
 | EventoSeguridad | Registra los intentos fallidos de autenticación y los accesos denegados. | — | RN-23 |
+| SolicitudRestablecimiento | Representa un enlace de restablecimiento de contraseña: guarda su resumen criptográfico, su vencimiento y si ya se usó. | estaVigente(), marcarUsada() | RN-28, RN-30, RN-31 |
 
 *Nota.* Las reglas de la última columna son las que la clase hace cumplir por sí misma, sin depender de la capa de servicios.
 
@@ -421,6 +462,7 @@ Las multiplicidades no son un adorno de la notación: cada una es una decisión 
 | Matricula — Calificacion | Composición | 1 a 0..* | Las calificaciones pertenecen a la matrícula y no sobreviven a su eliminación. |
 | Corte — Calificacion | Asociación | 1 a 0..* | Cada calificación corresponde a un corte, que aporta su porcentaje al cálculo. |
 | Usuario — RegistroAuditoria | Asociación | 1 a 0..* | Cada registro de auditoría identifica al usuario que hizo el cambio. |
+| Usuario — SolicitudRestablecimiento | Composición | 1 a 0..* | Las solicitudes pertenecen a la cuenta y no sobreviven a su eliminación. |
 
 
 ### 3.6 Clases de Diseño y Arquitectura en Capas
@@ -614,7 +656,7 @@ La trazabilidad de esta fase responde una pregunta concreta: ¿quedó algún req
 
 | Módulo | Casos de uso | Clases implicadas | Figuras |
 |---|---|---|---|
-| M1 Seguridad | CU-01, CU-02, CU-03, CU-23 | Usuario, Persona, EventoSeguridad | 1, 6, 10 |
+| M1 Seguridad | CU-01, CU-02, CU-03, CU-23, CU-28 | Usuario, Persona, EventoSeguridad, SolicitudRestablecimiento | 1, 6, 10 |
 | M2 Personas | CU-04 a CU-09 | Persona, Estudiante, Docente | 1, 5, 6 |
 | M3 Oferta académica | CU-10 a CU-13 | PeriodoAcademico, Curso, Corte | 2, 7, 14 |
 | M4 Matrícula | CU-14, CU-15, CU-16, CU-24, CU-26 | Matricula, Curso, Estudiante | 2, 4, 7, 9, 11, 16 |
@@ -630,10 +672,10 @@ Antes de dar la fase por terminada revisamos seis condiciones que el modelo debe
 
 | Condición verificada | Resultado | Detalle |
 |---|---|---|
-| Todo requerimiento funcional del MVP pertenece a un caso de uso | Cumple | 49 de 49 |
-| Todo caso de uso tiene un actor que lo inicia o es incluido por otro | Cumple | 27 de 27 |
-| Toda regla de negocio aparece como restricción en una clase o en un diagrama dinámico | Cumple | 27 de 27 |
-| Toda clase del dominio participa en al menos una relación | Cumple | 11 de 11 |
+| Todo requerimiento funcional del MVP pertenece a un caso de uso | Cumple | 52 de 52 |
+| Todo caso de uso tiene un actor que lo inicia o es incluido por otro | Cumple | 28 de 28 |
+| Toda regla de negocio aparece como restricción en una clase o en un diagrama dinámico | Cumple | 31 de 31 |
+| Toda clase del dominio participa en al menos una relación | Cumple | 12 de 12 |
 | Todo estado de las enumeraciones aparece en un diagrama de estados o de actividades | Cumple | 11 de 11 |
 | Los diagramas de secuencia solo usan clases declaradas en la vista de diseño | Cumple | 4 de 4 |
 
@@ -658,7 +700,7 @@ Modelar es decidir, y varias decisiones de esta fase admitían otra respuesta ra
 
 ## 8. Conclusiones
 
-Los 49 requerimientos del producto mínimo viable quedaron representados en 27 casos de uso, 11 clases de dominio, 6 enumeraciones y 20 diagramas. La agrupación no fue mecánica: RF-31 a RF-35, que en la Fase 2 son cinco requerimientos independientes, forman aquí un solo caso incluido, CU-24, porque desde la perspectiva del usuario son una sola cosa: que el sistema no lo deje matricular mal.
+Los 52 requerimientos del producto mínimo viable quedaron representados en 28 casos de uso, 12 clases de dominio, 6 enumeraciones y 20 diagramas. La agrupación no fue mecánica: RF-31 a RF-35, que en la Fase 2 son cinco requerimientos independientes, forman aquí un solo caso incluido, CU-24, porque desde la perspectiva del usuario son una sola cosa: que el sistema no lo deje matricular mal.
 
 El modelado obligó a precisar cosas que la especificación dejaba abiertas. La más importante fue distinguir entre una calificación pendiente y una calificación de 0.0, que llevó a incluir el estado Pendiente en el ciclo de vida de la Calificación. Un sistema que confundiera ambas cosas reprobaría estudiantes por notas que el docente aún no ha subido, y ese error no lo habríamos detectado hasta tener el sistema andando.
 
@@ -684,4 +726,4 @@ Queda una decisión consciente que conviene señalar: mantener el contador de ma
 
 ---
 
-**Resumen del entregable:** 27 casos de uso · 11 clases de dominio · 6 enumeraciones · 20 diagramas UML · 13 tablas · verificación de consistencia en 6 condiciones.
+**Resumen del entregable:** 28 casos de uso · 12 clases de dominio · 6 enumeraciones · 20 diagramas UML · 13 tablas · verificación de consistencia en 6 condiciones.

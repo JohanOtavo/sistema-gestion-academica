@@ -1,0 +1,58 @@
+@startuml 04-flujo-consulta-estudiante
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam activity {
+  BorderColor #2E75B6
+  BackgroundColor #DEEBF7
+  FontColor #1F3864
+  DiamondBorderColor #BF9000
+  DiamondBackgroundColor #FFF9E6
+  DiamondFontColor #7F6000
+}
+
+title Flujo de consulta de notas del estudiante
+
+start
+:Acceso con correo y contrasena;
+
+if (Primer ingreso con clave temporal) then (si)
+  :Cambio obligatorio de contrasena;
+else (no)
+  :Se omite el cambio;
+endif
+
+:Mis cursos;
+note right
+  El identificador del estudiante se toma
+  de la sesion, nunca de la direccion.
+  Cambiar un numero en la URL no muestra
+  los datos de otra persona (RN-23).
+end note
+
+:Mis notas;
+
+if (El corte tiene nota registrada) then (si)
+  :Se muestra la nota y su aporte;
+else (no)
+  :Se muestra Pendiente, nunca 0.0;
+endif
+
+if (Estan registrados todos los cortes) then (si)
+  :Definitiva y estado de aprobacion;
+else (no)
+  :En curso, sin estado de aprobacion;
+endif
+
+if (El promedio del periodo es inferior a 3.0) then (si)
+  :Aviso de riesgo academico;
+else (no)
+  :Sin aviso;
+endif
+
+stop
+@enduml

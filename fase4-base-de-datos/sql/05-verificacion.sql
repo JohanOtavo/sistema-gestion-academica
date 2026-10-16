@@ -12,7 +12,7 @@
 -- Ejecución:
 --   psql -d sga -f 05-verificacion.sql
 --
--- Resultado esperado: 22 avisos "OK" y un único ERROR, el de V-13, que es
+-- Resultado esperado: 26 avisos "OK" y un único ERROR, el de V-13, que es
 -- el resultado que esa comprobación busca provocar. Cualquier otro ERROR
 -- significa que el esquema dejó de cumplir una regla de negocio.
 -- =====================================================================
@@ -455,6 +455,91 @@ BEGIN
         RAISE EXCEPTION 'V-22 FALLA: se inactivó un docente con cursos en el período activo';
     EXCEPTION WHEN check_violation THEN
         RAISE NOTICE 'V-22 OK · RN-24: inactivación de docente con cursos vigentes rechazada';
+    END;
+END $$;
+
+
+-- =====================================================================
+-- 5b. RESTABLECIMIENTO DE CONTRASEÑA
+-- =====================================================================
+
+-- V-23 · RN-29: la solicitud responde igual exista o no la cuenta
+DO $$
+DECLARE
+    v_existe    BOOLEAN;
+    v_no_existe BOOLEAN;
+BEGIN
+    v_existe := fn_solicitar_restablecimiento('valentina.rios@sga.edu.co',
+                  encode(sha256('v23-a'::bytea), 'hex'), '127.0.0.1');
+    v_no_existe := fn_solicitar_restablecimiento('nadie@sga.edu.co',
+                  encode(sha256('v23-b'::bytea), 'hex'), '127.0.0.1');
+
+    IF v_existe IS DISTINCT FROM v_no_existe THEN
+        RAISE EXCEPTION 'V-23 FALLA: la respuesta delata si la cuenta existe';
+    END IF;
+    IF EXISTS (SELECT 1 FROM solicitud_restablecimiento
+                WHERE hash_enlace = encode(sha256('v23-b'::bytea), 'hex')) THEN
+        RAISE EXCEPTION 'V-23 FALLA: se registro un enlace para una cuenta inexistente';
+    END IF;
+    RAISE NOTICE 'V-23 OK · RN-29: la solicitud no revela que correos existen';
+END $$;
+
+-- V-24 · RN-28: el enlace vencido y el ya usado no sirven
+DO $$
+BEGIN
+    IF fn_validar_enlace(encode(sha256('enlace-vencido-de-prueba'::bytea), 'hex')) IS NOT NULL THEN
+        RAISE EXCEPTION 'V-24 FALLA: se acepto un enlace vencido';
+    END IF;
+    IF fn_validar_enlace(encode(sha256('enlace-ya-usado-de-prueba'::bytea), 'hex')) IS NOT NULL THEN
+        RAISE EXCEPTION 'V-24 FALLA: se acepto un enlace ya usado';
+    END IF;
+    IF fn_validar_enlace(encode(sha256('enlace-vigente-de-prueba'::bytea), 'hex')) IS NULL THEN
+        RAISE EXCEPTION 'V-24 FALLA: se rechazo un enlace vigente';
+    END IF;
+    RAISE NOTICE 'V-24 OK · RN-28: solo el enlace vigente y sin usar es aceptado';
+END $$;
+
+-- V-25 · RN-28 y RN-31: al usar el enlace, se consume y cambia la contrasena
+DO $$
+DECLARE
+    v_hash    CHAR(64) := encode(sha256('enlace-vigente-de-prueba'::bytea), 'hex');
+    v_usuario BIGINT;
+    v_antes   CHAR(64);
+    v_despues CHAR(64);
+BEGIN
+    v_usuario := fn_validar_enlace(v_hash);
+    SELECT hash_contrasena INTO v_antes FROM usuario WHERE id_usuario = v_usuario;
+
+    PERFORM fn_usar_enlace(v_hash,
+             encode(sha256('contrasena-nueva'::bytea), 'hex'),
+             md5('sal-nueva'));
+
+    SELECT hash_contrasena INTO v_despues FROM usuario WHERE id_usuario = v_usuario;
+    IF v_antes = v_despues THEN
+        RAISE EXCEPTION 'V-25 FALLA: la contrasena no cambio';
+    END IF;
+
+    BEGIN
+        PERFORM fn_usar_enlace(v_hash, encode(sha256('otra'::bytea), 'hex'), md5('otra'));
+        RAISE EXCEPTION 'V-25 FALLA: el enlace se pudo usar dos veces';
+    EXCEPTION WHEN check_violation THEN
+        RAISE NOTICE 'V-25 OK · RN-28: el enlace cambio la contrasena y quedo consumido';
+    END;
+END $$;
+
+-- V-26 · RN-30: la cuarta solicitud en una hora se rechaza
+DO $$
+DECLARE
+    v_correo VARCHAR := 'mariana.castano@sga.edu.co';
+BEGIN
+    PERFORM fn_solicitar_restablecimiento(v_correo, encode(sha256('v26-1'::bytea), 'hex'));
+    PERFORM fn_solicitar_restablecimiento(v_correo, encode(sha256('v26-2'::bytea), 'hex'));
+    PERFORM fn_solicitar_restablecimiento(v_correo, encode(sha256('v26-3'::bytea), 'hex'));
+    BEGIN
+        PERFORM fn_solicitar_restablecimiento(v_correo, encode(sha256('v26-4'::bytea), 'hex'));
+        RAISE EXCEPTION 'V-26 FALLA: se acepto la cuarta solicitud en una hora';
+    EXCEPTION WHEN check_violation THEN
+        RAISE NOTICE 'V-26 OK · RN-30: la cuarta solicitud en una hora fue rechazada';
     END;
 END $$;
 

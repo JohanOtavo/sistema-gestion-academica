@@ -1,0 +1,73 @@
+@startuml 07-sistema-diseno
+!pragma layout smetana
+skinparam dpi 160
+skinparam defaultFontName "Segoe UI"
+skinparam defaultFontSize 11
+skinparam shadowing false
+skinparam backgroundColor #FFFFFF
+skinparam ArrowColor #1F3864
+skinparam rectangle {
+  BorderColor #2E75B6
+  BackgroundColor #FFFFFF
+  FontColor #1F3864
+}
+skinparam package {
+  BorderColor #808080
+  BackgroundColor #F8F8F8
+  FontColor #404040
+}
+
+title Sistema de diseno del prototipo
+
+package "1. Tokens" #DEEBF7 {
+  rectangle "Color\nazul-900 titulos\nazul-600 acciones\nverde confirmacion\nrojo error\nambar aviso" as color
+  rectangle "Tipografia\nSegoe UI\nbase de 16 px\nescala 1.5 / 1.2 / 1.0" as tipo
+  rectangle "Espaciado\nescala de 4 px\nde 4 a 48" as espacio
+}
+
+package "2. Componentes" #E2F0D9 {
+  rectangle "Barra superior\ncon rol visible" as barra
+  rectangle "Menu lateral\ncon pagina actual\nmarcada" as menu
+  rectangle "Tarjeta" as tarjeta
+  rectangle "Tabla de datos\nque se apila en movil" as tabla
+  rectangle "Formulario\ncampo, ayuda y error" as form
+  rectangle "Boton\nprincipal, secundario\ny de peligro" as boton
+  rectangle "Mensaje\nexito, error,\naviso e informacion" as mensaje
+  rectangle "Distintivo de estado" as estado
+  rectangle "Estado vacio" as vacio
+  rectangle "Filtros de listado" as filtros
+}
+
+package "3. Pantallas" #FFF2CC {
+  rectangle "18 pantallas\n3 roles" as pantallas
+}
+
+color --> barra
+color --> mensaje
+color --> estado
+tipo --> tarjeta
+espacio --> tarjeta
+barra --> pantallas
+menu --> pantallas
+tarjeta --> pantallas
+tabla --> pantallas
+form --> pantallas
+boton --> pantallas
+mensaje --> pantallas
+estado --> pantallas
+vacio --> pantallas
+filtros --> pantallas
+
+note bottom of color
+  Todas las combinaciones superan
+  la relacion de contraste 4.5:1
+  que exige RNF-12.
+end note
+
+note bottom of pantallas
+  Un unico archivo de estilo,
+  sin marcos de trabajo y sin
+  dependencias externas: el
+  prototipo abre con doble clic.
+end note
+@enduml

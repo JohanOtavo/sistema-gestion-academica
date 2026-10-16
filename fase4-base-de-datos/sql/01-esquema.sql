@@ -161,6 +161,44 @@ COMMENT ON COLUMN evento_seguridad.id_usuario IS
   'Nulo cuando el correo del intento no corresponde a ninguna cuenta (excepción 4a de CU-01).';
 
 
+-- ---------------------------------------------------------------------
+-- 1.6 solicitud_restablecimiento — RF-58 a RF-60
+--     RN-28 un solo uso y vencimiento · RN-30 tope por hora
+--
+--     Del enlace se guarda unicamente su resumen criptografico, nunca el
+--     identificador en claro. El razonamiento es el mismo de ADR-007 con
+--     las contrasenas: un enlace almacenado tal cual es una credencial
+--     activa, y quien leyera la tabla podria usarla.
+-- ---------------------------------------------------------------------
+CREATE TABLE solicitud_restablecimiento (
+    id_solicitud       BIGINT    GENERATED ALWAYS AS IDENTITY,
+    id_usuario         BIGINT    NOT NULL,
+    hash_enlace        CHAR(64)  NOT NULL,
+    fecha_creacion     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_vencimiento  TIMESTAMP NOT NULL,
+    fecha_uso          TIMESTAMP,
+    direccion_ip       VARCHAR(45),
+
+    CONSTRAINT pk_solicitud_restablecimiento PRIMARY KEY (id_solicitud),
+    -- Composición con usuario: la solicitud no sobrevive a la cuenta
+    CONSTRAINT fk_solicitud_usuario FOREIGN KEY (id_usuario)
+        REFERENCES usuario (id_usuario) ON DELETE CASCADE ON UPDATE CASCADE,
+    -- El mismo enlace no puede existir dos veces
+    CONSTRAINT uq_solicitud_enlace UNIQUE (hash_enlace),
+    -- RN-28: el vencimiento siempre es posterior a la creación
+    CONSTRAINT ck_solicitud_vencimiento CHECK (fecha_vencimiento > fecha_creacion),
+    -- Una solicitud no se puede haber usado antes de existir
+    CONSTRAINT ck_solicitud_uso CHECK (fecha_uso IS NULL OR fecha_uso >= fecha_creacion)
+);
+
+COMMENT ON TABLE solicitud_restablecimiento IS
+  'RF-58 a RF-60: enlaces de restablecimiento de contraseña, de un solo uso (RN-28).';
+COMMENT ON COLUMN solicitud_restablecimiento.hash_enlace IS
+  'Resumen criptográfico del identificador del enlace. Nunca el enlace en claro.';
+COMMENT ON COLUMN solicitud_restablecimiento.fecha_uso IS
+  'Nula mientras el enlace esté sin usar. Al fijarse, el enlace deja de servir.';
+
+
 -- =====================================================================
 -- 2. MÓDULO M3: OFERTA ACADÉMICA
 -- =====================================================================

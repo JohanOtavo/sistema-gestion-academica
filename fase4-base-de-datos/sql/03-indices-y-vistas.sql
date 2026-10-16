@@ -46,6 +46,11 @@ CREATE INDEX ix_auditoria_entidad ON registro_auditoria (entidad, id_entidad);
 CREATE INDEX ix_auditoria_fecha   ON registro_auditoria (fecha_hora DESC);
 CREATE INDEX ix_evento_fecha      ON evento_seguridad (fecha_hora DESC);
 
+-- Restablecimiento: busqueda del enlace y conteo de solicitudes por hora
+CREATE INDEX ix_solicitud_usuario ON solicitud_restablecimiento (id_usuario, fecha_creacion DESC);
+CREATE INDEX ix_solicitud_vigente ON solicitud_restablecimiento (fecha_vencimiento)
+    WHERE fecha_uso IS NULL;
+
 COMMENT ON INDEX ix_persona_activa IS
   'Índice parcial: las listas y los selectores solo consultan personas activas (ADR-004).';
 

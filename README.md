@@ -26,7 +26,7 @@ El objetivo del proyecto es construir una **fuente única de verdad** con contro
 | 2 | Requerimientos | Documento de requerimientos | ✅ Completada |
 | 3 | Diagramas UML | Casos de uso, clases, secuencia, actividades | ✅ Completada |
 | 4 | Base de datos | Modelo ER/UML + script SQL | ✅ Completada |
-| 5 | Mockup / Prototipo | Prototipo navegable | ⏳ Pendiente |
+| 5 | Mockup / Prototipo | Prototipo navegable | ✅ Completada |
 | 6 | Programa funcional | MVP funcional | ⏳ Pendiente |
 
 ---
@@ -65,21 +65,21 @@ es como cumplimos el criterio de la Definición de Terminado.
 - Glosario del dominio y 18 reglas de negocio candidatas
 - **9 épicas** y **32 historias de usuario** con criterios de aceptación en formato Dado-Cuando-Entonces
 - Priorización MoSCoW + índice valor/esfuerzo
-- **MVP: 23 historias, 126 puntos de historia, 4 sprints**
+- **MVP: 24 historias, 134 puntos de historia, 4 sprints**
 - Definición de Listo y de Terminado, riesgos, métricas de éxito y matriz de trazabilidad
 
 ### Resumen del MVP
 
 | Épica | Historias | Puntos |
 |---|---|---|
-| EP-01 Acceso y seguridad | HU-01 … HU-05 | 23 |
+| EP-01 Acceso y seguridad | HU-01 … HU-05, HU-32 | 31 |
 | EP-02 Gestión de estudiantes | HU-06 … HU-09 | 14 |
 | EP-03 Gestión de docentes | HU-11, HU-12 | 8 |
 | EP-04 Oferta académica | HU-13, HU-14, HU-17 | 18 |
 | EP-05 Matrícula | HU-15, HU-16, HU-22 | 21 |
 | EP-06 Registro de calificaciones | HU-18, HU-19, HU-21 | 29 |
 | EP-07 Consultas del estudiante | HU-23, HU-24, HU-25 | 13 |
-| **Total** | **23 historias** | **126** |
+| **Total** | **24 historias** | **134** |
 
 ---
 
@@ -224,6 +224,53 @@ psql -d sga -f 05-verificacion.sql
 | 9 | De las tablas a los casos de uso | [`09-vistas-y-consultas.puml`](fase4-base-de-datos/diagramas/09-vistas-y-consultas.puml) |
 
 ![Modelo físico para PostgreSQL 16](fase4-base-de-datos/diagramas/03-modelo-fisico.png)
+
+---
+
+## Fase 5 — Mockup y prototipo navegable
+
+📁 [`fase5-mockup/`](fase5-mockup/)
+
+| Archivo | Descripción |
+|---|---|
+| [`Fase5-Mockup-SGA-APA7.docx`](fase5-mockup/Fase5-Mockup-SGA-APA7.docx) | Documento formal en normas APA 7.ª edición |
+| [`fase5-mockup.md`](fase5-mockup/fase5-mockup.md) | Misma información en Markdown, con los diagramas renderizados |
+| [`figma-plugin/`](fase5-mockup/figma-plugin/) | **Prototipo navegable**: generador del archivo de Figma con las 22 pantallas y 142 conexiones |
+| [`diagramas/`](fase5-mockup/diagramas/) | 8 diagramas en PlantUML (fuentes `.puml` y renders `.png`) |
+
+### Abrir el prototipo
+
+El prototipo es un archivo de Figma y se genera por código. En Figma:
+`Plugins > Development > SGA - Generador del prototipo > Run`. Deja las 22 pantallas en una página
+nueva, con las 142 conexiones y el punto de partida fijado en la pantalla de acceso, de modo que el
+botón **Presentar** arranca por donde debe. Los detalles están en
+[`fase5-mockup/figma-plugin/README.md`](fase5-mockup/figma-plugin/README.md).
+
+### Contenido de la fase
+
+- **Estructura de navegación** por rol, con la verificación de los tres clics (RNF-13)
+- **Sistema de diseño**: tokens de color, tipografía y espaciado, y **16 componentes**
+- **22 pantallas**: acceso, restablecimiento de contraseña, paneles de los tres roles, formularios, listados con filtros, fichas de detalle y consultas
+- **Catálogo de mensajes** completo: el Anexo A que la Fase 2 dejó pendiente, con sus reglas de redacción
+- Verificación medida: **142 de 142 conexiones del prototipo y 0 desbordes a 360 px** en las 22 pantallas
+- Plan de prueba de usabilidad para medir RNF-09 antes de programar
+- Los datos del prototipo son los del juego de prueba de la Fase 4: lo que se ve en pantalla es lo que devuelve la base de datos
+- Decisión nueva de arquitectura: [ADR-011](docs/adr/ADR-011-prototipo-en-figma.md)
+
+### Diagramas de la fase
+
+| # | Diagrama | Fuente |
+|---|---|---|
+| 1 | Mapa de navegación | [`01-mapa-navegacion.puml`](fase5-mockup/diagramas/01-mapa-navegacion.puml) |
+| 2 | Flujo de la matrícula | [`02-flujo-matricula.puml`](fase5-mockup/diagramas/02-flujo-matricula.puml) |
+| 3 | Flujo del registro de calificaciones | [`03-flujo-calificar.puml`](fase5-mockup/diagramas/03-flujo-calificar.puml) |
+| 4 | Flujo de consulta del estudiante | [`04-flujo-consulta-estudiante.puml`](fase5-mockup/diagramas/04-flujo-consulta-estudiante.puml) |
+| 5 | Boceto de Matricular estudiante | [`05-wireframe-matricular.puml`](fase5-mockup/diagramas/05-wireframe-matricular.puml) |
+| 6 | Boceto de Mis notas | [`06-wireframe-mis-notas.puml`](fase5-mockup/diagramas/06-wireframe-mis-notas.puml) |
+| 7 | Sistema de diseño | [`07-sistema-diseno.puml`](fase5-mockup/diagramas/07-sistema-diseno.puml) |
+| 8 | Estados de una pantalla con datos | [`08-estados-interfaz.puml`](fase5-mockup/diagramas/08-estados-interfaz.puml) |
+
+![Mapa de navegación](fase5-mockup/diagramas/01-mapa-navegacion.png)
 
 ---
 
