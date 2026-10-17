@@ -267,7 +267,7 @@ es como se mueve algo con masa.
 Estas duraciones no son una ocurrencia: salieron de probarlas en un navegador, en la maqueta de
 trabajo con la que se midió la accesibilidad (sección 10.1). La profundidad —degradados, sombras,
 cintas de color y barras de ocupación— sí está en el prototipo entregado, porque es pintura y no
-animación, y se genera como relleno y efecto de cada frame.
+animación: vive en el relleno y los efectos de cada frame.
 
 ---
 
@@ -592,8 +592,16 @@ El problema real de una interfaz académica en el teléfono es la tabla: seis co
 | Ocultar columnas | Se muestran solo dos o tres | El usuario pierde información sin saberlo |
 | **Apilar en fichas** | **Cada fila se vuelve una ficha con sus rótulos** | **Elegida: no se pierde nada y se lee** |
 
-En móvil, el encabezado de la tabla se oculta y cada celda muestra su rótulo delante del valor,
-tomado del atributo `data-rotulo`. La información es la misma; cambia la forma de leerla.
+En móvil, el encabezado de la tabla se oculta y cada celda muestra su rótulo delante del valor. La
+información es la misma; cambia la forma de leerla.
+
+**Figura 9.** *El listado de estudiantes a 360 píxeles*
+
+![El listado de estudiantes a 360 píxeles](capturas/06-listado-movil.png)
+
+*Nota.* Cada fila de la tabla se vuelve una ficha y ninguna columna se pierde: código,
+estudiante, documento, correo, estado y acciones siguen estando, cada una con su rótulo delante.
+El menú lateral pasa arriba y el contenido ocupa el ancho completo.
 
 
 ### 10.3 Decisiones de Accesibilidad
@@ -615,47 +623,76 @@ tomado del atributo `data-rotulo`. La información es la misma; cambia la forma 
 ## 11. El Prototipo Navegable
 
 
-### 11.1 Cómo Está Hecho
+### 11.1 Qué Contiene y Cómo se Recorre
 
-El prototipo es un archivo de Figma con las 22 pantallas de la Tabla 2 y 142 conexiones entre
-ellas. No se dibujó arrastrando cajas: se **generó por código**, con un plugin propio que sí está
-versionado en el repositorio.
+El prototipo es un archivo de Figma con las 22 pantallas de la Tabla 2 y las 142 conexiones que
+las unen.
 
-```text
-fase5-mockup/figma-plugin/
-├── manifest.json   Declaración del plugin
-├── code.js         Las 22 pantallas descritas como datos, y el generador
-└── README.md       Cómo ejecutarlo y qué se verificó
-```
-
-Cada pantalla se declara como una lista de bloques —título, mensaje, indicadores, tabla,
-formulario, ficha— y el generador los convierte en frames con auto layout, estilos de color y de
-texto, variables y las conexiones del prototipo. La razón es la misma de ADR-006, que ya decidió
-escribir los diagramas en lugar de dibujarlos: un cambio de interfaz se revisa como un diff de
-texto, se repite sin pasos manuales y no depende de que alguien recuerde dónde movió una caja.
-
-**Para abrirlo:** en Figma, `Plugins > Development > SGA - Generador del prototipo > Run`. Genera
-el archivo completo en una página nueva. Para recorrerlo, el botón **Presentar** arranca en la
-pantalla de acceso, que está fijada como punto de partida del flujo.
-
-
-### 11.2 Lo que se Verificó al Generarlo
-
-**Tabla 13.** *Resultado de la generación*
+**Tabla 13.** *Contenido del archivo de Figma*
 
 | Elemento | Cantidad |
 |---|---|
-| Pantallas como frames con auto layout | 22 |
-| Conexiones, todas con transición Smart Animate de 300 ms | 142 |
+| Pantallas, cada una un frame con auto layout | 22 |
+| Conexiones entre pantallas | 142 |
 | Estilos de color y de texto | 23 |
 | Variables de color y espaciado | 25 |
-| Hoja de componentes del sistema de diseño | 1 |
+| Hoja con los componentes del sistema de diseño | 1 |
 
-El generador se probó en dos niveles: primero contra un doble de la API de plugins, fuera de
-Figma, que comprueba que cada nodo recibe valores que la API admite; después ejecutándolo de
-verdad en el editor. El segundo nivel importa, porque el primero no lo ve todo: el detalle de los
-cuatro defectos que aparecieron y de cuál de ellos el doble no detecta está en el README del
-plugin.
+Dos decisiones de construcción sostienen todo lo demás. La primera es el **auto layout**: ninguna
+pantalla es un montón de cajas sueltas, sino contenedores que crecen con su contenido. Por eso una
+tabla con dos filas y otra con ocho se ven bien sin ajustar nada a mano, y por eso el prototipo
+soporta cambiar un texto sin que se descuadre la pantalla entera. La segunda son los **estilos y
+las variables**: los colores y los espaciados de la sección 3 no están escritos pantalla por
+pantalla, sino declarados una vez. Cambiar el azul institucional cambia las 22 pantallas a la vez,
+que es justamente lo que a mano se olvida.
+
+**Para recorrerlo**, el botón **Presentar** arranca en la pantalla de acceso, que está fijada como
+punto de partida del flujo. Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
+a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
+comparten la barra superior y el menú con el mismo nombre y la misma posición, Figma los reconoce
+entre pantallas y los interpola en lugar de cortar en seco.
+
+
+### 11.2 Las Pantallas
+
+Cinco pantallas bastan para ver el sistema de diseño aplicado: una de acceso, un tablero, dos
+formularios con reglas de negocio a la vista y una consulta.
+
+**Figura 10.** *Pantalla de acceso*
+
+![Pantalla de acceso](capturas/01-acceso.png)
+
+*Nota.* El único camino de entrada al sistema. El enlace de restablecimiento abre el flujo de
+autoservicio de HU-32, que no pasa por la secretaría.
+
+**Figura 11.** *Panel del administrador académico*
+
+![Panel del administrador académico](capturas/02-panel-administrador.png)
+
+*Nota.* Los indicadores y la tabla de ocupación salen del juego de prueba de la Fase 4: 11
+estudiantes activos, 23 matrículas sobre 109 cupos. Los dos avisos ámbar no son decorativos, son
+los dos problemas reales de ese juego de datos: MAT-101 lleno y SOC-101 sin docente.
+
+**Figura 12.** *Matricular estudiante*
+
+![Matricular estudiante](capturas/03-matricular.png)
+
+*Nota.* La pantalla muestra el cupo disponible antes de confirmar, de modo que RN-05 se ve en la
+interfaz y no solo se descubre cuando el sistema rechaza la operación.
+
+**Figura 13.** *Registrar calificaciones*
+
+![Registrar calificaciones](capturas/04-calificar.png)
+
+*Nota.* El lote se guarda completo o no se guarda. El error se marca en la fila concreta, no en un
+aviso general al principio del formulario.
+
+**Figura 14.** *Mis notas del estudiante*
+
+![Mis notas del estudiante](capturas/05-mis-notas.png)
+
+*Nota.* La columna de aporte hace visible el cálculo de RN-11: responde de dónde salió la
+definitiva sin que el estudiante tenga que preguntarlo en la ventanilla.
 
 
 ### 11.3 Qué es Real y Qué está Simulado
@@ -775,7 +812,7 @@ distinción entre *Pendiente* y 0.0 se entiende sin explicación.
 
 | Decisión | Por qué | Qué nos cuesta |
 |---|---|---|
-| El prototipo de Figma se genera por código, no se dibuja | Un cambio de interfaz se revisa como un diff y se repite sin pasos manuales, igual que los diagramas de ADR-006 | Escribir el generador cuesta más que arrastrar las primeras pantallas |
+| El prototipo se arma con auto layout, estilos y variables, no con cajas sueltas | Cambiar un token o un componente cambia las 22 pantallas a la vez y nada se descuadra al editar un texto | Montar el sistema de diseño antes que las pantallas retrasa las primeras |
 | La accesibilidad se mide en una maqueta HTML aparte | RNF-11 y RNF-12 se verifican con una medición, no con una opinión | Esa maqueta no se entrega: la medición consta en el informe, pero no se puede repetir desde el repositorio |
 | Un menú por rol, sin opciones deshabilitadas | Lo que no le corresponde a un rol no existe en su interfaz | Tres menús que mantener en lugar de uno |
 | Los datos del prototipo son los de la Fase 4 | Lo que se ve en pantalla es lo que devuelve la base de datos | Hay que actualizarlos si cambia el juego de prueba |
