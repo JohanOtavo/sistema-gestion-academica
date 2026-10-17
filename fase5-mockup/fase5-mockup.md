@@ -597,7 +597,7 @@ información es la misma; cambia la forma de leerla.
 
 **Figura 9.** *El listado de estudiantes a 360 píxeles*
 
-![El listado de estudiantes a 360 píxeles](capturas/06-listado-movil.png)
+![El listado de estudiantes a 360 píxeles](capturas/19-listado-movil.png)
 
 *Nota.* Cada fila de la tabla se vuelve una ficha y ninguna columna se pierde: código,
 estudiante, documento, correo, estado y acciones siguen estando, cada una con su rótulo delante.
@@ -679,45 +679,159 @@ entre pantallas y los interpola en lugar de cortar en seco.
 
 ### 11.2 Las Pantallas
 
-Cinco pantallas bastan para ver el sistema de diseño aplicado: una de acceso, un tablero, dos
-formularios con reglas de negocio a la vista y una consulta.
+Las 22 pantallas, en el orden en que se recorren y agrupadas por el rol que las usa. Cada captura
+sale del prototipo con los datos del juego de prueba de la Fase 4.
 
-**Figura 10.** *Pantalla de acceso*
 
-![Pantalla de acceso](capturas/01-acceso.png)
+#### 11.2.1 Acceso y contraseña
 
-*Nota.* El único camino de entrada al sistema. El enlace de restablecimiento abre el flujo de
-autoservicio de HU-32, que no pasa por la secretaría.
+Seis pantallas que nadie ve más de una vez al día, y que por eso tienen que explicarse solas.
 
-**Figura 11.** *Panel del administrador académico*
+**Figura 10.** *Acceso*
 
-![Panel del administrador académico](capturas/02-panel-administrador.png)
+![Acceso](capturas/01-acceso.png)
 
-*Nota.* Los indicadores y la tabla de ocupación salen del juego de prueba de la Fase 4: 11
-estudiantes activos, 23 matrículas sobre 109 cupos. Los dos avisos ámbar no son decorativos, son
-los dos problemas reales de ese juego de datos: MAT-101 lleno y SOC-101 sin docente.
+*Nota.* El único camino de entrada. El enlace de restablecimiento abre el flujo de autoservicio de HU-32, que no pasa por la secretaría.
 
-**Figura 12.** *Matricular estudiante*
+**Figura 11.** *Cambio obligatorio de contraseña*
 
-![Matricular estudiante](capturas/03-matricular.png)
+![Cambio obligatorio de contraseña](capturas/02-cambio-clave.png)
 
-*Nota.* La pantalla muestra el cupo disponible antes de confirmar, de modo que RN-05 se ve en la
-interfaz y no solo se descubre cuando el sistema rechaza la operación.
+*Nota.* Primer ingreso con contraseña temporal. RN-22 impide seguir usando el sistema hasta cambiarla.
 
-**Figura 13.** *Registrar calificaciones*
+**Figura 12.** *Olvidé mi contraseña*
 
-![Registrar calificaciones](capturas/04-calificar.png)
+![Olvidé mi contraseña](capturas/02b-recuperar.png)
 
-*Nota.* El lote se guarda completo o no se guarda. El error se marca en la fila concreta, no en un
-aviso general al principio del formulario.
+*Nota.* Pide solo el correo. No confirma ni desmiente que la cuenta exista, que es lo que exige RN-29.
 
-**Figura 14.** *Mis notas del estudiante*
+**Figura 13.** *Confirmación del envío*
 
-![Mis notas del estudiante](capturas/05-mis-notas.png)
+![Confirmación del envío](capturas/02c-recuperar-enviado.png)
 
-*Nota.* La columna de aporte hace visible el cálculo de RN-11: responde de dónde salió la
-definitiva sin que el estudiante tenga que preguntarlo en la ventanilla.
+*Nota.* El mismo mensaje se muestre o no la cuenta. Es la mitad visible de RN-29: la respuesta no revela quién está registrado.
 
+**Figura 14.** *Contraseña nueva desde el enlace*
+
+![Contraseña nueva desde el enlace](capturas/02d-recuperar-nueva.png)
+
+*Nota.* Se llega aquí solo con un enlace válido. Al guardar, RN-31 invalida los demás enlaces del mismo usuario.
+
+**Figura 15.** *Enlace no válido*
+
+![Enlace no válido](capturas/02e-recuperar-invalido.png)
+
+*Nota.* Vencido o ya usado. El mensaje no dice cuál de los dos, y ofrece pedir uno nuevo.
+
+
+#### 11.2.2 Administración académica
+
+Once pantallas. Es el rol con más trabajo: registra personas, arma la oferta y matricula.
+
+**Figura 16.** *Panel del administrador académico*
+
+![Panel del administrador académico](capturas/03-panel-admin.png)
+
+*Nota.* Los indicadores y la tabla de ocupación salen del juego de prueba de la Fase 4: 11 estudiantes activos, 23 matrículas sobre 109 cupos. Los dos avisos ámbar no son decorativos, son los dos problemas reales de ese juego de datos: MAT-101 lleno y SOC-101 sin docente.
+
+**Figura 17.** *Listado de estudiantes*
+
+![Listado de estudiantes](capturas/04-estudiantes.png)
+
+*Nota.* Filtros, paginación y el mensaje de éxito del registro anterior. Ningún listado muestra la contraseña ni el documento completo de quien no corresponde.
+
+**Figura 18.** *Formulario de estudiante*
+
+![Formulario de estudiante](capturas/05-estudiante-form.png)
+
+*Nota.* Alta y edición comparten pantalla. El correo debe ser único, que es RN-02.
+
+**Figura 19.** *Ficha del estudiante*
+
+![Ficha del estudiante](capturas/06-estudiante-detalle.png)
+
+*Nota.* Reúne datos personales, matrículas del periodo y promedio. Desde aquí se inactiva, nunca se borra: es la aplicación de ADR-004.
+
+**Figura 20.** *Listado de docentes*
+
+![Listado de docentes](capturas/07-docentes.png)
+
+*Nota.* Muestra cuántos cursos tiene asignado cada docente, que es lo que hace falta para repartir carga.
+
+**Figura 21.** *Cuentas y roles*
+
+![Cuentas y roles](capturas/08-usuarios.png)
+
+*Nota.* Una cuenta por persona y un rol por cuenta (RN-23). La columna de último acceso ayuda a detectar cuentas abandonadas.
+
+**Figura 22.** *Períodos académicos*
+
+![Períodos académicos](capturas/09-periodos.png)
+
+*Nota.* Solo un periodo puede estar activo a la vez (RN-03). Cerrar uno es la acción que habilita abrir el siguiente.
+
+**Figura 23.** *Oferta académica*
+
+![Oferta académica](capturas/10-cursos.png)
+
+*Nota.* Cupo, matriculados y docente por curso. Es la pantalla que responde la pregunta que dispara el aviso del panel.
+
+**Figura 24.** *Formulario de curso*
+
+![Formulario de curso](capturas/11-curso-form.png)
+
+*Nota.* Curso, docente titular y los cortes con su peso. La suma de los pesos debe dar 100 %, que es RN-10.
+
+**Figura 25.** *Matricular estudiante*
+
+![Matricular estudiante](capturas/12-matricular.png)
+
+*Nota.* La pantalla muestra las cinco reglas que el sistema revisa antes de escribir nada, con su resultado para la selección actual, y debajo los cinco mensajes posibles de rechazo. El cupo disponible se ve antes de confirmar, de modo que RN-05 está en la interfaz y no solo en el error.
+
+**Figura 26.** *Lista de clase*
+
+![Lista de clase](capturas/13-lista-clase.png)
+
+*Nota.* Quién está matriculado en un curso. La comparten el administrador y el docente, con el mismo contenido y distinto menú.
+
+
+#### 11.2.3 Docente
+
+**Figura 27.** *Mis cursos del docente*
+
+![Mis cursos del docente](capturas/14-panel-docente.png)
+
+*Nota.* Solo los cursos donde es titular. Lo que no le corresponde no aparece: es ADR-003 en pantalla.
+
+**Figura 28.** *Registrar calificaciones*
+
+![Registrar calificaciones](capturas/15-calificar.png)
+
+*Nota.* El lote se guarda completo o no se guarda. El error se marca en la fila concreta, no en un aviso general al principio del formulario.
+
+
+#### 11.2.4 Estudiante
+
+**Figura 29.** *Mis cursos del estudiante*
+
+![Mis cursos del estudiante](capturas/16-panel-estudiante.png)
+
+*Nota.* Sus matrículas del periodo activo y el estado de cada una.
+
+**Figura 30.** *Mis notas*
+
+![Mis notas](capturas/17-mis-notas.png)
+
+*Nota.* La columna de aporte hace visible el cálculo de RN-11: responde de dónde salió la definitiva sin que el estudiante tenga que preguntarlo en la ventanilla. *Pendiente* nunca se dibuja como 0.0.
+
+
+#### 11.2.5 Referencia de diseño
+
+**Figura 31.** *Catálogo de mensajes*
+
+![Catálogo de mensajes](capturas/18-catalogo-mensajes.png)
+
+*Nota.* No es una pantalla del sistema, es la referencia de diseño: reúne los 25 mensajes con su redacción definitiva. La captura muestra el comienzo; la pantalla continúa con el resto.
 
 ### 11.3 Qué es Real y Qué está Simulado
 
@@ -899,6 +1013,6 @@ y está declarada en la sección 11.2 para que nadie la confunda con el comporta
 
 ---
 
-**Resumen del entregable:** 22 pantallas · 16 componentes · 8 diagramas · 6 capturas ·
+**Resumen del entregable:** 22 pantallas · 16 componentes · 8 diagramas · 23 capturas ·
 18 tablas · catálogo de 25 mensajes · prototipo de Figma con 142 conexiones ·
 0 desbordes a 360 px · 24 historias del MVP trazadas.
