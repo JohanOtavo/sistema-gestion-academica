@@ -235,16 +235,18 @@ psql -d sga -f 05-verificacion.sql
 |---|---|
 | [`Fase5-Mockup-SGA-APA7.docx`](fase5-mockup/Fase5-Mockup-SGA-APA7.docx) | Documento formal en normas APA 7.ª edición |
 | [`fase5-mockup.md`](fase5-mockup/fase5-mockup.md) | Misma información en Markdown, con los diagramas renderizados |
-| [`figma-plugin/`](fase5-mockup/figma-plugin/) | **Prototipo navegable**: generador del archivo de Figma con las 22 pantallas y 142 conexiones |
+| [`capturas/`](fase5-mockup/capturas/) | Pantallazos del prototipo: seis pantallas, una de ellas a 360 píxeles |
 | [`diagramas/`](fase5-mockup/diagramas/) | 8 diagramas en PlantUML (fuentes `.puml` y renders `.png`) |
 
 ### Abrir el prototipo
 
-El prototipo es un archivo de Figma y se genera por código. En Figma:
-`Plugins > Development > SGA - Generador del prototipo > Run`. Deja las 22 pantallas en una página
-nueva, con las 142 conexiones y el punto de partida fijado en la pantalla de acceso, de modo que el
-botón **Presentar** arranca por donde debe. Los detalles están en
-[`fase5-mockup/figma-plugin/README.md`](fase5-mockup/figma-plugin/README.md).
+El prototipo es un archivo de Figma con las 22 pantallas y 142 conexiones. El botón **Presentar**
+arranca en la pantalla de acceso, que está fijada como punto de partida del flujo.
+
+**[Abrir el prototipo en Figma](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed)** — no hace falta cuenta ni iniciar sesión.
+
+Las seis capturas de [`fase5-mockup/capturas/`](fase5-mockup/capturas/) y la sección 11 del informe
+muestran las pantallas principales sin salir del repositorio.
 
 ### Contenido de la fase
 

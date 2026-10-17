@@ -21,7 +21,7 @@ Registramos aquí solo las decisiones que cumplen dos condiciones: **son costosa
 | [ADR-008](ADR-008-stack-tecnologico.md) | Conjunto tecnológico de construcción | **Pendiente** | RE-03, Fase 6 |
 | [ADR-009](ADR-009-motor-postgresql.md) | PostgreSQL como motor de base de datos | Aceptada | ADR-002, RN-03, RN-04, RN-10 |
 | [ADR-010](ADR-010-mapeo-de-la-herencia.md) | Tabla por clase para la jerarquía Persona | Aceptada | RN-01, Fase 3 |
-| [ADR-011](ADR-011-prototipo-en-figma.md) | Prototipo navegable en Figma, generado por código | Aceptada | ADR-006, RE-06, Fase 5 |
+| [ADR-011](ADR-011-prototipo-en-figma.md) | Prototipo navegable en Figma, con medición aparte en el navegador | Aceptada | ADR-006, RNF-11, RNF-12 |
 | [ADR-012](ADR-012-restablecimiento-por-autoservicio.md) | Restablecimiento de contraseña por autoservicio con enlace por correo | Aceptada | ADR-007, HU-32, RN-28 a RN-31 |
 
 ## Estados posibles

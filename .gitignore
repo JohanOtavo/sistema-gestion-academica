@@ -18,3 +18,6 @@ Thumbs.db
 # entrega es el archivo de Figma que genera fase5-mockup/figma-plugin/.
 # Ver ADR-011.
 fase5-mockup/prototipo/
+
+# Herramienta de trabajo para armar el archivo de Figma. No es un entregable.
+fase5-mockup/figma-plugin/
