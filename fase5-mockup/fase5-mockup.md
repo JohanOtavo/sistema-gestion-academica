@@ -237,12 +237,12 @@ prototipo es uno de esos siete valores.
 ### 3.4 Profundidad y Movimiento
 
 Una interfaz plana obliga a leerlo todo para saber qué es importante. La jerarquía se refuerza con
-dos recursos que no añaden ni una dependencia: **elevación** y **movimiento**.
+dos recursos: **elevación** y **movimiento**.
 
-**Elevación.** Cuatro niveles de sombra, declarados como variables (`--sombra-1` a `--sombra-4`)
-y aplicados según cuánto se adelanta un elemento respecto del fondo. El menú y las tarjetas usan el
-nivel 1; la banda de encabezado y los elementos que responden al puntero, el 4. Los degradados
-siguen la misma lógica: el azul institucional se oscurece hacia el fondo y se aclara hacia adelante.
+**Elevación.** Cuatro niveles de sombra, declarados como estilos de efecto y aplicados según cuánto
+se adelanta un elemento respecto del fondo. El menú y las tarjetas usan el nivel 1; la banda de
+encabezado y los elementos que responden al puntero, el 4. Los degradados siguen la misma lógica:
+el azul institucional se oscurece hacia el fondo y se aclara hacia adelante.
 
 **Movimiento.** En el prototipo, cada conexión entre pantallas se genera con *Smart Animate*,
 salida suave y 300 ms. Como las 22 pantallas comparten la barra superior y el menú con el mismo
@@ -567,10 +567,10 @@ accesos directos a sus tres tareas principales, que es lo que permite llegar en 
 |---|---|---|
 | RNF-11 adaptación | Sin desplazamiento horizontal desde 360 px | **Cumple en las 22 pantallas**, verificado midiendo `scrollWidth` contra `clientWidth` |
 | RNF-12 contraste | Mínimo 4.5:1 en texto normal | Cumple; el valor más bajo de la paleta es 4.6:1 |
-| RNF-12 teclado | Foco visible en todo elemento interactivo | Cumple; contorno de 3 px con separación |
+| RNF-12 teclado | Foco visible en todo elemento interactivo | Definido: contorno de 3 px con separación. Comprobado en la maqueta de trabajo |
 | RNF-13 interacciones | Tres o menos para las tareas frecuentes | Cumple; verificado en la Tabla 11 |
 | RNF-10 mensajes | Causa y acción correctiva, sin códigos | Cumple; catálogo completo en la sección 8 |
-| RNF-12 movimiento | La animación no puede ser obligatoria | Cumple; con `prefers-reduced-motion` la interfaz queda quieta y conserva color y jerarquía |
+| RNF-12 movimiento | La animación no puede ser obligatoria | Especificado para la Fase 6: con `prefers-reduced-motion` la interfaz queda quieta y conserva color y jerarquía. Comprobado en la maqueta de trabajo |
 
 *Nota.* Un frame de Figma no se puede medir: no se adapta ni tiene relación de contraste
 calculable sobre un fondo real. Para verificar RNF-11 y RNF-12 con números y no con opiniones, las
@@ -606,16 +606,34 @@ El menú lateral pasa arriba y el contenido ocupa el ancho completo.
 
 ### 10.3 Decisiones de Accesibilidad
 
-- **Enlace de salto al contenido**, primera parada del tabulador en cada pantalla.
-- **Marcado semántico**: `header`, `nav`, `main`, `footer`, `table` con `thead` y `scope`. Un
-  lector de pantalla puede recorrer la estructura sin adivinar.
-- **`aria-current="page"`** en la opción activa del menú.
-- **Rótulos reales** asociados a cada control con `for` e `id`, nunca texto suelto al lado.
+La accesibilidad se decide en dos momentos distintos y conviene separarlos, porque se verifican de
+formas distintas.
+
+**Lo que ya está resuelto en el diseño.** Se ve en el prototipo y se puede revisar ahí mismo:
+
 - **El color nunca comunica solo**: todo estado lleva además texto. Las barras de ocupación
   acompañan a un porcentaje escrito; si se quitan, no se pierde ningún dato.
+- **Contraste suficiente en toda la paleta**, con 4.6:1 como valor más bajo (Tabla 3).
+- **Rótulo visible en todo control**, siempre encima del campo y nunca dentro como texto de ejemplo,
+  que desaparece al escribir.
+- **Orden de lectura explícito** en cada pantalla, que es el que debe seguir el tabulador.
+
+**Lo que queda especificado para la Fase 6.** Son decisiones tomadas, pero que solo existen cuando
+haya código; el equipo de desarrollo no tiene que volver a discutirlas:
+
+- **Indicador de foco propio**, contorno de 3 píxeles con separación, en lugar del que el navegador
+  ponga por defecto.
+- **Enlace de salto al contenido**, primera parada del tabulador en cada pantalla.
+- **Marcado semántico**: `header`, `nav`, `main`, `footer`, y `table` con `thead` y `scope`. Un
+  lector de pantalla recorre la estructura sin adivinar.
+- **`aria-current="page"`** en la opción activa del menú.
+- **Rótulos asociados** a su control con `for` e `id`, nunca texto suelto al lado.
 - **El movimiento se puede apagar**: con `prefers-reduced-motion: reduce`, las entradas, los
   desplazamientos al apuntar y las manchas de color del fondo se detienen. La interfaz queda
   idéntica en color, tamaño y jerarquía; solo deja de moverse.
+
+Las seis de la segunda lista se probaron en la maqueta de trabajo de la sección 10.1, de modo que
+pasan a la Fase 6 comprobadas y no como buenas intenciones.
 
 ---
 
@@ -646,8 +664,14 @@ las variables**: los colores y los espaciados de la sección 3 no están escrito
 pantalla, sino declarados una vez. Cambiar el azul institucional cambia las 22 pantallas a la vez,
 que es justamente lo que a mano se olvida.
 
-**Para recorrerlo**, el botón **Presentar** arranca en la pantalla de acceso, que está fijada como
-punto de partida del flujo. Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
+**Para recorrerlo:**
+
+```text
+https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed
+```
+
+El enlace abre el prototipo en modo presentación, sin necesidad de cuenta ni de iniciar sesión.
+Arranca en la pantalla de acceso, que está fijada como punto de partida del flujo. Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
 a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
 comparten la barra superior y el menú con el mismo nombre y la misma posición, Figma los reconoce
 entre pantallas y los interpola en lugar de cortar en seco.
@@ -706,11 +730,15 @@ Conviene ser explícito para que nadie espere lo que no hay.
 | Toda la navegación entre las 22 pantallas | Los datos: son fijos, del juego de prueba de la Fase 4 |
 | La estructura y el contenido de cada pantalla | El guardado: los formularios navegan, no persisten |
 | El sistema de diseño completo | La autenticación: cualquier botón entra |
-| La adaptación a móvil y el contraste | El cálculo: los resultados están escritos, no se computan |
+| El contraste de la paleta | El cálculo: los resultados están escritos, no se computan |
 | Los mensajes, con su redacción definitiva | La autorización: el prototipo deja cambiar de rol a voluntad |
+| | La adaptación: los frames tienen un ancho fijo, no se reacomodan |
 
-*Nota.* La última fila es a propósito: el prototipo permite saltar entre roles para poder revisarlo
-completo. En el sistema real, ese salto es exactamente lo que RN-23 impide.
+*Nota.* Dos filas piden explicación. La autorización se deja abierta a propósito, para poder
+revisar el prototipo completo con los tres roles; en el sistema real ese salto es exactamente lo
+que RN-23 impide. Y la adaptación no se puede mostrar en Figma: un frame mide lo que se le dibujó.
+El diseño adaptable está definido —la Figura 9 muestra cómo se ve a 360 píxeles— y medido en la
+sección 10.1, pero sobre la maqueta de trabajo, no sobre este archivo.
 
 
 ### 11.4 Qué se Lleva la Fase 6
@@ -816,7 +844,7 @@ distinción entre *Pendiente* y 0.0 se entiende sin explicación.
 | La accesibilidad se mide en una maqueta HTML aparte | RNF-11 y RNF-12 se verifican con una medición, no con una opinión | Esa maqueta no se entrega: la medición consta en el informe, pero no se puede repetir desde el repositorio |
 | Un menú por rol, sin opciones deshabilitadas | Lo que no le corresponde a un rol no existe en su interfaz | Tres menús que mantener en lugar de uno |
 | Los datos del prototipo son los de la Fase 4 | Lo que se ve en pantalla es lo que devuelve la base de datos | Hay que actualizarlos si cambia el juego de prueba |
-| La tabla se apila en móvil en vez de desplazarse | No se pierde ninguna columna y no hay desplazamiento horizontal | Cada celda necesita su rótulo en el marcado |
+| La tabla se apila en móvil en vez de desplazarse | No se pierde ninguna columna y no hay desplazamiento horizontal | Cada celda necesita llevar su rótulo, que en escritorio va en el encabezado |
 | El lote de notas se rechaza completo | Un guardado parcial deja al docente sin saber qué alcanzó a registrar | Más fricción cuando hay un solo error |
 | La definitiva muestra el aporte de cada corte | Responde la pregunta más frecuente en la ventanilla | Una columna más en una pantalla ya densa |
 | *Pendiente* nunca se dibuja como 0.0 | Es la distinción que la Fase 3 declaró crítica | Obliga a un estilo propio y a explicarlo en la interfaz |

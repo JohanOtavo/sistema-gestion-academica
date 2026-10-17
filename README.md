@@ -243,11 +243,10 @@ psql -d sga -f 05-verificacion.sql
 El prototipo es un archivo de Figma con las 22 pantallas y 142 conexiones. El botón **Presentar**
 arranca en la pantalla de acceso, que está fijada como punto de partida del flujo.
 
-> **Enlace del archivo:** _pendiente de publicar._ Compartir el archivo en modo «cualquiera con el
-> enlace puede ver» y pegar aquí la dirección.
+**[Abrir el prototipo en Figma](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed)** — no hace falta cuenta ni iniciar sesión.
 
-Mientras tanto, las seis capturas de [`fase5-mockup/capturas/`](fase5-mockup/capturas/) y la
-sección 11 del informe muestran las pantallas principales.
+Las seis capturas de [`fase5-mockup/capturas/`](fase5-mockup/capturas/) y la sección 11 del informe
+muestran las pantallas principales sin salir del repositorio.
 
 ### Contenido de la fase
 
