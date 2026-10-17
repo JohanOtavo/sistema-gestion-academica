@@ -899,6 +899,6 @@ y está declarada en la sección 11.2 para que nadie la confunda con el comporta
 
 ---
 
-**Resumen del entregable:** 22 pantallas · 16 componentes · 8 diagramas · 18 tablas ·
-catálogo de 25 mensajes · prototipo de Figma generado por código, con 142 conexiones ·
+**Resumen del entregable:** 22 pantallas · 16 componentes · 8 diagramas · 6 capturas ·
+18 tablas · catálogo de 25 mensajes · prototipo de Figma con 142 conexiones ·
 0 desbordes a 360 px · 24 historias del MVP trazadas.
