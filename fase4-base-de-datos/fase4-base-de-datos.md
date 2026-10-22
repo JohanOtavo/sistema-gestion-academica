@@ -40,7 +40,7 @@
 
 ### 1.1 Propósito
 
-La Fase 3 dejó once clases de dominio, seis enumeraciones y veinte diagramas. Esta fase convierte
+La Fase 3 dejó doce clases de dominio, seis enumeraciones y veinte diagramas. Esta fase convierte
 ese modelo en una base de datos que se puede crear, cargar y consultar: doce tablas, dieciséis
 índices, nueve disparadores, diez funciones, ocho vistas y un script SQL ejecutable.
 
@@ -62,7 +62,7 @@ en un formulario produce un dato malo; una restricción declarada en el esquema 
 
 | Construcción UML | Representación relacional | Observación |
 |---|---|---|
-| Clase de dominio | Tabla | Las once clases dieron once tablas, sin agrupar ni dividir ninguna. |
+| Clase de dominio | Tabla | Las doce clases dieron doce tablas, sin agrupar ni dividir ninguna. |
 | Atributo | Columna con tipo y restricción de dominio | Los tipos de la Fase 3 se concretaron en tipos SQL. |
 | Enumeración | `VARCHAR` con restricción `CHECK` | Se prefirió al tipo enumerado nativo por portabilidad (RNF-28). |
 | Generalización | Tabla por clase con clave primaria compartida | Decidido en [ADR-010](../docs/adr/ADR-010-mapeo-de-la-herencia.md). |
@@ -85,7 +85,7 @@ una tabla de catálogo solo añadiría uniones sin añadir capacidad.
 | Modelo conceptual, lógico y físico | Afinamiento de rendimiento con datos reales |
 | Normalización hasta la tercera forma normal | Particionamiento o réplicas de lectura |
 | Script de creación, carga y verificación | Procedimiento de respaldo automatizado (RNF-16, Fase 6) |
-| Las 27 reglas de negocio ubicadas en el esquema o en la capa de negocio | Migraciones versionadas de esquema (Fase 6) |
+| Las 33 reglas de negocio ubicadas en el esquema o en la capa de negocio | Migraciones versionadas de esquema (Fase 6) |
 
 ---
 
@@ -95,7 +95,7 @@ una tabla de catálogo solo añadiría uniones sin añadir capacidad.
 
 ### 2.1 Identificación de las Entidades
 
-El punto de partida fueron las once clases de la Fase 3. Las revisamos una por una con dos
+El punto de partida fueron las doce clases de la Fase 3. Las revisamos una por una con dos
 preguntas: si tiene identidad propia y si necesita conservarse en el tiempo. Las once la pasaron.
 
 **Tabla 2.** *Entidades del modelo conceptual*
@@ -476,7 +476,7 @@ consultas realmente recorren, con lo que ocupan menos y se mantienen más rápid
 
 ### 6.1 El Criterio de Ubicación
 
-Las 27 reglas de la Fase 2 no viven todas en el mismo lugar, y repartirlas fue una de las decisiones
+Las 33 reglas de la Fase 2 no viven todas en el mismo lugar, y repartirlas fue una de las decisiones
 centrales de esta fase. El criterio tiene dos preguntas:
 
 1. **¿Incumplirla corrompe el registro académico?** Si la respuesta es sí, la regla baja al motor.
@@ -495,7 +495,7 @@ disponibles.
 
 ### 6.2 Ubicación Regla por Regla
 
-**Tabla 12.** *Las 27 reglas de negocio y el objeto que las hace cumplir*
+**Tabla 12.** *Las 33 reglas de negocio y el objeto que las hace cumplir*
 
 | Regla | Mecanismo | Objeto del esquema |
 |---|---|---|
@@ -530,15 +530,25 @@ disponibles.
 | RN-29 la solicitud no revela la cuenta | Función | `fn_solicitar_restablecimiento` |
 | RN-30 tope de solicitudes por hora | Función | `fn_solicitar_restablecimiento` |
 | RN-31 invalidar los demás enlaces | Función | `fn_usar_enlace` |
+| RN-32 solo sus datos de contacto | Capa de negocio | Depende de qué usuario tiene la sesión abierta |
+| RN-33 exigir la contraseña actual | Capa de negocio | Compara el resumen de lo escrito contra `usuario.hash_contrasena` |
 
 **Resumen:** 8 reglas con restricción declarativa, 2 con índice único parcial, 9 con disparador,
-4 con función de cálculo y 4 en la capa de negocio. Las cuatro últimas son precisamente las que
-dependen de la sesión del usuario, que la base de datos no conoce.
+4 con función de cálculo y 6 en la capa de negocio. Las seis últimas son precisamente las que
+dependen de la sesión del usuario o de la contraseña en claro, que la base de datos no conoce.
 
 *Nota.* RN-21 merece un comentario. La longitud mínima de la contraseña no se puede verificar en la
 base de datos porque allí solo llega el resumen criptográfico, que siempre mide lo mismo. Es un buen
 ejemplo de una regla que el esquema no puede proteger y que por lo tanto exige una prueba
-automatizada en la capa de negocio (RNF-26).
+automatizada en la capa de negocio (RNF-26). RN-33 cae en la misma categoría y por la misma razón:
+comprobar que la contraseña actual es correcta exige comparar resúmenes, y el valor en claro nunca
+llega a la base de datos.
+
+*Nota.* El módulo de perfil (CU-29) no obligó a cambiar el esquema. `persona.telefono` ya existía y
+es el único campo que RN-32 deja editar al propio usuario; el documento, los nombres y el correo ya
+estaban protegidos por `uq_persona_documento`, `uq_persona_correo` y `uq_usuario_correo`. Que una
+funcionalidad nueva no exija una tabla nueva es señal de que el modelo de la Fase 3 estaba bien
+dimensionado.
 
 
 ### 6.3 La Transacción de la Matrícula
@@ -614,9 +624,9 @@ corresponde a lo que cambia junto y a lo que un revisor necesita leer por separa
 
 | Archivo | Contenido | Cuándo se ejecuta |
 |---|---|---|
-| [`sql/01-esquema.sql`](sql/01-esquema.sql) | Esquema, 11 tablas, claves y restricciones declarativas | Una vez, al crear |
+| [`sql/01-esquema.sql`](sql/01-esquema.sql) | Esquema, 12 tablas, claves y restricciones declarativas | Una vez, al crear |
 | [`sql/02-reglas-de-negocio.sql`](sql/02-reglas-de-negocio.sql) | 10 funciones de negocio y 9 disparadores | Después del esquema, y cada vez que cambie una regla |
-| [`sql/03-indices-y-vistas.sql`](sql/03-indices-y-vistas.sql) | 14 índices y 8 vistas | Después de las reglas |
+| [`sql/03-indices-y-vistas.sql`](sql/03-indices-y-vistas.sql) | 16 índices y 8 vistas | Después de las reglas |
 | [`sql/04-datos-de-prueba.sql`](sql/04-datos-de-prueba.sql) | Juego de datos ficticios del entorno de desarrollo | Solo en desarrollo y en pruebas |
 | [`sql/05-verificacion.sql`](sql/05-verificacion.sql) | 26 comprobaciones de las reglas de negocio | Después de la carga, y en cada cambio del esquema |
 

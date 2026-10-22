@@ -7,7 +7,7 @@
 | **Grupo** | 6 |
 | **Integrante** | Jannier Johan Otavo |
 | **Fase** | 5 de 6 — Mockup / Prototipo |
-| **Entregable** | Estructura de navegación, sistema de diseño, 22 pantallas y prototipo navegable |
+| **Entregable** | Estructura de navegación, sistema de diseño, 24 pantallas y prototipo navegable |
 | **Versión** | 1.0 |
 | **Fecha** | 15 de octubre de 2026 |
 | **Fase anterior** | [Fase 4 — Diseño de la base de datos](../fase4-base-de-datos/fase4-base-de-datos.md) |
@@ -46,7 +46,7 @@ Las cuatro fases anteriores definieron qué debe hacer el sistema, cómo se comp
 cómo guarda la información. Ninguna respondió la pregunta que un docente hará el primer día:
 *¿dónde hago clic para subir las notas?*
 
-Esta fase responde eso. Entrega **22 pantallas** organizadas en una estructura de navegación, un
+Esta fase responde eso. Entrega **24 pantallas** organizadas en una estructura de navegación, un
 sistema de diseño con sus componentes, el catálogo de mensajes del sistema y un **prototipo
 navegable en Figma** que se recorre completo, con los tres roles, antes de escribir una línea de
 código de la aplicación.
@@ -82,8 +82,8 @@ necesita un dato que el esquema no tiene, se nota aquí y no en la Fase 6.
 
 | Incluye | No incluye |
 |---|---|
-| Las 24 historias del producto mínimo viable | Las historias de la versión 2 (boletín, tablero, automatrícula) |
-| Prototipo navegable de 22 pantallas | Aplicación funcional: eso es la Fase 6 |
+| Las 25 historias del producto mínimo viable | Las historias de la versión 2 (boletín, tablero, automatrícula) |
+| Prototipo navegable de 24 pantallas | Aplicación funcional: eso es la Fase 6 |
 | Sistema de diseño con tokens y componentes | Biblioteca de componentes programada |
 | Catálogo de mensajes completo | Traducción a otros idiomas |
 | Verificación de adaptación y contraste | Prueba de usabilidad con usuarios reales (plan en la sección 13) |
@@ -110,7 +110,7 @@ es la referencia de diseño de los estados de la interfaz.
 
 ### 2.2 Las Rutas
 
-**Tabla 2.** *Las 22 pantallas del prototipo*
+**Tabla 2.** *Las 24 pantallas del prototipo*
 
 El nombre de cada pantalla es el del frame en Figma. El prefijo numérico fija el orden de lectura
 en el lienzo y agrupa el flujo de contraseña bajo el 02.
@@ -139,11 +139,13 @@ en el lienzo y agrupa el flujo de contraseña bajo el 02.
 | `16 Panel estudiante` | Mis cursos | Estudiante |
 | `17 Mis notas` | Mis notas y promedio | Estudiante |
 | `18 Catálogo de mensajes` | Catálogo de mensajes | Referencia de diseño |
+| `19 Mi perfil` | Mis datos y mis datos de contacto | Los tres roles |
+| `20 Cambiar contraseña` | Cambio voluntario de contraseña | Los tres roles |
 
 
 ### 2.3 Reglas de Navegación
 
-Cuatro reglas gobiernan la estructura y se aplican sin excepción en las 22 pantallas.
+Cuatro reglas gobiernan la estructura y se aplican sin excepción en las 24 pantallas.
 
 1. **Tres niveles como máximo.** Desde cualquier panel, cualquier tarea del MVP se alcanza en tres
    interacciones o menos. Es la métrica de RNF-13 y la sección 9 la verifica tarea por tarea.
@@ -159,7 +161,7 @@ Cuatro reglas gobiernan la estructura y se aplican sin excepción en las 22 pant
 
 ## 3. Sistema de Diseño
 
-Un prototipo de 22 pantallas escritas sin un sistema común produce 18 variantes del mismo botón.
+Un prototipo de 24 pantallas escritas sin un sistema común produce 18 variantes del mismo botón.
 Definimos los tokens y los componentes antes de escribir la primera pantalla.
 
 **Figura 2.** *Sistema de diseño del prototipo*
@@ -216,7 +218,7 @@ prototipo es uno de esos siete valores.
 
 | Componente | Qué resuelve | Dónde aparece |
 |---|---|---|
-| Barra superior | Identidad, rol activo y salida | Las 22 pantallas |
+| Barra superior | Identidad, rol activo y salida | Las 24 pantallas |
 | Menú lateral | Navegación del rol, con la página actual marcada | 15 pantallas |
 | Ruta de navegación | Dónde está el usuario y cómo vuelve | Pantallas interiores |
 | Tarjeta | Agrupa información relacionada | Paneles y fichas |
@@ -245,7 +247,7 @@ encabezado y los elementos que responden al puntero, el 4. Los degradados siguen
 el azul institucional se oscurece hacia el fondo y se aclara hacia adelante.
 
 **Movimiento.** En el prototipo, cada conexión entre pantallas se genera con *Smart Animate*,
-salida suave y 300 ms. Como las 22 pantallas comparten la barra superior y el menú con el mismo
+salida suave y 300 ms. Como las 24 pantallas comparten la barra superior y el menú con el mismo
 nombre y la misma posición, Figma los reconoce entre pantallas y los interpola en lugar de cortar.
 
 Para la Fase 6, el movimiento dentro de cada pantalla queda especificado aquí. Todo se anima sobre
@@ -274,7 +276,7 @@ animación: vive en el relleno y los efectos de cada frame.
 
 ## 4. Inventario de Pantallas
 
-**Tabla 5.** *Las 22 pantallas, su caso de uso y su historia*
+**Tabla 5.** *Las 24 pantallas, su caso de uso y su historia*
 
 | Pantalla | Caso de uso | Historia | Tipo |
 |---|---|---|---|
@@ -300,8 +302,10 @@ animación: vive en el relleno y los efectos de cada frame.
 | Mis cursos del estudiante | CU-20, CU-22 | HU-23, HU-25 | Tablero |
 | Mis notas | CU-21, CU-27 | HU-24 | Consulta |
 | Catálogo de mensajes | — | — | Referencia |
+| Mi perfil | CU-29 | HU-33 | Detalle y formulario |
+| Cambiar contraseña | CU-03 | HU-05 | Formulario |
 
-*Nota.* Las 24 historias del producto mínimo viable quedan cubiertas. Las dos que no aparecen como
+*Nota.* Las 25 historias del producto mínimo viable quedan cubiertas. Las dos que no aparecen como
 pantalla propia son HU-02 (cerrar sesión), que es la acción de la barra superior, y HU-21 (calcular
 la definitiva), que no tiene interfaz: el sistema la ejecuta al guardar las notas.
 
@@ -565,7 +569,7 @@ accesos directos a sus tres tareas principales, que es lo que permite llegar en 
 
 | Requerimiento | Métrica | Resultado |
 |---|---|---|
-| RNF-11 adaptación | Sin desplazamiento horizontal desde 360 px | **Cumple en las 22 pantallas**, verificado midiendo `scrollWidth` contra `clientWidth` |
+| RNF-11 adaptación | Sin desplazamiento horizontal desde 360 px | **Cumple en las 24 pantallas**, verificado midiendo `scrollWidth` contra `clientWidth` |
 | RNF-12 contraste | Mínimo 4.5:1 en texto normal | Cumple; el valor más bajo de la paleta es 4.6:1 |
 | RNF-12 teclado | Foco visible en todo elemento interactivo | Definido: contorno de 3 px con separación. Comprobado en la maqueta de trabajo |
 | RNF-13 interacciones | Tres o menos para las tareas frecuentes | Cumple; verificado en la Tabla 11 |
@@ -574,7 +578,7 @@ accesos directos a sus tres tareas principales, que es lo que permite llegar en 
 
 *Nota.* Un frame de Figma no se puede medir: no se adapta ni tiene relación de contraste
 calculable sobre un fondo real. Para verificar RNF-11 y RNF-12 con números y no con opiniones, las
-22 pantallas se construyeron primero como una **maqueta de trabajo en HTML y CSS**, se cargaron en
+24 pantallas se construyeron primero como una **maqueta de trabajo en HTML y CSS**, se cargaron en
 un marco de 360 píxeles y se comparó el ancho del contenido con el de la ventana: ninguna desbordó.
 El contraste se calculó par de colores a par de colores sobre esa misma maqueta. La maqueta es un
 instrumento de medición, no un entregable, y no forma parte de la entrega: lo que queda registrado
@@ -597,7 +601,7 @@ información es la misma; cambia la forma de leerla.
 
 **Figura 9.** *El listado de estudiantes a 360 píxeles*
 
-![El listado de estudiantes a 360 píxeles](capturas/19-listado-movil.png)
+![El listado de estudiantes a 360 píxeles](capturas/21-listado-movil.png)
 
 *Nota.* Cada fila de la tabla se vuelve una ficha y ninguna columna se pierde: código,
 estudiante, documento, correo, estado y acciones siguen estando, cada una con su rótulo delante.
@@ -643,35 +647,60 @@ pasan a la Fase 6 comprobadas y no como buenas intenciones.
 
 ### 11.1 Qué Contiene y Cómo se Recorre
 
-El prototipo es un archivo de Figma con las 22 pantallas de la Tabla 2 y las 142 conexiones que
-las unen.
+El prototipo es un archivo de Figma con las 24 pantallas de la Tabla 2 y las conexiones que las
+unen.
 
 **Tabla 13.** *Contenido del archivo de Figma*
 
 | Elemento | Cantidad |
 |---|---|
-| Pantallas, cada una un frame con auto layout | 22 |
-| Conexiones entre pantallas | 142 |
+| Pantallas por versión, cada una un frame con auto layout | 24 |
+| Versiones: escritorio 1440 × 1024 y móvil 360 × 800 | 2 |
+| Conexiones entre pantallas, escritorio | 142 |
+| Conexiones entre pantallas, móvil | 96 |
 | Estilos de color y de texto | 23 |
 | Variables de color y espaciado | 25 |
 | Hoja con los componentes del sistema de diseño | 1 |
+
+El prototipo se entrega en **dos tamaños de ventana**, con las mismas 24 pantallas en cada uno:
+
+| Versión | Tamaño del frame | Por qué ese tamaño |
+|---|---|---|
+| Escritorio | 1440 × 1024 px | Resolución de trabajo de la secretaría académica |
+| Móvil | 360 × 800 px | Es el ancho mínimo que exige RNF-11, no uno cómodo |
+
+El tamaño no es un detalle cosmético: fija el ancho real de trabajo y obliga a decidir qué entra
+en la primera pantalla y qué queda debajo. Cuando el contenido es más alto que la ventana —el
+panel del administrador, la lista de clase, el catálogo de mensajes— la pantalla se desplaza
+verticalmente al presentarla, igual que en un navegador, en lugar de recortarse.
+
+La versión móvil no es la de escritorio encogida. Aplica las mismas tres reglas de adaptación de
+la sección 10.2: el menú lateral pasa arriba, las rejillas de indicadores y accesos directos
+quedan en una sola columna, y cada tabla se convierte en una lista de fichas donde cada celda
+lleva delante el rótulo que en escritorio va en la cabecera. Ninguna columna se pierde.
 
 Dos decisiones de construcción sostienen todo lo demás. La primera es el **auto layout**: ninguna
 pantalla es un montón de cajas sueltas, sino contenedores que crecen con su contenido. Por eso una
 tabla con dos filas y otra con ocho se ven bien sin ajustar nada a mano, y por eso el prototipo
 soporta cambiar un texto sin que se descuadre la pantalla entera. La segunda son los **estilos y
 las variables**: los colores y los espaciados de la sección 3 no están escritos pantalla por
-pantalla, sino declarados una vez. Cambiar el azul institucional cambia las 22 pantallas a la vez,
+pantalla, sino declarados una vez. Cambiar el azul institucional cambia las 24 pantallas a la vez,
 que es justamente lo que a mano se olvida.
 
-**Para recorrerlo:**
+**Para recorrerlo**, sin necesidad de cuenta ni de iniciar sesión. Cada enlace abre su versión en
+modo presentación y arranca en la pantalla de acceso, fijada como punto de partida del flujo:
+
+Escritorio, 1440 × 1024:
 
 ```text
-https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed
+https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=52-4743&starting-point-node-id=52%3A4743&scaling=contain&content-scaling=fixed
 ```
 
-El enlace abre el prototipo en modo presentación, sin necesidad de cuenta ni de iniciar sesión.
-Arranca en la pantalla de acceso, que está fijada como punto de partida del flujo. Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
+Móvil, 360 × 800:
+
+```text
+https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=54-7377&starting-point-node-id=54%3A7377&scaling=contain&content-scaling=fixed
+``` Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
 a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
 comparten la barra superior y el menú con el mismo nombre y la misma posición, Figma los reconoce
 entre pantallas y los interpola en lugar de cortar en seco.
@@ -679,7 +708,7 @@ entre pantallas y los interpola en lugar de cortar en seco.
 
 ### 11.2 Las Pantallas
 
-Las 22 pantallas, en el orden en que se recorren y agrupadas por el rol que las usa. Cada captura
+Las 24 pantallas, en el orden en que se recorren y agrupadas por el rol que las usa. Cada captura
 sale del prototipo con los datos del juego de prueba de la Fase 4.
 
 
@@ -825,9 +854,27 @@ Once pantallas. Es el rol con más trabajo: registra personas, arma la oferta y 
 *Nota.* La columna de aporte hace visible el cálculo de RN-11: responde de dónde salió la definitiva sin que el estudiante tenga que preguntarlo en la ventanilla. *Pendiente* nunca se dibuja como 0.0.
 
 
-#### 11.2.5 Referencia de diseño
+#### 11.2.5 Mi cuenta
 
-**Figura 31.** *Catálogo de mensajes*
+Dos pantallas comunes a los tres roles. El menú de cada rol las incluye bajo el grupo *Mi cuenta*;
+el prototipo muestra la instancia del estudiante.
+
+**Figura 31.** *Mi perfil*
+
+![Mi perfil](capturas/19-perfil.png)
+
+*Nota.* La identidad se muestra pero no se edita, y la pantalla dice por qué: el documento identifica a la persona (RN-01) y el correo es la credencial de acceso (RN-02). Lo único editable es el teléfono (RN-32). El mensaje azul no es decorativo: evita que el usuario busque dónde cambiar su nombre y termine escribiendo a soporte.
+
+**Figura 32.** *Cambiar contraseña*
+
+![Cambiar contraseña](capturas/20-cambiar-contrasena.png)
+
+*Nota.* Es HU-05 desde una sesión abierta, distinta del restablecimiento por correo de HU-32. Pide la contraseña actual (RN-33) y avisa de la consecuencia antes de guardar: se cierran las demás sesiones y caducan los enlaces pendientes (RN-31). Debajo, los dos mensajes que el sistema puede responder.
+
+
+#### 11.2.6 Referencia de diseño
+
+**Figura 33.** *Catálogo de mensajes*
 
 ![Catálogo de mensajes](capturas/18-catalogo-mensajes.png)
 
@@ -841,12 +888,12 @@ Conviene ser explícito para que nadie espere lo que no hay.
 
 | Es real | Está simulado |
 |---|---|
-| Toda la navegación entre las 22 pantallas | Los datos: son fijos, del juego de prueba de la Fase 4 |
+| Toda la navegación entre las 24 pantallas | Los datos: son fijos, del juego de prueba de la Fase 4 |
 | La estructura y el contenido de cada pantalla | El guardado: los formularios navegan, no persisten |
 | El sistema de diseño completo | La autenticación: cualquier botón entra |
 | El contraste de la paleta | El cálculo: los resultados están escritos, no se computan |
 | Los mensajes, con su redacción definitiva | La autorización: el prototipo deja cambiar de rol a voluntad |
-| | La adaptación: los frames tienen un ancho fijo, no se reacomodan |
+| | La adaptación automática: cada frame tiene un tamaño fijo. Hay dos versiones, pero una no se transforma en la otra al cambiar el ancho |
 
 *Nota.* Dos filas piden explicación. La autorización se deja abierta a propósito, para poder
 revisar el prototipo completo con los tres roles; en el sistema real ese salto es exactamente lo
@@ -954,7 +1001,7 @@ distinción entre *Pendiente* y 0.0 se entiende sin explicación.
 
 | Decisión | Por qué | Qué nos cuesta |
 |---|---|---|
-| El prototipo se arma con auto layout, estilos y variables, no con cajas sueltas | Cambiar un token o un componente cambia las 22 pantallas a la vez y nada se descuadra al editar un texto | Montar el sistema de diseño antes que las pantallas retrasa las primeras |
+| El prototipo se arma con auto layout, estilos y variables, no con cajas sueltas | Cambiar un token o un componente cambia las 24 pantallas a la vez y nada se descuadra al editar un texto | Montar el sistema de diseño antes que las pantallas retrasa las primeras |
 | La accesibilidad se mide en una maqueta HTML aparte | RNF-11 y RNF-12 se verifican con una medición, no con una opinión | Esa maqueta no se entrega: la medición consta en el informe, pero no se puede repetir desde el repositorio |
 | Un menú por rol, sin opciones deshabilitadas | Lo que no le corresponde a un rol no existe en su interfaz | Tres menús que mantener en lugar de uno |
 | Los datos del prototipo son los de la Fase 4 | Lo que se ve en pantalla es lo que devuelve la base de datos | Hay que actualizarlos si cambia el juego de prueba |
@@ -970,9 +1017,9 @@ distinción entre *Pendiente* y 0.0 se entiende sin explicación.
 
 ## 15. Conclusiones
 
-Las 24 historias del producto mínimo viable se convirtieron en 22 pantallas, un sistema de diseño
+Las 25 historias del producto mínimo viable se convirtieron en 24 pantallas, un sistema de diseño
 de 16 componentes y un prototipo navegable en Figma que se recorre completo con los tres roles.
-Los requerimientos de interfaz quedaron verificados: ninguna de las 22 pantallas desborda a 360
+Los requerimientos de interfaz quedaron verificados: ninguna de las 24 pantallas desborda a 360
 píxeles, la paleta completa supera el contraste exigido y las cinco tareas más frecuentes se
 alcanzan en tres interacciones o menos.
 
@@ -1013,6 +1060,6 @@ y está declarada en la sección 11.2 para que nadie la confunda con el comporta
 
 ---
 
-**Resumen del entregable:** 22 pantallas · 16 componentes · 8 diagramas · 23 capturas ·
-18 tablas · catálogo de 25 mensajes · prototipo de Figma con 142 conexiones ·
-0 desbordes a 360 px · 24 historias del MVP trazadas.
+**Resumen del entregable:** 24 pantallas · 16 componentes · 8 diagramas · 25 capturas ·
+18 tablas · catálogo de 25 mensajes · prototipo de Figma en escritorio y móvil ·
+0 desbordes a 360 px · 25 historias del MVP trazadas.

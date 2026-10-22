@@ -35,7 +35,7 @@
 
 ### 1.1 Propósito
 
-En la Fase 2 dejamos escrito qué debe hacer el sistema: 57 requerimientos funcionales, 28 no funcionales y 27 reglas de negocio. Aquí damos el paso siguiente y modelamos cómo se organiza por dentro para cumplirlos. El resultado son veinte diagramas en notación UML que muestran el sistema desde cuatro ángulos distintos: qué hace y para quién, con qué información trabaja, cómo se comporta en el tiempo y cómo se instala.
+En la Fase 2 dejamos escrito qué debe hacer el sistema: 62 requerimientos funcionales, 28 no funcionales y 33 reglas de negocio. Aquí damos el paso siguiente y modelamos cómo se organiza por dentro para cumplirlos. El resultado son veinte diagramas en notación UML que muestran el sistema desde cuatro ángulos distintos: qué hace y para quién, con qué información trabaja, cómo se comporta en el tiempo y cómo se instala.
 
 No es un ejercicio de dibujo. Cada diagrama responde una pregunta que la Fase 4 y la Fase 6 nos van a hacer: qué tablas necesitamos, qué clases hay que programar, en qué orden ocurren las validaciones y qué pasa cuando una falla. Modelar antes de programar es lo que evita descubrir esas respuestas a mitad de un sprint.
 
@@ -154,6 +154,7 @@ La tabla siguiente relaciona cada caso de uso con su actor iniciador, su módulo
 | CU-26 | Informar tope de cursos alcanzado | Sistema | RF-35 | Extensión |
 | CU-27 | Advertir riesgo académico | Sistema | RF-51 | Extensión |
 | CU-28 | Restablecer contraseña olvidada | Usuario | RF-58, RF-59, RF-60 | Base |
+| CU-29 | Consultar y actualizar mi perfil | Usuario | RF-61, RF-62 | Base |
 
 *Nota.* Los casos marcados como incluidos no los inicia un actor humano: se ejecutan siempre dentro de otro caso de uso. Las extensiones se activan solo cuando se cumple su condición.
 
@@ -626,7 +627,7 @@ La organización del código en paquetes materializa la arquitectura en capas. L
 | Paquete | Contenido | Depende de |
 |---|---|---|
 | sga.presentacion | Controladores y vistas; traduce peticiones del navegador a llamadas de negocio | sga.negocio, sga.dominio, sga.comun |
-| sga.negocio | Servicios y reglas de negocio; es donde viven las 27 reglas RN | sga.dominio, sga.datos, sga.comun |
+| sga.negocio | Servicios y reglas de negocio; es donde viven las 33 reglas RN | sga.dominio, sga.datos, sga.comun |
 | sga.dominio | Clases del modelo y enumeraciones; no depende de ninguna otra capa | — |
 | sga.datos | Interfaces de repositorio y su implementación para el motor concreto | sga.dominio, sga.comun |
 | sga.comun | Utilidades compartidas: validaciones de formato, manejo de fechas y excepciones | — |
@@ -656,7 +657,7 @@ La trazabilidad de esta fase responde una pregunta concreta: ¿quedó algún req
 
 | Módulo | Casos de uso | Clases implicadas | Figuras |
 |---|---|---|---|
-| M1 Seguridad | CU-01, CU-02, CU-03, CU-23, CU-28 | Usuario, Persona, EventoSeguridad, SolicitudRestablecimiento | 1, 6, 10 |
+| M1 Seguridad | CU-01, CU-02, CU-03, CU-23, CU-28, CU-29 | Usuario, Persona, EventoSeguridad, SolicitudRestablecimiento | 1, 6, 10 |
 | M2 Personas | CU-04 a CU-09 | Persona, Estudiante, Docente | 1, 5, 6 |
 | M3 Oferta académica | CU-10 a CU-13 | PeriodoAcademico, Curso, Corte | 2, 7, 14 |
 | M4 Matrícula | CU-14, CU-15, CU-16, CU-24, CU-26 | Matricula, Curso, Estudiante | 2, 4, 7, 9, 11, 16 |
