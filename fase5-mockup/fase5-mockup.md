@@ -700,8 +700,9 @@ Móvil, 360 × 800:
 
 ```text
 https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=54-7377&starting-point-node-id=54%3A7377&scaling=contain&content-scaling=fixed
-``` Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
-a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
+```
+
+Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
 comparten la barra superior y el menú con el mismo nombre y la misma posición, Figma los reconoce
 entre pantallas y los interpola en lugar de cortar en seco.
 
