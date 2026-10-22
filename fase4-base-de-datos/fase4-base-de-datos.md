@@ -530,15 +530,25 @@ disponibles.
 | RN-29 la solicitud no revela la cuenta | Función | `fn_solicitar_restablecimiento` |
 | RN-30 tope de solicitudes por hora | Función | `fn_solicitar_restablecimiento` |
 | RN-31 invalidar los demás enlaces | Función | `fn_usar_enlace` |
+| RN-32 solo sus datos de contacto | Capa de negocio | Depende de qué usuario tiene la sesión abierta |
+| RN-33 exigir la contraseña actual | Capa de negocio | Compara el resumen de lo escrito contra `usuario.hash_contrasena` |
 
 **Resumen:** 8 reglas con restricción declarativa, 2 con índice único parcial, 9 con disparador,
-4 con función de cálculo y 4 en la capa de negocio. Las cuatro últimas son precisamente las que
-dependen de la sesión del usuario, que la base de datos no conoce.
+4 con función de cálculo y 6 en la capa de negocio. Las seis últimas son precisamente las que
+dependen de la sesión del usuario o de la contraseña en claro, que la base de datos no conoce.
 
 *Nota.* RN-21 merece un comentario. La longitud mínima de la contraseña no se puede verificar en la
 base de datos porque allí solo llega el resumen criptográfico, que siempre mide lo mismo. Es un buen
 ejemplo de una regla que el esquema no puede proteger y que por lo tanto exige una prueba
-automatizada en la capa de negocio (RNF-26).
+automatizada en la capa de negocio (RNF-26). RN-33 cae en la misma categoría y por la misma razón:
+comprobar que la contraseña actual es correcta exige comparar resúmenes, y el valor en claro nunca
+llega a la base de datos.
+
+*Nota.* El módulo de perfil (CU-29) no obligó a cambiar el esquema. `persona.telefono` ya existía y
+es el único campo que RN-32 deja editar al propio usuario; el documento, los nombres y el correo ya
+estaban protegidos por `uq_persona_documento`, `uq_persona_correo` y `uq_usuario_correo`. Que una
+funcionalidad nueva no exija una tabla nueva es señal de que el modelo de la Fase 3 estaba bien
+dimensionado.
 
 
 ### 6.3 La Transacción de la Matrícula

@@ -65,21 +65,21 @@ es como cumplimos el criterio de la Definición de Terminado.
 - Glosario del dominio y 18 reglas de negocio candidatas
 - **9 épicas** y **32 historias de usuario** con criterios de aceptación en formato Dado-Cuando-Entonces
 - Priorización MoSCoW + índice valor/esfuerzo
-- **MVP: 24 historias, 134 puntos de historia, 4 sprints**
+- **MVP: 25 historias, 137 puntos de historia, 4 sprints**
 - Definición de Listo y de Terminado, riesgos, métricas de éxito y matriz de trazabilidad
 
 ### Resumen del MVP
 
 | Épica | Historias | Puntos |
 |---|---|---|
-| EP-01 Acceso y seguridad | HU-01 … HU-05, HU-32 | 31 |
+| EP-01 Acceso y seguridad | HU-01 … HU-05, HU-32, HU-33 | 34 |
 | EP-02 Gestión de estudiantes | HU-06 … HU-09 | 14 |
 | EP-03 Gestión de docentes | HU-11, HU-12 | 8 |
 | EP-04 Oferta académica | HU-13, HU-14, HU-17 | 18 |
 | EP-05 Matrícula | HU-15, HU-16, HU-22 | 21 |
 | EP-06 Registro de calificaciones | HU-18, HU-19, HU-21 | 29 |
 | EP-07 Consultas del estudiante | HU-23, HU-24, HU-25 | 13 |
-| **Total** | **24 historias** | **134** |
+| **Total** | **25 historias** | **137** |
 
 ---
 
@@ -243,7 +243,10 @@ psql -d sga -f 05-verificacion.sql
 El prototipo es un archivo de Figma con las 22 pantallas y 142 conexiones. El botón **Presentar**
 arranca en la pantalla de acceso, que está fijada como punto de partida del flujo.
 
-**[Abrir el prototipo en Figma](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=28-2514&starting-point-node-id=28%3A2514&scaling=contain&content-scaling=fixed)** — no hace falta cuenta ni iniciar sesión.
+El prototipo se entrega en dos tamaños de ventana. No hace falta cuenta ni iniciar sesión:
+
+- **[Escritorio, 1440 × 1024](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=52-4743&starting-point-node-id=52%3A4743&scaling=contain&content-scaling=fixed)**
+- **[Móvil, 360 × 800](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=54-7377&starting-point-node-id=54%3A7377&scaling=contain&content-scaling=fixed)**
 
 Las seis capturas de [`fase5-mockup/capturas/`](fase5-mockup/capturas/) y la sección 11 del informe
 muestran las pantallas principales sin salir del repositorio.

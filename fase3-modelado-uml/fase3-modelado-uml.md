@@ -154,6 +154,7 @@ La tabla siguiente relaciona cada caso de uso con su actor iniciador, su módulo
 | CU-26 | Informar tope de cursos alcanzado | Sistema | RF-35 | Extensión |
 | CU-27 | Advertir riesgo académico | Sistema | RF-51 | Extensión |
 | CU-28 | Restablecer contraseña olvidada | Usuario | RF-58, RF-59, RF-60 | Base |
+| CU-29 | Consultar y actualizar mi perfil | Usuario | RF-61, RF-62 | Base |
 
 *Nota.* Los casos marcados como incluidos no los inicia un actor humano: se ejecutan siempre dentro de otro caso de uso. Las extensiones se activan solo cuando se cumple su condición.
 
@@ -656,7 +657,7 @@ La trazabilidad de esta fase responde una pregunta concreta: ¿quedó algún req
 
 | Módulo | Casos de uso | Clases implicadas | Figuras |
 |---|---|---|---|
-| M1 Seguridad | CU-01, CU-02, CU-03, CU-23, CU-28 | Usuario, Persona, EventoSeguridad, SolicitudRestablecimiento | 1, 6, 10 |
+| M1 Seguridad | CU-01, CU-02, CU-03, CU-23, CU-28, CU-29 | Usuario, Persona, EventoSeguridad, SolicitudRestablecimiento | 1, 6, 10 |
 | M2 Personas | CU-04 a CU-09 | Persona, Estudiante, Docente | 1, 5, 6 |
 | M3 Oferta académica | CU-10 a CU-13 | PeriodoAcademico, Curso, Corte | 2, 7, 14 |
 | M4 Matrícula | CU-14, CU-15, CU-16, CU-24, CU-26 | Matricula, Curso, Estudiante | 2, 4, 7, 9, 11, 16 |

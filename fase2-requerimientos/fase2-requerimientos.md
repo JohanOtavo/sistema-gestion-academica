@@ -166,6 +166,8 @@ Autenticación, gestión de cuentas, roles y autorización de operaciones. Reuni
 | RF-07 | Autorizar las operaciones según el rol | Alta | HU-04 | MVP |
 | RF-08 | Cambiar la contraseña propia | Media | HU-05 | MVP |
 | RF-09 | Registrar los eventos de seguridad | Media | HU-01, HU-04 | MVP |
+| RF-61 | Consultar mi perfil | Media | HU-33 | MVP |
+| RF-62 | Actualizar mis datos de contacto | Media | HU-33 | MVP |
 | RF-58 | Solicitar el restablecimiento de la contraseña | Alta | HU-32 | MVP |
 | RF-59 | Validar el enlace de restablecimiento | Alta | HU-32 | MVP |
 | RF-60 | Fijar la contraseña nueva desde el enlace | Alta | HU-32 | MVP |
@@ -1321,7 +1323,9 @@ Las reglas de negocio vienen del dominio y no de la tecnología: existirían igu
 | RN-28 | Restricción de estado | El enlace de restablecimiento de contraseña sirve una sola vez y vence a los treinta minutos de haberse generado. | Equipo de desarrollo | RF-58, RF-59, RF-60 |
 | RN-29 | Autorización | La solicitud de restablecimiento responde lo mismo exista o no una cuenta con ese correo, para no revelar qué correos están registrados. | Rectoría | RF-58 |
 | RN-30 | Validación | Una cuenta admite como máximo tres solicitudes de restablecimiento por hora. | Equipo de desarrollo | RF-58 |
-| RN-31 | Restricción de integridad | Al fijar una contraseña nueva se invalidan los demás enlaces vigentes de la cuenta y se cierran sus sesiones abiertas. | Equipo de desarrollo | RF-60 |
+| RN-31 | Restricción de integridad | Al fijar una contraseña nueva se invalidan los demás enlaces vigentes de la cuenta y se cierran sus sesiones abiertas. | Equipo de desarrollo | RF-60, RF-08 |
+| RN-32 | Autorización | Desde su perfil el usuario solo modifica sus datos de contacto. El documento, los nombres, el correo institucional y el rol los mantiene la secretaría académica. | Rectoría | RF-61, RF-62 |
+| RN-33 | Autorización | Cambiar la contraseña desde una sesión abierta exige escribir primero la contraseña actual. | Equipo de desarrollo | RF-08 |
 
 *Nota.* Anotamos el origen de cada regla para saber a quién consultar cuando alguien pida cambiarla.
 

@@ -300,7 +300,7 @@ DEL USUARIO  al sistema   personas      la oferta                               
 | **Valor de negocio** | Protege la integridad de las notas y da trazabilidad: se sabe quién hizo qué. |
 | **Actores** | Administrador, docente, estudiante |
 | **Criterio de éxito** | Ninguna funcionalidad sensible es accesible sin sesión válida y rol autorizado. |
-| **Historias** | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32 |
+| **Historias** | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32, HU-33 |
 | **Prioridad** | Must have — es la base de todo lo demás |
 
 ### EP-02 — Gestión de estudiantes
@@ -1123,6 +1123,27 @@ de historia (escala Fibonacci) y dependencias.
 - **CA-7.** *Dado* que uso el enlace con éxito, *cuando* la contraseña queda cambiada, *entonces*
   el evento queda registrado en la bitácora de seguridad.
 
+#### HU-33 — Actualizar mis datos de contacto
+
+> **Como** usuario autenticado **quiero** ver mis datos y corregir mi teléfono desde mi perfil
+> **para** que la institución me localice sin tener que ir a la secretaría por un número mal
+> escrito.
+> **Prioridad:** Should have · **Estimación:** 3 SP · **Sprint:** 4
+
+**Criterios de aceptación**
+
+- **CA-1.** *Dado* que entro a mi perfil, *cuando* se carga la pantalla, *entonces* veo mi
+  documento, mis nombres, mi código, mi rol, mi correo institucional y el estado de mi cuenta.
+- **CA-2.** *Dado* que estoy en mi perfil, *cuando* intento editar el documento, los nombres, el
+  correo institucional o el rol, *entonces* no puedo: esos campos se muestran pero no se editan,
+  y la pantalla explica a quién acudir para corregirlos (RN-32).
+- **CA-3.** *Dado* que escribo un teléfono de entre siete y quince dígitos, *cuando* guardo,
+  *entonces* el sistema lo registra y me confirma el cambio.
+- **CA-4.** *Dado* que dejo el teléfono vacío, *cuando* guardo, *entonces* el sistema lo acepta:
+  el teléfono es opcional.
+- **CA-5.** *Dado* que estoy en mi perfil, *cuando* pulso «Cambiar mi contraseña», *entonces*
+  llego a la pantalla de HU-05 sin perder la sesión.
+
 ---
 
 ## 10. Priorización
@@ -1177,6 +1198,7 @@ A mayor índice, antes se implementa.
 | HU-30 | Tablero del administrador | EP-08 | 2 | 1 | 8 | 0.38 | Could | v2 |
 | HU-31 | Notificar notas | EP-09 | 2 | 1 | 8 | 0.38 | Won't | — |
 | HU-32 | Restablecer contraseña olvidada | EP-01 | 5 | 4 | 8 | 1.13 | Must | 1 |
+| HU-33 | Actualizar mis datos de contacto | EP-01 | 3 | 2 | 3 | 1.67 | Should | 4 |
 
 > **Nota sobre HU-15 y HU-18:** su índice es bajo únicamente por su tamaño (13 SP), no por su
 > importancia. Son el núcleo del sistema y por eso se ubican en sprints propios; si el equipo
@@ -1205,18 +1227,18 @@ A mayor índice, antes se implementa.
 El MVP es la versión más pequeña del sistema que **resuelve el problema central**: tener una fuente
 única de verdad para estudiantes, docentes, cursos, matrículas y notas.
 
-**24 historias · 134 puntos de historia · 4 sprints de 2 semanas.**
+**25 historias · 137 puntos de historia · 4 sprints de 2 semanas.**
 
 | Épica | Historias del MVP | SP |
 |---|---|---|
-| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32 | 31 |
+| EP-01 Acceso y seguridad | HU-01, HU-02, HU-03, HU-04, HU-05, HU-32, HU-33 | 34 |
 | EP-02 Estudiantes | HU-06, HU-07, HU-08, HU-09 | 14 |
 | EP-03 Docentes | HU-11, HU-12 | 8 |
 | EP-04 Oferta académica | HU-13, HU-14, HU-17 | 18 |
 | EP-05 Matrícula | HU-15, HU-16, HU-22 | 21 |
 | EP-06 Calificaciones | HU-18, HU-19, HU-21 | 29 |
 | EP-07 Consultas del estudiante | HU-23, HU-24, HU-25 | 13 |
-| **Total** | **24 historias** | **134** |
+| **Total** | **25 historias** | **137** |
 
 ### 11.2 Qué no entra y por qué
 
@@ -1349,7 +1371,7 @@ requerimientos funcionales.
 | EP-08 Reportes | HU-22 / HU-26, HU-29, HU-30 (v2) | Parcial | OE-7 |
 | EP-09 Notificaciones | HU-31 | No | — |
 
-**Resumen:** 9 épicas · 32 historias de usuario · 24 en el MVP · 134 puntos de historia.
+**Resumen:** 9 épicas · 33 historias de usuario · 25 en el MVP · 137 puntos de historia.
 
 ---
 

@@ -28,7 +28,7 @@ contrastar el plan contra la realidad; con dos o tres, se puede proyectar.
 >
 > El propio registro ya advertía que con 27 puntos de velocidad los 126 del producto mínimo viable
 > necesitaban cinco sprints en lugar de cuatro. Con la mitad de capacidad la advertencia deja de ser
-> un riesgo y pasa a ser un hecho: **134 puntos no caben en cuatro sprints de una sola persona.**
+> un riesgo y pasa a ser un hecho: **137 puntos no caben en cuatro sprints de una sola persona.**
 >
 > Las dos salidas siguen siendo las mismas y ahora hay que tomar ambas, no una:
 >
@@ -44,15 +44,15 @@ contrastar el plan contra la realidad; con dos o tres, se puede proyectar.
 
 ## Plan inicial (dimensionado para dos personas)
 
-Distribución de los puntos del producto mínimo viable, según la Fase 1. El total subió de 126 a 134 al incorporar HU-32 (restablecer la contraseña olvidada) al sprint 1:
+Distribución de los puntos del producto mínimo viable, según la Fase 1. El total subió de 126 a 134 al incorporar HU-32 (restablecer la contraseña olvidada) al sprint 1, y a 137 al sumar HU-33 (actualizar mis datos de contacto) al sprint 4:
 
 | Sprint | Objetivo | Puntos planeados |
 |---|---|---|
 | 1 | Acceso por rol, restablecimiento de contraseña y registro de estudiantes | 36 |
 | 2 | Oferta académica configurada | 29 |
 | 3 | Matrícula con reglas aplicadas | 24 |
-| 4 | Calificaciones y consultas del estudiante | 45 |
-| | **Total** | **134** |
+| 4 | Calificaciones, consultas del estudiante y mi perfil | 48 |
+| | **Total** | **137** |
 
 ## Registro real
 
@@ -61,7 +61,7 @@ Distribución de los puntos del producto mínimo viable, según la Fase 1. El to
 | 1 | 36 | — | — | — | Pendiente de ejecutar |
 | 2 | 29 | — | — | — | Pendiente de ejecutar |
 | 3 | 24 | — | — | — | Pendiente de ejecutar |
-| 4 | 45 | — | — | — | Pendiente de ejecutar |
+| 4 | 48 | — | — | — | Pendiente de ejecutar |
 
 **Velocidad promedio:** sin datos todavía.
 
@@ -73,7 +73,7 @@ commit correspondiente usa el alcance `seguimiento`.
 **Al cerrar el sprint 1.** Comparamos lo completado contra los 28 puntos planeados. Si la diferencia
 supera el 20 %, replanificamos los sprints 2 a 4 antes de comprometer el siguiente.
 
-**Al cerrar el sprint 2.** Con dos datos calculamos el promedio y proyectamos si los 134 puntos
+**Al cerrar el sprint 2.** Con dos datos calculamos el promedio y proyectamos si los 137 puntos
 caben en cuatro sprints. Un solo dato puede ser atípico; dos ya insinúan una tendencia.
 
 **En adelante.** Comprometemos por sprint una cantidad de puntos igual al promedio de los dos
