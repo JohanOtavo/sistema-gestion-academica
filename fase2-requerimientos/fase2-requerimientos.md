@@ -1185,7 +1185,7 @@ Organizamos los 28 requerimientos no funcionales con las ocho características d
 | ID | Subcaracterística | Enunciado | Métrica de verificación | Prior. |
 |---|---|---|---|---|
 | RNF-01 | Corrección funcional | Los cálculos de nota definitiva y de promedio general deben producir el mismo resultado que el cálculo manual verificado. | Cero discrepancias en una muestra de 30 matrículas contrastadas manualmente | Alta |
-| RNF-02 | Pertinencia funcional | El sistema debe implementar la totalidad de las reglas de negocio declaradas en este documento. | 100 % de las reglas RN-01 a RN-31 con al menos un requerimiento funcional asociado | Alta |
+| RNF-02 | Pertinencia funcional | El sistema debe implementar la totalidad de las reglas de negocio declaradas en este documento. | 100 % de las reglas RN-01 a RN-33 con al menos un requerimiento funcional asociado | Alta |
 
 
 ### 4.2 Eficiencia de desempeño

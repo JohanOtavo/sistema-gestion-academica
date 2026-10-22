@@ -33,6 +33,7 @@
 14. [Decisiones de Diseño de Interfaz](#14-decisiones-de-diseno-de-interfaz)
 15. [Conclusiones](#15-conclusiones)
 16. [Referencias](#16-referencias)
+17. [Anexo B. Medición de los requerimientos de interfaz](#anexo-b-medición-de-los-requerimientos-de-interfaz)
 
 ---
 
@@ -72,7 +73,7 @@ necesita un dato que el esquema no tiene, se nota aquí y no en la Fase 6.
 |---|---|
 | Qué puede hacer cada rol | Casos de uso de la Fase 3 |
 | Qué campos tiene un formulario | Columnas y dominios de la Fase 4 |
-| Qué valida el sistema y en qué orden | Reglas de negocio RN-01 a RN-27 |
+| Qué valida el sistema y en qué orden | Reglas de negocio RN-01 a RN-33 |
 | Qué dice un mensaje de error | RNF-10 y los flujos de excepción de la Fase 3 |
 | Qué columnas tiene un listado | Vistas `vw_*` de la Fase 4 |
 | Qué aparece cuando no hay datos | Estados vacíos definidos en esta fase |
@@ -182,16 +183,18 @@ salió bien, el rojo que algo se rechazó, el ámbar que conviene prestar atenci
 
 | Token | Valor | Uso | Contraste |
 |---|---|---|---|
-| `--azul-900` | `#1f3864` | Títulos y barra superior | 11.6:1 sobre blanco |
-| `--azul-600` | `#2e75b6` | Acciones principales | 4.6:1 sobre blanco |
-| `--gris-900` | `#1a1a1a` | Texto principal | 15.3:1 sobre blanco |
-| `--gris-700` | `#44474d` | Texto secundario y ayudas | 8.9:1 sobre blanco |
-| `--verde-texto` | `#10632b` | Confirmación | 7.3:1 sobre su fondo |
-| `--rojo-texto` | `#a50e0e` | Error | 7.6:1 sobre su fondo |
-| `--ambar-texto` | `#7f6000` | Aviso | 7.1:1 sobre su fondo |
+| `--azul-900` | `#1f3864` | Títulos y barra superior | 11.62:1 sobre blanco |
+| `--azul-600` | `#2e75b6` | Acciones principales | 4.84:1 sobre blanco |
+| `--gris-900` | `#1a1a1a` | Texto principal | 17.40:1 sobre blanco |
+| `--gris-700` | `#44474d` | Texto secundario y ayudas | 9.32:1 sobre blanco |
+| `--verde-texto` | `#10632b` | Confirmación | 6.51:1 sobre `#e6f4ea` |
+| `--rojo-texto` | `#a50e0e` | Error | 6.68:1 sobre `#fce8e6` |
+| `--ambar-texto` | `#7f6000` | Aviso | 5.48:1 sobre `#fef7e0` |
 
 *Nota.* Todas superan el 4.5:1 que exige RNF-12 para texto normal. El mínimo de la paleta es el
-azul de acción, con 4.6:1, y se usa únicamente como fondo de botón con texto blanco encima.
+azul de acción, con 4.84:1, y se usa como fondo de botón con texto blanco encima, combinación que
+da esa misma razón. Las cifras se calculan con la fórmula de luminancia relativa de WCAG 2.1; el
+procedimiento está en el Anexo B y se puede repetir.
 
 
 ### 3.2 Tipografía y Espaciado
@@ -570,7 +573,7 @@ accesos directos a sus tres tareas principales, que es lo que permite llegar en 
 | Requerimiento | Métrica | Resultado |
 |---|---|---|
 | RNF-11 adaptación | Sin desplazamiento horizontal desde 360 px | **Cumple en las 24 pantallas**, verificado midiendo `scrollWidth` contra `clientWidth` |
-| RNF-12 contraste | Mínimo 4.5:1 en texto normal | Cumple; el valor más bajo de la paleta es 4.6:1 |
+| RNF-12 contraste | Mínimo 4.5:1 en texto normal | Cumple; el valor más bajo de la paleta es 4.84:1 (Anexo B) |
 | RNF-12 teclado | Foco visible en todo elemento interactivo | Definido: contorno de 3 px con separación. Comprobado en la maqueta de trabajo |
 | RNF-13 interacciones | Tres o menos para las tareas frecuentes | Cumple; verificado en la Tabla 11 |
 | RNF-10 mensajes | Causa y acción correctiva, sin códigos | Cumple; catálogo completo en la sección 8 |
@@ -617,7 +620,7 @@ formas distintas.
 
 - **El color nunca comunica solo**: todo estado lleva además texto. Las barras de ocupación
   acompañan a un porcentaje escrito; si se quitan, no se pierde ningún dato.
-- **Contraste suficiente en toda la paleta**, con 4.6:1 como valor más bajo (Tabla 3).
+- **Contraste suficiente en toda la paleta**, con 4.84:1 como valor más bajo (Tabla 3).
 - **Rótulo visible en todo control**, siempre encima del campo y nunca dentro como texto de ejemplo,
   que desaparece al escribir.
 - **Orden de lectura explícito** en cada pantalla, que es el que debe seguir el tabulador.
@@ -700,8 +703,9 @@ Móvil, 360 × 800:
 
 ```text
 https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=54-7377&starting-point-node-id=54%3A7377&scaling=contain&content-scaling=fixed
-``` Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva
-a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
+```
+
+Desde ahí se entra a cualquiera de los tres roles y cada pantalla lleva a las demás. Las conexiones usan *Smart Animate* con salida suave y 300 ms: como las pantallas
 comparten la barra superior y el menú con el mismo nombre y la misma posición, Figma los reconoce
 entre pantallas y los interpola en lugar de cortar en seco.
 
@@ -1060,6 +1064,116 @@ y está declarada en la sección 11.2 para que nadie la confunda con el comporta
 
 ---
 
+## Anexo B. Medición de los Requerimientos de Interfaz
+
+Las dos métricas de la Tabla 12 que se pueden medir —RNF-11 y RNF-12— se verificaron con números.
+Este anexo deja el procedimiento y el resultado para que quien lo revise pueda repetirlo, en vez de
+tener que creer la afirmación.
+
+**Fecha de la medición:** 21 de octubre de 2026.
+**Instrumento:** maqueta de trabajo en HTML y CSS con las mismas 24 pantallas, cargada en un
+navegador. No forma parte de la entrega, por lo dicho en ADR-011.
+
+
+### B.1 RNF-11, sin desplazamiento horizontal desde 360 píxeles
+
+Cada pantalla se carga en un marco de 360 píxeles de ancho y se compara el ancho del contenido
+contra el de la ventana. Si el contenido es más ancho, aparece la barra de desplazamiento
+horizontal que RNF-11 prohíbe.
+
+```js
+const d = document.documentElement;
+const exceso = d.scrollWidth - d.clientWidth;   // debe ser 0
+```
+
+**Tabla 19.** *Ancho del contenido de cada pantalla a 360 píxeles*
+
+| Pantalla | Ruta | Contenido (px) | Ventana (px) | Exceso |
+|---|---|---|---|---|
+| 01 Acceso | `index.html` | 360 | 360 | **0** |
+| 02 Cambio de contraseña | `cambiar-clave.html` | 360 | 360 | **0** |
+| 02b Olvidé mi contraseña | `recuperar.html` | 360 | 360 | **0** |
+| 02c Revise su correo | `recuperar-enviado.html` | 360 | 360 | **0** |
+| 02d Contraseña nueva | `recuperar-nueva.html` | 360 | 360 | **0** |
+| 02e Enlace no válido | `recuperar-invalido.html` | 360 | 360 | **0** |
+| 03 Panel administrador | `admin/panel.html` | 360 | 360 | **0** |
+| 04 Estudiantes | `admin/estudiantes.html` | 360 | 360 | **0** |
+| 05 Formulario de estudiante | `admin/estudiante-form.html` | 360 | 360 | **0** |
+| 06 Ficha del estudiante | `admin/estudiante-detalle.html` | 360 | 360 | **0** |
+| 07 Docentes | `admin/docentes.html` | 360 | 360 | **0** |
+| 08 Cuentas y roles | `admin/usuarios.html` | 360 | 360 | **0** |
+| 09 Períodos académicos | `admin/periodos.html` | 360 | 360 | **0** |
+| 10 Oferta académica | `admin/cursos.html` | 360 | 360 | **0** |
+| 11 Formulario de curso | `admin/curso-form.html` | 360 | 360 | **0** |
+| 12 Matricular estudiante | `admin/matricular.html` | 360 | 360 | **0** |
+| 13 Lista de clase | `admin/lista-clase.html` | 360 | 360 | **0** |
+| 14 Panel docente | `docente/panel.html` | 360 | 360 | **0** |
+| 15 Registrar calificaciones | `docente/calificar.html` | 360 | 360 | **0** |
+| 16 Panel estudiante | `estudiante/panel.html` | 360 | 360 | **0** |
+| 17 Mis notas | `estudiante/mis-notas.html` | 360 | 360 | **0** |
+| 18 Catálogo de mensajes | `estados.html` | 360 | 360 | **0** |
+| 19 Mi perfil | `perfil.html` | 360 | 360 | **0** |
+| 20 Cambiar contraseña | `cambiar-contrasena.html` | 360 | 360 | **0** |
+
+*Nota.* Las 24 pantallas dan exceso 0. El valor más alto de contenido es 360 px, que es exactamente
+el ancho de la ventana: ninguna pantalla lo supera ni por un píxel. La tabla de datos es el caso
+difícil y se resuelve apilándola en fichas, como muestran la sección 10.2 y la Figura 9.
+
+
+### B.2 RNF-12, relación de contraste mínima de 4.5:1
+
+El contraste se calcula con la fórmula de luminancia relativa de WCAG 2.1, no se estima a ojo ni se
+toma de una herramienta sin dejar constancia. Solo necesita los valores hexadecimales de la Tabla 3:
+
+```python
+def lineal(c):
+    c = c / 255.0
+    return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
+
+def luminancia(hexa):
+    h = hexa.lstrip('#')
+    r, g, b = (int(h[i:i+2], 16) for i in (0, 2, 4))
+    return 0.2126 * lineal(r) + 0.7152 * lineal(g) + 0.0722 * lineal(b)
+
+def contraste(frente, fondo):
+    a, b = luminancia(frente), luminancia(fondo)
+    if a < b:
+        a, b = b, a
+    return (a + 0.05) / (b + 0.05)
+```
+
+**Tabla 20.** *Contraste calculado de cada par de la paleta*
+
+| Par | Frente | Fondo | Razón | ¿Cumple 4.5:1? |
+|---|---|---|---|---|
+| Títulos y barra superior | `#1f3864` | `#ffffff` | 11.62:1 | Sí |
+| Acciones principales | `#2e75b6` | `#ffffff` | 4.84:1 | Sí |
+| Texto principal | `#1a1a1a` | `#ffffff` | 17.40:1 | Sí |
+| Texto secundario y ayudas | `#44474d` | `#ffffff` | 9.32:1 | Sí |
+| Confirmación | `#10632b` | `#e6f4ea` | 6.51:1 | Sí |
+| Error | `#a50e0e` | `#fce8e6` | 6.68:1 | Sí |
+| Aviso | `#7f6000` | `#fef7e0` | 5.48:1 | Sí |
+| Texto de botón principal | `#ffffff` | `#2e75b6` | 4.84:1 | Sí |
+
+*Nota.* El mínimo de la paleta es 4.84:1, en el azul de acción. Al recalcular para este anexo
+aparecieron diferencias con las cifras que la Tabla 3 traía desde la primera versión del documento:
+el ámbar de aviso figuraba en 7.1:1 y da 5.48:1, y el verde y el rojo estaban una décima largos.
+Ninguna baja de 4.5:1, de modo que la conclusión no cambia, pero las cifras sí: quedan corregidas
+en la Tabla 3.
+
+
+### B.3 Lo que este anexo no cubre
+
+RNF-13 se verifica contando interacciones, y eso está en la Tabla 11. RNF-10 se verifica leyendo el
+catálogo de mensajes de la sección 8. Las dos son revisables sin instrumento, por eso no aparecen
+aquí.
+
+La limitación que sí queda escrita: la maqueta con la que se midió no se entrega. Quien quiera
+repetir B.1 tiene que reconstruirla; B.2, en cambio, solo necesita los hexadecimales de la Tabla 3
+y se puede repetir hoy mismo con el código de arriba.
+
+---
+
 **Resumen del entregable:** 24 pantallas · 16 componentes · 8 diagramas · 25 capturas ·
-18 tablas · catálogo de 25 mensajes · prototipo de Figma en escritorio y móvil ·
-0 desbordes a 360 px · 25 historias del MVP trazadas.
+20 tablas · catálogo de 25 mensajes · prototipo de Figma en escritorio y móvil ·
+0 desbordes a 360 px en las 24 pantallas · contraste mínimo 4.84:1 · 25 historias del MVP trazadas.
