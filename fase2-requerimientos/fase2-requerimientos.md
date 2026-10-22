@@ -63,7 +63,7 @@ Identificamos cada elemento con un prefijo que mantendremos en las fases siguien
 
 | Prefijo | Elemento | Ejemplo | Cantidad |
 |---|---|---|---|
-| HU | Historia de usuario (Fase 1) | HU-15 | 32 historias |
+| HU | Historia de usuario (Fase 1) | HU-15 | 33 historias |
 | RF | Requerimiento funcional | RF-30 | 60 requerimientos |
 | RNF | Requerimiento no funcional | RNF-15 | 28 requerimientos |
 | RN | Regla de negocio | RN-05 | 31 reglas |

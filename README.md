@@ -63,7 +63,7 @@ es como cumplimos el criterio de la Definición de Terminado.
 - Alcance, exclusiones y backlog de versiones futuras
 - 6 actores, 3 perfiles de usuario y matriz de interesados
 - Glosario del dominio y 18 reglas de negocio candidatas
-- **9 épicas** y **32 historias de usuario** con criterios de aceptación en formato Dado-Cuando-Entonces
+- **9 épicas** y **33 historias de usuario** con criterios de aceptación en formato Dado-Cuando-Entonces
 - Priorización MoSCoW + índice valor/esfuerzo
 - **MVP: 25 historias, 137 puntos de historia, 4 sprints**
 - Definición de Listo y de Terminado, riesgos, métricas de éxito y matriz de trazabilidad
@@ -95,9 +95,9 @@ es como cumplimos el criterio de la Definición de Terminado.
 
 ### Contenido de la fase
 
-- **57 requerimientos funcionales** en 6 módulos, cada uno con entradas, proceso, salidas, precondición y postcondición
+- **62 requerimientos funcionales** en 6 módulos, cada uno con entradas, proceso, salidas, precondición y postcondición
 - **28 requerimientos no funcionales** según las 8 características de la norma ISO/IEC 25010, todos con métrica de verificación
-- **27 reglas de negocio** formalizadas y clasificadas por tipo, con su origen institucional
+- **33 reglas de negocio** formalizadas y clasificadas por tipo, con su origen institucional
 - **10 restricciones** técnicas, de proyecto, de negocio y normativas
 - **15 casos de prueba** de aceptación del sistema
 - **5 matrices de trazabilidad** con cobertura completa
@@ -141,7 +141,7 @@ es como cumplimos el criterio de la Definición de Terminado.
 
 ### Contenido de la fase
 
-- **27 casos de uso** con actor iniciador, módulo y requerimientos que agrupa
+- **29 casos de uso** con actor iniciador, módulo y requerimientos que agrupa
 - **5 casos de uso expandidos** con flujo principal, flujos alternos y excepciones
 - **11 clases de dominio** y 6 enumeraciones, con las reglas de negocio como restricciones anotadas
 - Tabla de **relaciones y multiplicidades** con la justificación de cada una
@@ -180,9 +180,9 @@ es como cumplimos el criterio de la Definición de Terminado.
 - **Modelo conceptual** con 11 entidades, sus dominios y sus cardinalidades
 - **Normalización** desde la planilla de cálculo actual hasta la tercera forma normal, con las dos desnormalizaciones deliberadas justificadas
 - **Modelo lógico**: estrategia de herencia, claves subrogadas y política de nulos
-- **Modelo físico** para PostgreSQL 16: **11 tablas, 14 índices, 9 disparadores, 7 funciones y 8 vistas**
-- Las **27 reglas de negocio** ubicadas una por una: 23 impuestas por el motor y 4 en la capa de negocio
-- **Script SQL completo** con datos de prueba y **22 comprobaciones** de las reglas, **ejecutadas contra PostgreSQL 16.10** con las 22 en verde
+- **Modelo físico** para PostgreSQL 16: **12 tablas, 16 índices, 9 disparadores, 10 funciones y 8 vistas**
+- Las **33 reglas de negocio** ubicadas una por una: 27 impuestas por el motor y 6 en la capa de negocio
+- **Script SQL completo** con datos de prueba y **26 comprobaciones** de las reglas, **ejecutadas contra PostgreSQL 16.10** con las 26 en verde
 - Matrices de trazabilidad clase-tabla y módulo-objeto, y verificación de consistencia en 6 condiciones
 - Dos decisiones nuevas de arquitectura: [ADR-009](docs/adr/ADR-009-motor-postgresql.md) y [ADR-010](docs/adr/ADR-010-mapeo-de-la-herencia.md)
 
@@ -240,7 +240,7 @@ psql -d sga -f 05-verificacion.sql
 
 ### Abrir el prototipo
 
-El prototipo es un archivo de Figma con las 22 pantallas y 142 conexiones. El botón **Presentar**
+El prototipo es un archivo de Figma con las 24 pantallas, en escritorio y en móvil. El botón **Presentar**
 arranca en la pantalla de acceso, que está fijada como punto de partida del flujo.
 
 El prototipo se entrega en dos tamaños de ventana. No hace falta cuenta ni iniciar sesión:
@@ -255,9 +255,9 @@ muestran las pantallas principales sin salir del repositorio.
 
 - **Estructura de navegación** por rol, con la verificación de los tres clics (RNF-13)
 - **Sistema de diseño**: tokens de color, tipografía y espaciado, y **16 componentes**
-- **22 pantallas**: acceso, restablecimiento de contraseña, paneles de los tres roles, formularios, listados con filtros, fichas de detalle y consultas
+- **24 pantallas**: acceso, restablecimiento de contraseña, paneles de los tres roles, formularios, listados con filtros, fichas de detalle, consultas y el perfil del usuario
 - **Catálogo de mensajes** completo: el Anexo A que la Fase 2 dejó pendiente, con sus reglas de redacción
-- Verificación medida: **142 de 142 conexiones del prototipo y 0 desbordes a 360 px** en las 22 pantallas
+- Verificación medida: **169 de 169 conexiones en escritorio, 96 de 96 en móvil y 0 desbordes a 360 px** en las 24 pantallas
 - Plan de prueba de usabilidad para medir RNF-09 antes de programar
 - Los datos del prototipo son los del juego de prueba de la Fase 4: lo que se ve en pantalla es lo que devuelve la base de datos
 - Decisión nueva de arquitectura: [ADR-011](docs/adr/ADR-011-prototipo-en-figma.md)

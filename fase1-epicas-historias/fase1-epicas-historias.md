@@ -84,6 +84,12 @@ antes.
                              CAUSAS
 ```
 
+**Figura 1.** *Árbol de problemas del Sistema de Gestión Académica*
+
+![Árbol de problemas del Sistema de Gestión Académica](diagramas/02-arbol-problemas.png)
+
+*Nota.* Elaboración propia. Las causas corresponden a condiciones estructurales del proceso actual; los efectos son las consecuencias observadas por la coordinación académica.
+
 ### 1.3 Formulación del problema central
 
 > **La institución no cuenta con un sistema centralizado que registre y relacione estudiantes,
@@ -173,6 +179,12 @@ multi-año, exportación a PDF con plantilla institucional.
 | **Acudiente** | Secundario, humano | Responsable del estudiante menor de edad. *(Fuera del MVP)* | Solo lectura, futuro |
 | **Servicio de autenticación** | Secundario, software | Valida credenciales y administra la sesión. | Interno |
 | **Motor de reportes** | Secundario, software | Genera listas, boletines y consolidados. | Interno |
+
+**Figura 2.** *Diagrama de contexto: actores y funciones principales del sistema*
+
+![Diagrama de contexto: actores y funciones principales del sistema](diagramas/01-actores.png)
+
+*Nota.* Elaboración propia con PlantUML. El actor Acudiente se representa con relación punteada por corresponder a una versión posterior.
 
 ### 4.2 Perfiles de usuario (personas)
 
@@ -285,6 +297,18 @@ DEL USUARIO  al sistema   personas      la oferta                               
              por correo
 ```
 
+**Figura 3.** *Descomposición de las épicas en historias de usuario*
+
+![Descomposición de las épicas en historias de usuario](diagramas/03-epicas-historias.png)
+
+*Nota.* Elaboración propia con PlantUML. Las historias sombreadas en verde corresponden al producto mínimo viable y las grises a la versión 2.
+
+**Figura 4.** *Mapa de historias de usuario del Sistema de Gestión Académica*
+
+![Mapa de historias de usuario del Sistema de Gestión Académica](diagramas/04-story-map.png)
+
+*Nota.* Elaboración propia con PlantUML. Cada columna corresponde a una actividad del usuario y cada color a un nivel de entrega.
+
 ---
 
 ## 8. Épicas
@@ -389,6 +413,18 @@ DEL USUARIO  al sistema   personas      la oferta                               
 | **Actores** | Estudiante, docente |
 | **Historias** | HU-31 |
 | **Prioridad** | Could have — versión 2 |
+
+**Figura 5.** *Casos de uso del administrador académico*
+
+![Casos de uso del administrador académico](diagramas/05-casos-uso-administrador.png)
+
+*Nota.* Elaboración propia con PlantUML. Las relaciones de inclusión evidencian la dependencia de la matrícula respecto de las reglas RN-05 y RN-07.
+
+**Figura 6.** *Casos de uso del docente y del estudiante*
+
+![Casos de uso del docente y del estudiante](diagramas/06-casos-uso-docente-estudiante.png)
+
+*Nota.* Elaboración propia con PlantUML. La regla RN-08 restringe el acceso del docente a los cursos que tiene asignados.
 
 ---
 
@@ -1218,6 +1254,12 @@ A mayor índice, antes se implementa.
            (hacer primero)          (planear y dividir)
 ```
 
+**Figura 7.** *Matriz de valor y esfuerzo de las historias de usuario*
+
+![Matriz de valor y esfuerzo de las historias de usuario](diagramas/07-matriz-valor-esfuerzo.png)
+
+*Nota.* Elaboración propia con PlantUML. Las historias del cuadrante superior izquierdo se ejecutan primero; las del cuadrante superior derecho requieren división previa.
+
 ---
 
 ## 11. Definición del MVP y roadmap
@@ -1278,6 +1320,12 @@ Al terminar el sprint 4 este recorrido debe funcionar completo:
 8. Intenta registrar 5.8: **el sistema lo impide.**
 9. Valentina entra con su cuenta, ve `MAT-101`, su nota 4.0 y su definitiva parcial.
 10. Valentina intenta abrir la gestión de estudiantes por URL: **el sistema lo impide.**
+
+**Figura 8.** *Cronograma de los cuatro sprints del producto mínimo viable*
+
+![Cronograma de los cuatro sprints del producto mínimo viable](diagramas/08-roadmap-sprints.png)
+
+*Nota.* Elaboración propia con PlantUML. Los rombos señalan las demostraciones de sprint y la entrega final del producto mínimo viable.
 
 ---
 
@@ -1383,7 +1431,7 @@ requerimientos funcionales.
 | Definir el objetivo general | ✅ | Sección 2.1 |
 | Identificar actores / usuarios | ✅ | Sección 4 (actores, personas y stakeholders) |
 | Crear las épicas | ✅ | Sección 8 (9 épicas) |
-| Crear historias de usuario | ✅ | Sección 9 (32 historias) |
+| Crear historias de usuario | ✅ | Sección 9 (33 historias) |
 | Definir criterios de aceptación | ✅ | Sección 9 (formato Gherkin por historia) |
 | Priorizar las historias para determinar el MVP | ✅ | Secciones 10 y 11 |
 

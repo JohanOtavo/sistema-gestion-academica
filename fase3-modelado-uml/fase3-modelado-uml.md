@@ -35,7 +35,7 @@
 
 ### 1.1 Propósito
 
-En la Fase 2 dejamos escrito qué debe hacer el sistema: 57 requerimientos funcionales, 28 no funcionales y 27 reglas de negocio. Aquí damos el paso siguiente y modelamos cómo se organiza por dentro para cumplirlos. El resultado son veinte diagramas en notación UML que muestran el sistema desde cuatro ángulos distintos: qué hace y para quién, con qué información trabaja, cómo se comporta en el tiempo y cómo se instala.
+En la Fase 2 dejamos escrito qué debe hacer el sistema: 62 requerimientos funcionales, 28 no funcionales y 33 reglas de negocio. Aquí damos el paso siguiente y modelamos cómo se organiza por dentro para cumplirlos. El resultado son veinte diagramas en notación UML que muestran el sistema desde cuatro ángulos distintos: qué hace y para quién, con qué información trabaja, cómo se comporta en el tiempo y cómo se instala.
 
 No es un ejercicio de dibujo. Cada diagrama responde una pregunta que la Fase 4 y la Fase 6 nos van a hacer: qué tablas necesitamos, qué clases hay que programar, en qué orden ocurren las validaciones y qué pasa cuando una falla. Modelar antes de programar es lo que evita descubrir esas respuestas a mitad de un sprint.
 
@@ -627,7 +627,7 @@ La organización del código en paquetes materializa la arquitectura en capas. L
 | Paquete | Contenido | Depende de |
 |---|---|---|
 | sga.presentacion | Controladores y vistas; traduce peticiones del navegador a llamadas de negocio | sga.negocio, sga.dominio, sga.comun |
-| sga.negocio | Servicios y reglas de negocio; es donde viven las 27 reglas RN | sga.dominio, sga.datos, sga.comun |
+| sga.negocio | Servicios y reglas de negocio; es donde viven las 33 reglas RN | sga.dominio, sga.datos, sga.comun |
 | sga.dominio | Clases del modelo y enumeraciones; no depende de ninguna otra capa | — |
 | sga.datos | Interfaces de repositorio y su implementación para el motor concreto | sga.dominio, sga.comun |
 | sga.comun | Utilidades compartidas: validaciones de formato, manejo de fechas y excepciones | — |
