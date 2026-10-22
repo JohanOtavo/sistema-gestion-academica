@@ -650,11 +650,17 @@ las unen.
 
 | Elemento | Cantidad |
 |---|---|
-| Pantallas, cada una un frame con auto layout | 22 |
+| Pantallas, cada una un frame de 1440 × 1024 px con auto layout | 22 |
 | Conexiones entre pantallas | 142 |
 | Estilos de color y de texto | 23 |
 | Variables de color y espaciado | 25 |
 | Hoja con los componentes del sistema de diseño | 1 |
+
+Las 22 pantallas miden lo mismo, **1440 × 1024 píxeles**, que es la resolución de escritorio
+sobre la que se diseñó. No es un detalle cosmético: fija el ancho real de trabajo y obliga a
+decidir qué entra en la primera pantalla y qué queda debajo. Cuando el contenido es más alto que
+la ventana —el panel del administrador, la lista de clase, el catálogo de mensajes— la pantalla se
+desplaza verticalmente al presentarla, igual que en un navegador, en lugar de recortarse.
 
 Dos decisiones de construcción sostienen todo lo demás. La primera es el **auto layout**: ninguna
 pantalla es un montón de cajas sueltas, sino contenedores que crecen con su contenido. Por eso una
@@ -667,7 +673,7 @@ que es justamente lo que a mano se olvida.
 **Para recorrerlo:**
 
 ```text
-https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed
+https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=28-2514&starting-point-node-id=28%3A2514&scaling=contain&content-scaling=fixed
 ```
 
 El enlace abre el prototipo en modo presentación, sin necesidad de cuenta ni de iniciar sesión.
@@ -846,7 +852,7 @@ Conviene ser explícito para que nadie espere lo que no hay.
 | El sistema de diseño completo | La autenticación: cualquier botón entra |
 | El contraste de la paleta | El cálculo: los resultados están escritos, no se computan |
 | Los mensajes, con su redacción definitiva | La autorización: el prototipo deja cambiar de rol a voluntad |
-| | La adaptación: los frames tienen un ancho fijo, no se reacomodan |
+| | La adaptación: los frames miden 1440 × 1024 px fijos, no se reacomodan |
 
 *Nota.* Dos filas piden explicación. La autorización se deja abierta a propósito, para poder
 revisar el prototipo completo con los tres roles; en el sistema real ese salto es exactamente lo

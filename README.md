@@ -243,7 +243,7 @@ psql -d sga -f 05-verificacion.sql
 El prototipo es un archivo de Figma con las 22 pantallas y 142 conexiones. El botón **Presentar**
 arranca en la pantalla de acceso, que está fijada como punto de partida del flujo.
 
-**[Abrir el prototipo en Figma](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=12-103&starting-point-node-id=12%3A103&scaling=min-zoom&content-scaling=fixed)** — no hace falta cuenta ni iniciar sesión.
+**[Abrir el prototipo en Figma](https://www.figma.com/proto/0N23jzSCsiWpoBvI59fkup/SGA---Prototipo-Fase-5---Grupo-6?node-id=28-2514&starting-point-node-id=28%3A2514&scaling=contain&content-scaling=fixed)** — no hace falta cuenta ni iniciar sesión.
 
 Las seis capturas de [`fase5-mockup/capturas/`](fase5-mockup/capturas/) y la sección 11 del informe
 muestran las pantallas principales sin salir del repositorio.
